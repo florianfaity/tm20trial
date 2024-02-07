@@ -1,6 +1,6 @@
 namespace tm20trial.Domain.Entities;
 
-public class Users : BaseAuditableEntity
+public partial class Users
 {
     public required string DisplayName { get; set; }
 
@@ -14,4 +14,11 @@ public class Users : BaseAuditableEntity
     
     public string? TmxId { get; set; }
 
+
+    public virtual ICollection<Records> Records { get; set; }
+
+     public Users(){
+        
+            Records = new HashSet<Records>();
+     }
 }

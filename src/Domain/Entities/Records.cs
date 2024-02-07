@@ -13,5 +13,5 @@ public class Records : BaseAuditableEntity
     public int IdUser { get; set; }
 
     [ForeignKey("IdUser")]
-    public AspNetUsers
+    public virtual Users User { get; set; }
 }
