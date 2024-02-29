@@ -29,7 +29,14 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
+        services
+            .AddDefaultIdentity<ApplicationUser>()
+        //    .AddUserStore<UserStore>()
+            .AddRoles<IdentityRole>()
+            .AddRoleManager<RoleManager<IdentityRole>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+        
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services
