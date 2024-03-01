@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace tm20trial.Domain.Entities;
 
-public class Users
+public class Users: BaseAuditableEntity
 {
     public Users()
     {
