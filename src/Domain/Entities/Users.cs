@@ -2,13 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace tm20trial.Domain.Entities;
 
-public class Users: BaseAuditableEntity
+public class Users
 {
-    public Users()
-    {
-        Records = new HashSet<Records>();
-    }
-    
+    [Key]
+    public int IdUser{get;set;}
     public string? DisplayName { get; set; } 
 
     public string? LoginUplay { get; set; } 
@@ -21,6 +18,5 @@ public class Users: BaseAuditableEntity
 
     public string? TmxId { get; set; }
     
-    public virtual ICollection<Records> Records { get; set; }
-
+    public virtual ICollection<Records> Records { get; set; } = new HashSet<Records>();
 }
