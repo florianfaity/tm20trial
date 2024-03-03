@@ -15,8 +15,7 @@ namespace tm20trial.Infrastructure.Data.Migrations
                 name: "UserDetailsIdUser",
                 table: "AspNetUsers",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "Maps",
@@ -114,7 +113,7 @@ namespace tm20trial.Infrastructure.Data.Migrations
                 column: "UserDetailsIdUser",
                 principalTable: "Users",
                 principalColumn: "IdUser",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />

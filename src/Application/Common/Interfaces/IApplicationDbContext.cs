@@ -8,5 +8,11 @@ public interface IApplicationDbContext
 
     DbSet<TodoItem> TodoItems { get; }
 
+    DbSet<Domain.Entities.Users> UsersDb { get; }
+
+    DbSet<Records> Records { get; }
+
+    DbSet<Maps> Maps { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

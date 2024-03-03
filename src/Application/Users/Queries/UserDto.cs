@@ -1,12 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+using tm20trial.Domain.Entities;
 
-namespace tm20trial.Domain.Entities;
+namespace tm20trial.Application.Users.Queries;
 
-public class Users
+public class UserDto 
 {
-    [Key]
     public int IdUser { get; set; }
-    
+
     public string? DisplayName { get; set; }
 
     public string? LoginUplay { get; set; }
@@ -19,5 +18,12 @@ public class Users
 
     public string? TmxId { get; set; }
 
-    public virtual ICollection<Records> Records { get; set; } = new HashSet<Records>();
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<Domain.Entities.Users, UserDto>();
+        }
+    }
+
 }
