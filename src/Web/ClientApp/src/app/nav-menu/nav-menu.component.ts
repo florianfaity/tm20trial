@@ -7,7 +7,8 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
-
+  isAdminView = false;
+  pseudo = "Test"
   collapse() {
     this.isExpanded = false;
   }
