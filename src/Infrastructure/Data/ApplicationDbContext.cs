@@ -14,7 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<TodoList> TodoLists => Set<TodoList>();
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-    public DbSet<Users> UsersDb => Set<Users>();
+    public new DbSet<Users> Users => Set<Users>();
     public DbSet<Records> Records => Set<Records>();
     public DbSet<Maps> Maps => Set<Maps>();
 

@@ -81,7 +81,7 @@ namespace tm20trial.Infrastructure.Identity
                 .Include(x => x.UserDetails)
                 .FirstAsync(x => x.Id == userId);
 
-            return user.UserDetails;
+            return user.UserDetails??new Users();
         }
     }
 }

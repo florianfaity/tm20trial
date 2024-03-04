@@ -10,6 +10,6 @@ namespace tm20trial.Domain.Interfaces
 
         public string? Email { get; set; }
 
-        public Users UserDetails { get; set; }
+        public Users? UserDetails { get; set; }
     }
 }

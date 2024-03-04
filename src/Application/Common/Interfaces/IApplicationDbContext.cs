@@ -8,7 +8,7 @@ public interface IApplicationDbContext
 
     DbSet<TodoItem> TodoItems { get; }
 
-    DbSet<Domain.Entities.Users> UsersDb { get; }
+    DbSet<Domain.Entities.Users> Users { get; }
 
     DbSet<Records> Records { get; }
 
