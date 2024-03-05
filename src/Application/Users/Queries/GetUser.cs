@@ -11,7 +11,6 @@ public record GetUserQuery : IRequest<UserDto>
     public int IdUser {get;set;}
 }
 
-
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 {
     private readonly IApplicationDbContext _context;
