@@ -3,6 +3,7 @@ using tm20trial.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using tm20trial.Domain.Interfaces;
 
 namespace tm20trial.Infrastructure.Identity;
 
@@ -77,5 +78,18 @@ public class IdentityService : IIdentityService
         var result = await _userManager.DeleteAsync(user);
 
         return result.ToApplicationResult();
+    }
+    
+    public async Task<IApplicationUser> FindUserByIdAsync(string id, CancellationToken token = default)
+    {
+        var user = await _userManager.Users.Include(x => x.UserDetails).FirstOrDefaultAsync(u => u.Id == id, token);
+
+        return user?? new ApplicationUser();
+    }
+    public async Task<IApplicationUser> FindUserByIdAsync(int id, CancellationToken token = default)
+    {
+        var user = await _userManager.Users.Include(x => x.UserDetails).FirstOrDefaultAsync(u => u.UserDetails != null && u.UserDetails.IdUser == id, token);
+         
+        return user?? new ApplicationUser();
     }
 }

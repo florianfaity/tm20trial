@@ -69,10 +69,15 @@ public class ApplicationDbContextInitialiser
     {
         // Default roles
         var administratorRole = new IdentityRole(Roles.Administrator);
-
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
+        }
+        
+        var playerRole = new IdentityRole(Roles.Player);
+        if (_roleManager.Roles.All(r => r.Name != playerRole.Name))
+        {
+            await _roleManager.CreateAsync(playerRole);
         }
         
         var mapperRole = new IdentityRole(Roles.Mapper);
@@ -80,7 +85,6 @@ public class ApplicationDbContextInitialiser
         {
             await _roleManager.CreateAsync(mapperRole);
         }
-
 
         // Default users
         var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
