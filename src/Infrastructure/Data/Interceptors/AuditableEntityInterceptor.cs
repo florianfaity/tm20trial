@@ -8,11 +8,11 @@ namespace tm20trial.Infrastructure.Data.Interceptors;
 
 public class AuditableEntityInterceptor : SaveChangesInterceptor
 {
-    private readonly IUser _user;
+    private readonly ICurrentUserService _user;
     private readonly TimeProvider _dateTime;
 
     public AuditableEntityInterceptor(
-        IUser user,
+        ICurrentUserService user,
         TimeProvider dateTime)
     {
         _user = user;
@@ -41,13 +41,13 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = _user.Id;
+                entry.Entity.CreatedBy = _user.IdentityId;
                 entry.Entity.Created = _dateTime.GetUtcNow();
             } 
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.LastModifiedBy = _user.Id;
+                entry.Entity.LastModifiedBy = _user.IdentityId;
                 entry.Entity.LastModified = _dateTime.GetUtcNow();
             }
         }

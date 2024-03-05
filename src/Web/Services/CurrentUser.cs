@@ -6,6 +6,7 @@ namespace tm20trial.Web.Services;
 
 public class CurrentUser : ICurrentUserService
 {
+    public string? IdentityId { get; }
     public int UserId { get; }
     
     public bool IsAdmin { get; set; }
@@ -18,11 +19,12 @@ public class CurrentUser : ICurrentUserService
     {
         _httpContextAccessor = httpContextAccessor;
         
+        IdentityId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         try
         {
-            UserId = httpContextAccessor.HttpContext?.User.GetUserId() ?? 0;
-            IsAdmin = httpContextAccessor.HttpContext?.User.IsAdmin() ?? false;
-            Roles = httpContextAccessor.HttpContext?.User.GetRoles() ?? new List<string>();
+            UserId = httpContextAccessor.HttpContext?.User?.GetUserId() ?? 0;
+            IsAdmin = httpContextAccessor.HttpContext?.User?.IsAdmin() ?? false;
+            Roles = httpContextAccessor.HttpContext?.User?.GetRoles() ?? new List<string>();
         }
         catch (Exception)
         {

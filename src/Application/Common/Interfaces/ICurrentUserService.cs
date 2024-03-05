@@ -2,6 +2,8 @@
 
 public interface ICurrentUserService
 {
+    string? IdentityId { get; }
+    
     int UserId { get; }
 
     bool IsAdmin { get; set; }
