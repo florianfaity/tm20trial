@@ -7,9 +7,10 @@ namespace tm20trial.Application.Maps.Queries;
 
 public record GetMapQuery : IRequest<MapDto>
 {
+    public int Id { get; set; }
 }
 
-public class GetMapQueryHandler : IRequestHandler<GetMapsQuery, IEnumerable<MapDto>>
+public class GetMapQueryHandler : IRequestHandler<GetMapQuery, MapDto>
 {
 
     private readonly IApplicationDbContext _context;
@@ -21,9 +22,9 @@ public class GetMapQueryHandler : IRequestHandler<GetMapsQuery, IEnumerable<MapD
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<MapDto>> Handle(GetMapsQuery request, CancellationToken cancellationToken)
+    public async Task<MapDto> Handle(GetMapQuery request, CancellationToken cancellationToken)
     {
-        var maps = await _context.Maps.Include(x => x.Records).ToListAsync(cancellationToken);
+        var maps = await _context.Maps.Include(x => x.Records).FirstOrDefaultAsync(m => m.Id == request.Id ,cancellationToken);
         return _mapper.Map<MapDto>(maps);
     }
 }

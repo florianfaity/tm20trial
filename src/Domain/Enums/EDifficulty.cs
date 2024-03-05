@@ -1,6 +1,6 @@
 namespace tm20trial.Domain.Enums;
 
-public enum Difficulty
+public enum EDifficulty
 {
     None,
     Easy,

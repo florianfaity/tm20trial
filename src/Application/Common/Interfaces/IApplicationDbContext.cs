@@ -12,7 +12,7 @@ public interface IApplicationDbContext
 
     DbSet<Records> Records { get; }
 
-    DbSet<Maps> Maps { get; }
+    DbSet<Domain.Entities.Maps> Maps { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

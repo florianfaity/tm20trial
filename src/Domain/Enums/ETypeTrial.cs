@@ -1,6 +1,6 @@
 ﻿namespace tm20trial.Domain.Enums;
 
-public enum TypeTrial
+public enum ETypeTrial
 {
     Classic,
     Fun,

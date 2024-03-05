@@ -5,9 +5,9 @@ public class Maps : BaseAuditableEntity
     public required string Name { get; set; }
     public required string Author { get; set; }
 
-    public Difficulty Difficulty { get; set; }
+    public EDifficulty Difficulty { get; set; }
     
-    public TypeTrial TypeTrial { get; set; }
+    public ETypeTrial TypeTrial { get; set; }
 
 
     public int Points { get; set; }
