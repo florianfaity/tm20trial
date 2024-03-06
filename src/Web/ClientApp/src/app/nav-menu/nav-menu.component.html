@@ -5,16 +5,20 @@
         nzXs="0"
         nzMd="2"
         nzLg="2"
-        nzXl="6"
+        nzXl="7"
         [routerLink]="['/']"
         class="cursor-pointer"
       >
         <img alt="logo" src="assets/img/logo.png" class="logo" />
       </nz-col>
-      <nz-col nzXs="0" nzLg="8" [nzXl]="{ span: 7 }" >
-        Search
+      <nz-col nzXs="0" nzLg="8" nzXl="6" >
+        <nz-row>
+          <nz-col nzSpan="24">
+            <input nz-input type="text" placeholder="Search" class="search" />
+          </nz-col>
+        </nz-row>
       </nz-col>
-      <nz-col nzXs="24" nzMd="22" nzLg="14" nzXl=" 11">
+      <nz-col nzXs="24" nzMd="22" nzLg="14" nzXl="11">
         <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu-right">
           <li nz-menu-item nzMatchRouter [routerLink]="['/']">Home</li>
           <li nz-menu-item [routerLink]="['/leaderboard']">Leaderboard</li>
@@ -23,7 +27,7 @@
           <li nz-menu-item *ngIf="isAdminView" href="/api">Api</li>
           <li nz-menu-item class="user-menu">
             <a nz-dropdown [nzDropdownMenu]="menu">
-              <span class="username">{{ pseudo }}</span>
+              <span class="username">{{ pseudo }} </span>
               <nz-avatar nzIcon="user"></nz-avatar>
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">

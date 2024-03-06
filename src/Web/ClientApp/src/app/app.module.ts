@@ -22,6 +22,7 @@ import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {NzAvatarModule} from "ng-zorro-antd/avatar";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzGridModule} from "ng-zorro-antd/grid";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 registerLocaleData(en);
 
@@ -34,23 +35,24 @@ registerLocaleData(en);
     FetchDataComponent,
     TodoComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'counter', component: CounterComponent},
-      {path: 'fetch-data', component: FetchDataComponent},
-      {path: 'todo', component: TodoComponent}
-    ]),
-    BrowserAnimationsModule,
-    ModalModule.forRoot(),
-    NzDropDownModule,
-    NzAvatarModule,
-    NzLayoutModule,
-    NzGridModule
-  ],
+    imports: [
+        BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot([
+            {path: '', component: HomeComponent, pathMatch: 'full'},
+            {path: 'counter', component: CounterComponent},
+            {path: 'fetch-data', component: FetchDataComponent},
+            {path: 'todo', component: TodoComponent}
+        ]),
+        BrowserAnimationsModule,
+        ModalModule.forRoot(),
+        NzDropDownModule,
+        NzAvatarModule,
+        NzLayoutModule,
+        NzGridModule,
+        NzInputModule
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
     { provide: NZ_I18N, useValue: en_US }

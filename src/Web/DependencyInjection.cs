@@ -13,14 +13,14 @@ public static class DependencyInjection
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-        services.AddScoped<ICurrentUserService, CurrentUser>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
     //    services.AddScoped<IUser, CurrentUser>();
 
         services.AddHttpContextAccessor();
 
-        services.AddHealthChecks()
-            .AddDbContextCheck<ApplicationDbContext>();
+        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         services.AddExceptionHandler<CustomExceptionHandler>();
 

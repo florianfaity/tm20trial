@@ -10,21 +10,21 @@ namespace tm20trial.Application.UnitTests.Common.Behaviours;
 public class RequestLoggerTests
 {
     private Mock<ILogger<CreateTodoItemCommand>> _logger = null!;
-    private Mock<IUser> _user = null!;
+    private Mock<ICurrentUserService> _user = null!;
     private Mock<IIdentityService> _identityService = null!;
 
     [SetUp]
     public void Setup()
     {
         _logger = new Mock<ILogger<CreateTodoItemCommand>>();
-        _user = new Mock<IUser>();
+        _user = new Mock<ICurrentUserService>();
         _identityService = new Mock<IIdentityService>();
     }
 
     [Test]
     public async Task ShouldCallGetUserNameAsyncOnceIfAuthenticated()
     {
-        _user.Setup(x => x.Id).Returns(Guid.NewGuid().ToString());
+        _user.Setup(x => x.IdentityId).Returns(Guid.NewGuid().ToString());
 
         var requestLogger = new LoggingBehaviour<CreateTodoItemCommand>(_logger.Object, _user.Object, _identityService.Object);
 

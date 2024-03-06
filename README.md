@@ -45,6 +45,11 @@ If you encounter the error *"No templates or subcommands found matching: 'ca-use
 dotnet new install Clean.Architecture.Solution.Template::8.0.0
 ```
 
+Launch a docker container
+```
+docker run -d --name my-postgres -e POSTGRES_PASSWORD=my-password -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres
+```
+
 ## Test
 
 The solution contains unit, integration, functional, and acceptance tests.

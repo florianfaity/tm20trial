@@ -4,7 +4,7 @@ using tm20trial.Application.Common.Interfaces;
 
 namespace tm20trial.Web.Services;
 
-public class CurrentUser : ICurrentUserService
+public class CurrentUserService : ICurrentUserService
 {
     public string? IdentityId { get; }
     public int UserId { get; }
@@ -13,12 +13,9 @@ public class CurrentUser : ICurrentUserService
     
     public List<string> Roles { get; set; }
     
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUser(IHttpContextAccessor httpContextAccessor)
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
-        _httpContextAccessor = httpContextAccessor;
-        
         IdentityId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         try
         {
@@ -33,6 +30,6 @@ public class CurrentUser : ICurrentUserService
         }
     }
 
-    public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+   // public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
 }
