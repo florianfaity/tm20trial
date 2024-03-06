@@ -29,6 +29,150 @@
         }
       }
     },
+    "/api/Maps/{id}": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "GetMap",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "UpdateMap",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMapCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "DeleteMap",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Maps": {
+      "get": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "GetMaps",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MapDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "CreateMap",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMapCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TodoItems": {
       "get": {
         "tags": [
@@ -401,6 +545,177 @@
   },
   "components": {
     "schemas": {
+      "MapDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "idMap": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "$ref": "#/components/schemas/EDifficulty"
+          },
+          "typeTrial": {
+            "$ref": "#/components/schemas/ETypeTrial"
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tmxLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberCheckpoint": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberFinisher": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bestTime": {
+            "type": "string",
+            "format": "duration"
+          }
+        }
+      },
+      "EDifficulty": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "Easy",
+          "Intermediate",
+          "Advanced",
+          "Hard",
+          "Expert",
+          "Insane"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "ETypeTrial": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Classic",
+          "Fun",
+          "Mini"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "CreateMapCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "difficulty": {
+            "$ref": "#/components/schemas/EDifficulty"
+          },
+          "typeTrial": {
+            "$ref": "#/components/schemas/ETypeTrial"
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tmxLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberCheckpoint": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UpdateMapCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "difficulty": {
+            "$ref": "#/components/schemas/EDifficulty"
+          },
+          "typeTrial": {
+            "$ref": "#/components/schemas/ETypeTrial"
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tmxLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberCheckpoint": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validate": {
+            "type": "boolean"
+          }
+        }
+      },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",
         "additionalProperties": false,

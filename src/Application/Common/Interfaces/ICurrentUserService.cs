@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace tm20trial.Application.Common.Interfaces;
+﻿namespace tm20trial.Application.Common.Interfaces;
 
 public interface ICurrentUserService
 {

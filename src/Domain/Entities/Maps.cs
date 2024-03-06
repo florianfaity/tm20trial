@@ -3,12 +3,12 @@ namespace tm20trial.Domain.Entities;
 public class Maps : BaseAuditableEntity
 {  
     public required string Name { get; set; }
+    
     public required string Author { get; set; }
 
     public EDifficulty Difficulty { get; set; }
     
     public ETypeTrial TypeTrial { get; set; }
-
 
     public int Points { get; set; }
 
@@ -20,5 +20,7 @@ public class Maps : BaseAuditableEntity
 
     public int NumberCheckpoint { get; set; }
 
+    public bool Validate { get; set; } = false;
+    
     public virtual ICollection<Records> Records { get; set; } = new HashSet<Records>();
 }

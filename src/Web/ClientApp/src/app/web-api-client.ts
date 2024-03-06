@@ -88,6 +88,285 @@ export class AuthClient implements IAuthClient {
     }
 }
 
+export interface IMapsClient {
+    getMap(id: number): Observable<MapDto>;
+    updateMap(id: number, command: UpdateMapCommand): Observable<void>;
+    deleteMap(id: number): Observable<void>;
+    getMaps(): Observable<MapDto[]>;
+    createMap(command: CreateMapCommand): Observable<number>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MapsClient implements IMapsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    getMap(id: number): Observable<MapDto> {
+        let url_ = this.baseUrl + "/api/Maps/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MapDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MapDto>;
+        }));
+    }
+
+    protected processGetMap(response: HttpResponseBase): Observable<MapDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MapDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateMap(id: number, command: UpdateMapCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Maps/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateMap(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    deleteMap(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Maps/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteMap(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getMaps(): Observable<MapDto[]> {
+        let url_ = this.baseUrl + "/api/Maps";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMaps(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMaps(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MapDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MapDto[]>;
+        }));
+    }
+
+    protected processGetMaps(response: HttpResponseBase): Observable<MapDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MapDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    createMap(command: CreateMapCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Maps";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreateMap(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ITodoItemsClient {
     getTodoItemsWithPagination(listId: number, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto>;
     createTodoItem(command: CreateTodoItemCommand): Observable<number>;
@@ -788,6 +1067,246 @@ export class WeatherForecastsClient implements IWeatherForecastsClient {
         }
         return _observableOf(null as any);
     }
+}
+
+export class MapDto implements IMapDto {
+    idMap?: number;
+    name?: string | undefined;
+    author?: string | undefined;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+    numberFinisher?: number;
+    bestTime?: string;
+
+    constructor(data?: IMapDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.idMap = _data["idMap"];
+            this.name = _data["name"];
+            this.author = _data["author"];
+            this.difficulty = _data["difficulty"];
+            this.typeTrial = _data["typeTrial"];
+            this.points = _data["points"];
+            this.tmxLink = _data["tmxLink"];
+            this.videoLink = _data["videoLink"];
+            this.imageLink = _data["imageLink"];
+            this.numberCheckpoint = _data["numberCheckpoint"];
+            this.numberFinisher = _data["numberFinisher"];
+            this.bestTime = _data["bestTime"];
+        }
+    }
+
+    static fromJS(data: any): MapDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MapDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["idMap"] = this.idMap;
+        data["name"] = this.name;
+        data["author"] = this.author;
+        data["difficulty"] = this.difficulty;
+        data["typeTrial"] = this.typeTrial;
+        data["points"] = this.points;
+        data["tmxLink"] = this.tmxLink;
+        data["videoLink"] = this.videoLink;
+        data["imageLink"] = this.imageLink;
+        data["numberCheckpoint"] = this.numberCheckpoint;
+        data["numberFinisher"] = this.numberFinisher;
+        data["bestTime"] = this.bestTime;
+        return data;
+    }
+}
+
+export interface IMapDto {
+    idMap?: number;
+    name?: string | undefined;
+    author?: string | undefined;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+    numberFinisher?: number;
+    bestTime?: string;
+}
+
+export enum EDifficulty {
+    None = 0,
+    Easy = 1,
+    Intermediate = 2,
+    Advanced = 3,
+    Hard = 4,
+    Expert = 5,
+    Insane = 6,
+}
+
+export enum ETypeTrial {
+    Classic = 0,
+    Fun = 1,
+    Mini = 2,
+}
+
+export class CreateMapCommand implements ICreateMapCommand {
+    name?: string;
+    author?: string;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+
+    constructor(data?: ICreateMapCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.author = _data["author"];
+            this.difficulty = _data["difficulty"];
+            this.typeTrial = _data["typeTrial"];
+            this.points = _data["points"];
+            this.tmxLink = _data["tmxLink"];
+            this.videoLink = _data["videoLink"];
+            this.imageLink = _data["imageLink"];
+            this.numberCheckpoint = _data["numberCheckpoint"];
+        }
+    }
+
+    static fromJS(data: any): CreateMapCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateMapCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["author"] = this.author;
+        data["difficulty"] = this.difficulty;
+        data["typeTrial"] = this.typeTrial;
+        data["points"] = this.points;
+        data["tmxLink"] = this.tmxLink;
+        data["videoLink"] = this.videoLink;
+        data["imageLink"] = this.imageLink;
+        data["numberCheckpoint"] = this.numberCheckpoint;
+        return data;
+    }
+}
+
+export interface ICreateMapCommand {
+    name?: string;
+    author?: string;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+}
+
+export class UpdateMapCommand implements IUpdateMapCommand {
+    id?: number;
+    name?: string;
+    author?: string;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+    validate?: boolean;
+
+    constructor(data?: IUpdateMapCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.author = _data["author"];
+            this.difficulty = _data["difficulty"];
+            this.typeTrial = _data["typeTrial"];
+            this.points = _data["points"];
+            this.tmxLink = _data["tmxLink"];
+            this.videoLink = _data["videoLink"];
+            this.imageLink = _data["imageLink"];
+            this.numberCheckpoint = _data["numberCheckpoint"];
+            this.validate = _data["validate"];
+        }
+    }
+
+    static fromJS(data: any): UpdateMapCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateMapCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["author"] = this.author;
+        data["difficulty"] = this.difficulty;
+        data["typeTrial"] = this.typeTrial;
+        data["points"] = this.points;
+        data["tmxLink"] = this.tmxLink;
+        data["videoLink"] = this.videoLink;
+        data["imageLink"] = this.imageLink;
+        data["numberCheckpoint"] = this.numberCheckpoint;
+        data["validate"] = this.validate;
+        return data;
+    }
+}
+
+export interface IUpdateMapCommand {
+    id?: number;
+    name?: string;
+    author?: string;
+    difficulty?: EDifficulty;
+    typeTrial?: ETypeTrial;
+    points?: number;
+    tmxLink?: string | undefined;
+    videoLink?: string | undefined;
+    imageLink?: string | undefined;
+    numberCheckpoint?: number;
+    validate?: boolean;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
