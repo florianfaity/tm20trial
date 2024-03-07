@@ -21,13 +21,12 @@
       <nz-col nzXs="24" nzMd="22" nzLg="14" nzXl="11">
         <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu-right">
           <li nz-menu-item nzMatchRouter [routerLink]="['/']">Home</li>
-          <li nz-menu-item [routerLink]="['/leaderboard']">Leaderboard</li>
-          <li nz-menu-item [routerLink]="['/maps']">Maps</li>
-          <li nz-menu-item *ngIf="isAdminView" [routerLink]="['/admin']">Admin</li>
-          <li nz-menu-item *ngIf="isAdminView" href="/api">Api</li>
-          <li nz-menu-item class="user-menu">
+          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/leaderboard']">Leaderboard</li>
+          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/maps']">Maps</li>
+          <li nz-menu-item *ngIf="isAdmin" [routerLink]="['/admin']">Admin</li>
+          <li nz-menu-item class="user-menu" *ngIf="isPlayer">
             <a nz-dropdown [nzDropdownMenu]="menu">
-              <span class="username">{{ pseudo }} </span>
+              <span class="username">{{ playerName }} </span>
               <nz-avatar nzIcon="user"></nz-avatar>
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -46,6 +45,45 @@
       </nz-col>
     </nz-row>
   </nz-header>
+
+  <nz-layout *ngIf="isAdminView">
+    <nz-sider
+      nzCollapsible
+      nzBreakpoint="lg"
+      [nzWidth]="200"
+      class="sidepanel-menu"
+    >
+      <div [ngClass]="'sidepanel-menu-items'">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
+          <ng-container *ngIf="isAdminView">
+            <li nz-menu-item nzMatchRouter [routerLink]="['/', 'admin', 'users']">
+              <i nz-icon nzType="team" nzTheme="outline"></i>
+              <span>Users</span>
+            </li>
+            <li nz-submenu nzTitle="Maps" nzIcon="form">
+              <ul>
+                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'list']" nz-menu-item>List of maps</li>
+                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested</li>
+              </ul>
+            </li>
+            <li nz-submenu nzTitle="Records" nzIcon="database" [routerLink]="['/', 'admin', 'records']">
+                <span>Records</span>
+            </li>
+            <li nz-submenu nzTitle="Records" nzIcon="database" [routerLink]="['/', 'api']">
+              <span>Api</span>
+            </li>
+
+          </ng-container>
+        </ul>
+      </div>
+
+    </nz-sider>
+    <nz-layout class="inner-layout">
+      <nz-content>
+        <ng-content></ng-content>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
 </nz-layout>
 
 <!--<header>-->

@@ -23,3 +23,12 @@ html {
 .username {
   margin-right: 15px;
 }
+
+.sidepanel-menu {
+  display:flex;
+  flex-direction: column;
+}
+
+.sidepanel-menu-items {
+  height: calc(100vh - 155px);
+}

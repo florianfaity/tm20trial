@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,9 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.scss']
 })
 export class NavMenuComponent {
+  @Input() isAdmin = false;
+  @Input() isAdminView = false;
+  @Input() isMapper = false;
+  @Input() isPlayer = false;
+  @Input() playerName: string = "Test"
+
   isExpanded = false;
-  isAdminView = false;
-  pseudo = "Test"
+
   collapse() {
     this.isExpanded = false;
   }

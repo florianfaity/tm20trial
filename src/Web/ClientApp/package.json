@@ -29,6 +29,7 @@
     "jquery": "^3.6.4",
     "ng-zorro-antd": "^15.1.1",
     "ngx-bootstrap": "10.2.0",
+    "oidc-client": "^1.11.5",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",

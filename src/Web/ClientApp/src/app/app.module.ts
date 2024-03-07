@@ -23,6 +23,13 @@ import {NzAvatarModule} from "ng-zorro-antd/avatar";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzGridModule} from "ng-zorro-antd/grid";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
+import {MapsComponent} from "./maps/maps.component";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {SharedModule} from "./shared/shared.module";
+import {IsRoleGuard} from "../api-authorization/guards/is-role.guard";
+import {AuthorizeGuard} from "../api-authorization/guards/authorize.guard";
+import {TrackmaniaComponent} from "./trackmania/trackmania.component";
 
 registerLocaleData(en);
 
@@ -35,27 +42,35 @@ registerLocaleData(en);
     FetchDataComponent,
     TodoComponent
   ],
-    imports: [
-        BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-        HttpClientModule,
-        FormsModule,
-        RouterModule.forRoot([
-            {path: '', component: HomeComponent, pathMatch: 'full'},
-            {path: 'counter', component: CounterComponent},
-            {path: 'fetch-data', component: FetchDataComponent},
-            {path: 'todo', component: TodoComponent}
-        ]),
-        BrowserAnimationsModule,
-        ModalModule.forRoot(),
-        NzDropDownModule,
-        NzAvatarModule,
-        NzLayoutModule,
-        NzGridModule,
-        NzInputModule
-    ],
+  imports: [
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot([
+      {path: '', component: TrackmaniaComponent},
+      {
+        path: 'admin',
+        canActivate: [AuthorizeGuard, IsRoleGuard],
+        data: {role: 'admin'},
+        loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
+      },
+    ]),
+    BrowserAnimationsModule,
+    ModalModule.forRoot(),
+    NzDropDownModule,
+    NzAvatarModule,
+    NzLayoutModule,
+    NzGridModule,
+    NzInputModule,
+    NzIconModule,
+    SharedModule
+  ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
-    { provide: NZ_I18N, useValue: en_US }
+    {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
+    {provide: NZ_I18N, useValue: en_US}
+  ],
+  exports: [
+    NavMenuComponent
   ],
   bootstrap: [AppComponent]
 })

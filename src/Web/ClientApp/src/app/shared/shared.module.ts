@@ -10,7 +10,6 @@ import {NzCalendarModule} from 'ng-zorro-antd/calendar';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzCarouselModule} from 'ng-zorro-antd/carousel';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
-import {NzCodeEditorModule} from 'ng-zorro-antd/code-editor';
 import {NzCollapseModule} from 'ng-zorro-antd/collapse';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 import {NzDescriptionsModule} from 'ng-zorro-antd/descriptions';
@@ -60,6 +59,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {ModuleWithProviders, NgModule} from "@angular/core";
+import {NavMenuComponent} from "../nav-menu/nav-menu.component";
 
 const ngZorroModule = [
   NzIconModule,
@@ -114,7 +114,6 @@ const ngZorroModule = [
   NzEmptyModule,
   NzInputNumberModule,
   NzAnchorModule,
-  NzCodeEditorModule,
   NzSkeletonModule,
   NzSpaceModule,
   NzAutocompleteModule,
@@ -136,6 +135,7 @@ const modules = [
   imports: [...modules],
   declarations: [
     SpinnerComponent,
+    NavMenuComponent
   ],
   exports: [
     ...modules,
