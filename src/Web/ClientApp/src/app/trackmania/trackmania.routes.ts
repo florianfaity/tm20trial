@@ -10,10 +10,10 @@ export const trackmania_route: Routes = [
     path: '',
     component: TrackmaniaComponent,
     children: [
-      {path: '', component: HomeComponent, pathMatch: 'full'},
+      {path: 'home', component: HomeComponent, pathMatch: 'prefix'},
       {path: 'leaderboard', component: LeaderboardComponent},
       {path: 'maps', component: MapsComponent},
-      { path: '**', redirectTo: '' },
+      { path: '**', redirectTo: 'home' },
     ],
   },
 ];

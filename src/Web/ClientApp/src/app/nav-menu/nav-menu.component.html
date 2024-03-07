@@ -24,6 +24,7 @@
           <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/leaderboard']">Leaderboard</li>
           <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/maps']">Maps</li>
           <li nz-menu-item *ngIf="isAdmin" [routerLink]="['/admin']">Admin</li>
+          <li nz-menu-item *ngIf="!isPlayer" [routerLink]="['/login']">Sign in</li>
           <li nz-menu-item class="user-menu" *ngIf="isPlayer">
             <a nz-dropdown [nzDropdownMenu]="menu">
               <span class="username">{{ playerName }} </span>

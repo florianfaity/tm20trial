@@ -7,7 +7,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
@@ -36,7 +35,6 @@ registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
@@ -47,7 +45,10 @@ registerLocaleData(en);
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      {path: '', component: TrackmaniaComponent},
+      {
+        path: '',
+        loadChildren: () => import('./trackmania/trackmania.module').then((m) => m.TrackmaniaModule),
+      },
       {
         path: 'admin',
         canActivate: [AuthorizeGuard, IsRoleGuard],
@@ -70,7 +71,6 @@ registerLocaleData(en);
     {provide: NZ_I18N, useValue: en_US}
   ],
   exports: [
-    NavMenuComponent
   ],
   bootstrap: [AppComponent]
 })

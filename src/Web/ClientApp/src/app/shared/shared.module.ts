@@ -60,6 +60,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {NavMenuComponent} from "../nav-menu/nav-menu.component";
+import {RouterLink} from "@angular/router";
 
 const ngZorroModule = [
   NzIconModule,
@@ -132,7 +133,7 @@ const modules = [
 
 @NgModule({
   providers: [ ],
-  imports: [...modules],
+  imports: [...modules, RouterLink],
   declarations: [
     SpinnerComponent,
     NavMenuComponent
@@ -140,6 +141,7 @@ const modules = [
   exports: [
     ...modules,
     SpinnerComponent,
+    NavMenuComponent
   ],
 })
 export class SharedModule {

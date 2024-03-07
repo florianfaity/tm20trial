@@ -5,10 +5,9 @@ import { SharedModule } from '../shared/shared.module';
 
 import { AdminComponent } from './admin.component';
 import { admin_routes } from './admin.routes';
-import {AppModule} from "../app.module";
 
 @NgModule({
   declarations: [AdminComponent],
-  imports: [SharedModule, RouterModule.forChild(admin_routes), AppModule],
+  imports: [SharedModule, RouterModule.forChild(admin_routes)],
 })
 export class AdminModule {}

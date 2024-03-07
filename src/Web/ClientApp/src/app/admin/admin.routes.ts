@@ -3,13 +3,14 @@ import { Routes } from '@angular/router';
 import { IsRoleGuard } from '../../api-authorization/guards/is-role.guard';
 
 import { AdminComponent } from './admin.component';
+import {LeaderboardComponent} from "../leaderboard/leaderboard.component";
 
 export const admin_routes: Routes = [
   {
     path: '',
     component: AdminComponent,
     canActivate: [IsRoleGuard],
-    data: { role: 'superadmin' },
+    data: { role: 'admin' },
     children: [
       {
         path: 'users',
