@@ -14,8 +14,8 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isAdmin]="true"
       [playerName]="userName"
     >
-      <router-outlet></router-outlet>
     </app-nav-menu>
+      <router-outlet></router-outlet>
   `,
 })
 export class AdminComponent implements OnInit, OnDestroy  {
