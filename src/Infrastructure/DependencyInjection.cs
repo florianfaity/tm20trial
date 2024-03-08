@@ -23,7 +23,7 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
-         //   options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+        //    options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
             options.UseNpgsql(connectionString);
         });
@@ -38,7 +38,7 @@ public static class DependencyInjection
             .AddRoleManager<RoleManager<IdentityRole>>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
+        
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
 

@@ -1,17 +1,18 @@
-import {Observable, Subscription} from "rxjs";
+import {Observable, shareReplay, Subscription} from "rxjs";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {map} from "rxjs/operators";
 import {AuthorizeService} from "../../api-authorization/authorize.service";
+import {CurrentUserDto} from "../web-api-client";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-admin',
   template: `
     <app-nav-menu
       [isAdminView]="true"
-      [isAdmin]="isAdmin$ | async"
-      [isMapper]="isMapper$ | async"
-      [playerName]="userName | async"
+      [isAdmin]="true"
+      [playerName]="userName"
     >
       <router-outlet></router-outlet>
     </app-nav-menu>
@@ -20,10 +21,8 @@ import {AuthorizeService} from "../../api-authorization/authorize.service";
 export class AdminComponent implements OnInit, OnDestroy  {
 
   public routerLoading = false;
-  public userName: Observable<string>;
-  public isAdmin$: Observable<boolean>;
-  public isMapper$: Observable<boolean>;
-  public userId$ : Observable<number>;
+
+ userName: string;
 
   private _routeSubs: Subscription;
   constructor(
@@ -32,13 +31,17 @@ export class AdminComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
 
-    this.userName = this._authorizeService.getUser().pipe(map((u) => u && (u.name)));
+    this._authorizeService.getUser().pipe(shareReplay()).subscribe({
+      next: (user: CurrentUserDto) => {
+        if(!user.roles.indexOf('Administrator')){
 
-    this.userId$ = this._authorizeService.getUser().pipe(map((u) => u && u.UserId));
+        }
 
-    this.isAdmin$ = this._authorizeService.getUser().pipe(map((u) => u.isAdministrator()));
+      },
+      error : (err: HttpErrorResponse) => {
 
-    this.isMapper$ = this._authorizeService.getUser().pipe(map((u) => u.isMapper()));
+      }
+    });
 
     this._routeSubs = this._router.events.subscribe((event) => {
       switch (true) {

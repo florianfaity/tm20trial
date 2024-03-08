@@ -1,50 +1,62 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable, shareReplay, Subscription} from "rxjs";
-import {AuthorizeService, IUser} from "../../api-authorization/authorize.service";
-import {map} from "rxjs/operators";
+import {AuthorizeService} from "../../api-authorization/authorize.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
+import {CurrentUserDto} from "../web-api-client";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-trackmania',
   template: `
     <app-nav-menu
       [isAdminView]="false"
-      [isAdmin]="isAdmin$ | async"
-      [isMapper]="isMapper$ | async"
-      [isPlayer]="isPlayer$ | async"
-      [playerName]="userName | async"
+      [isAdmin]="isAdmin"
+      [isMapper]="isMapper"
+      [isPlayer]="isPlayer"
+      [playerName]="userName"
     >
-      <router-outlet></router-outlet>
     </app-nav-menu>
+    <router-outlet></router-outlet>
   `,
 })
 export class TrackmaniaComponent implements OnInit, OnDestroy {
 
   public routerLoading = false;
-  public userName: Observable<string>;
-  public isAdmin$: Observable<boolean>;
-  public isMapper$: Observable<boolean>;
-  public isPlayer$: Observable<boolean>;
-  public userId$ : Observable<number>;
+//  public userName: Observable<string>;
+  // public isAdmin$: Observable<boolean>;
+  // public isMapper$: Observable<boolean>;
+  // public isPlayer$: Observable<boolean>;
+ // public userId$: Observable<number>;
   private _routeSubs: Subscription;
 
   constructor(
     private _authorizeService: AuthorizeService,
     public sanitizer: DomSanitizer,
-    private _router: Router,) {}
+    private _router: Router,) {
+  }
 
+  isAdmin: boolean = false;
+  isMapper: boolean = false;
+  isPlayer: boolean = false;
+  userName: string = ''
   ngOnInit(): void {
 
-    const user$ = this._authorizeService.getUser().pipe(shareReplay());
-
-    this.userName = user$.pipe(map((u : IUser) => u && (u.name)));
-
-    this.isAdmin$ = user$.pipe(map((u : IUser) => u.isAdministrator()));
-    this.isMapper$ = user$.pipe(map((u : IUser) => u.isMapper()));
-    this.isPlayer$ = user$.pipe(map((u : IUser) => u.isPlayer()));
-
-    this.userId$ = this._authorizeService.getUser().pipe(map((u) => u && u.UserId));
+    this._authorizeService.getUser().pipe(shareReplay()).subscribe({
+      next: (user: CurrentUserDto) => {
+        this.isAdmin = user.roles.indexOf('Administrator') > 0;
+        this.isMapper = user.roles.indexOf('Mapper') > 0;
+        this.isPlayer = user.roles.indexOf('Player') > 0;
+        this.userName = user.displayName;
+      },
+      error : (err: HttpErrorResponse) => {
+        if(err.status == 401){
+          this.isAdmin = false;
+          this.isMapper = false;
+          this.isPlayer = false;
+        }
+      }
+    });
 
 
     this._routeSubs = this._router.events.subscribe((event) => {

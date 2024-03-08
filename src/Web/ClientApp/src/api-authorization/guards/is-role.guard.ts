@@ -3,7 +3,8 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 
-import { AuthorizeService, IUser } from '../authorize.service';
+import { AuthorizeService } from '../authorize.service';
+import {CurrentUserDto} from "../../app/web-api-client";
 
 @Injectable({ providedIn: 'root' })
 export class IsRoleGuard {
@@ -18,21 +19,21 @@ export class IsRoleGuard {
     );
   }
 
-  private hasRole(user: IUser, roleName: string): boolean {
+  private hasRole(user: CurrentUserDto, roleName: string): boolean {
     if (!user) {
       return false;
     }
-
-    switch (roleName) {
-      case 'admin':
-        return user.isAdministrator();
-      case 'mapper':
-        return user.isMapper();
-      case 'player':
-        return user.isPlayer();
-      default:
-        return false;
+    if (roleName === 'player') {
+      return user.roles.indexOf('Player') >= 0;
     }
+    if (roleName === 'admin') {
+      return user.roles.indexOf('Administrator') >= 0;
+    }
+    if (roleName === 'mapper') {
+      return user.roles.indexOf('Mapper') >= 0;
+    }
+    return false;
   }
+
 
 }

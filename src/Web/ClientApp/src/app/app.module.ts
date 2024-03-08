@@ -7,7 +7,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { TodoComponent } from './todo/todo.component';
@@ -22,20 +21,16 @@ import {NzAvatarModule} from "ng-zorro-antd/avatar";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzGridModule} from "ng-zorro-antd/grid";
 import {NzInputModule} from "ng-zorro-antd/input";
-import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
 import {MapsComponent} from "./maps/maps.component";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {SharedModule} from "./shared/shared.module";
 import {IsRoleGuard} from "../api-authorization/guards/is-role.guard";
-import {AuthorizeGuard} from "../api-authorization/guards/authorize.guard";
-import {TrackmaniaComponent} from "./trackmania/trackmania.component";
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     CounterComponent,
     FetchDataComponent,
     TodoComponent
@@ -51,7 +46,7 @@ registerLocaleData(en);
       },
       {
         path: 'admin',
-        canActivate: [AuthorizeGuard, IsRoleGuard],
+        canActivate: [IsRoleGuard],
         data: {role: 'admin'},
         loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
       },
