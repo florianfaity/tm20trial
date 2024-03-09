@@ -1,6 +1,7 @@
 using tm20trial.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using tm20trial.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,8 +35,9 @@ app.UseSwaggerUi3(settings =>
     settings.DocumentPath = "/api/specification.json";
 });
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");

@@ -11,6 +11,10 @@ public class CurrentUserService : ICurrentUserService
     
     public bool IsAdmin { get; set; }
     
+    public bool IsMapper { get; set; }
+    
+    public bool IsPlayer { get; set; }
+    
     public List<string> Roles { get; set; }
     
 
@@ -21,6 +25,8 @@ public class CurrentUserService : ICurrentUserService
         {
             UserId = httpContextAccessor.HttpContext?.User?.GetUserId() ?? 0;
             IsAdmin = httpContextAccessor.HttpContext?.User?.IsAdmin() ?? false;
+            IsMapper = httpContextAccessor.HttpContext?.User?.IsMapper() ?? false;
+            IsPlayer = httpContextAccessor.HttpContext?.User?.IsPlayer() ?? false;
             Roles = httpContextAccessor.HttpContext?.User?.GetRoles() ?? new List<string>();
         }
         catch (Exception)

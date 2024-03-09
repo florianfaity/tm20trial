@@ -30,7 +30,7 @@ public  static class ClaimsPrincipalExtensions
     {
         ArgumentNullException.ThrowIfNull(principal);
 
-        var id = principal.FindFirstValue("UserId");
+        var id = principal.FindFirstValue(Constants.UserCustomClaims.UserId);
 
         if (string.IsNullOrEmpty(id))
         {

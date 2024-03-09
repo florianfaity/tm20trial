@@ -1,12 +1,11 @@
 ﻿using Azure.Identity;
+using Microsoft.AspNetCore.Mvc;
 using tm20trial.Application.Common.Interfaces;
 using tm20trial.Infrastructure.Data;
 using tm20trial.Web.Services;
-using Microsoft.AspNetCore.Mvc;
-
 using ZymLabs.NSwag.FluentValidation;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace tm20trial.Web;
 
 public static class DependencyInjection
 {

@@ -14,6 +14,12 @@ export class NavMenuComponent {
 
   isExpanded = false;
 
+  onClickSignIn(){
+    console.log(window.location.href);
+    window.location.href = `Identity/Account/Login`;
+   
+  }
+
   collapse() {
     this.isExpanded = false;
   }

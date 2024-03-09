@@ -27,14 +27,18 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, C
 
     public async Task<CurrentUserDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _identityService.FindUserByIdAsync(_currentUserService.UserId, cancellationToken);
+        if(String.IsNullOrEmpty(_currentUserService.IdentityId))
+        {
+            throw new UnauthorizedAccessException();
+        }
+        var user = await _identityService.FindUserByIdAsync(_currentUserService.IdentityId, cancellationToken);
         
-        if (user == null)
+        if (user == null || user.UserDetails == null)
         {
             throw new NotFoundException("GetCurrentUser","id");
         }
-
-        var userDto = _mapper.Map<CurrentUserDto>(user);
+//TODO erreur de mapping
+        var userDto = _mapper.Map<CurrentUserDto>(user.UserDetails);
         
         userDto.Roles =_currentUserService.Roles;
 

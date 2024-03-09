@@ -20,11 +20,11 @@
       </nz-col>
       <nz-col nzXs="24" nzMd="22" nzLg="14" nzXl="11">
         <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu-right">
-          <li nz-menu-item nzMatchRouter [routerLink]="['/home']">Home</li>
+          <li nz-menu-item [routerLink]="['/home']">Home</li>
           <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/leaderboard']">Leaderboard</li>
           <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/maps']">Maps</li>
           <li nz-menu-item *ngIf="isAdmin" [routerLink]="['/admin']">Admin</li>
-          <li nz-menu-item *ngIf="!isPlayer" [routerLink]="['/login']">Sign in</li>
+          <li nz-menu-item *ngIf="!isPlayer" (click)="onClickSignIn()">Sign in</li>
           <li nz-menu-item class="user-menu" *ngIf="isPlayer">
             <a nz-dropdown [nzDropdownMenu]="menu">
               <span class="username">{{ playerName }} </span>

@@ -1,6 +1,8 @@
-﻿namespace tm20trial.Application.Users.Queries;
+﻿using tm20trial.Application.Common.Mappings;
 
-public class CurrentUserDto
+namespace tm20trial.Application.Users.Queries;
+
+public class CurrentUserDto : IMapFrom<Domain.Entities.Users>
 {
     public int IdUser { get; set; }
 
@@ -19,11 +21,8 @@ public class CurrentUserDto
     public List<string> Roles { get; set; } = new List<string>();
     
     
-    private class Mapping : Profile
+    public void Mapping(AutoMapper.Profile profile)
     {
-        public Mapping()
-        {
-            CreateMap<Domain.Entities.Users, UserDto>();
-        }
+        profile.CreateMap<Domain.Entities.Users, UserDto>();
     }
 }
