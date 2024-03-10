@@ -12,10 +12,13 @@ import {HttpErrorResponse} from "@angular/common/http";
     <app-nav-menu
       [isAdminView]="true"
       [isAdmin]="true"
+      [isConnected]="true"
       [playerName]="userName"
     >
     </app-nav-menu>
-      <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+
+<!--      -->
   `,
 })
 export class AdminComponent implements OnInit, OnDestroy  {
@@ -30,31 +33,31 @@ export class AdminComponent implements OnInit, OnDestroy  {
     private _router: Router,) {}
 
   ngOnInit(): void {
-
-    this._authorizeService.getUser().pipe(shareReplay()).subscribe({
-      next: (user: CurrentUserDto) => {
-        if(!user.roles.indexOf('Administrator')){
-
-        }
-
-      },
-      error : (err: HttpErrorResponse) => {
-
-      }
-    });
-
-    this._routeSubs = this._router.events.subscribe((event) => {
-      switch (true) {
-        case event instanceof NavigationStart:
-          this.routerLoading = true;
-          break;
-        case event instanceof NavigationEnd:
-        case event instanceof NavigationCancel:
-        case event instanceof NavigationError:
-          this.routerLoading = false;
-          break;
-      }
-    });
+    console.log("admin")
+    // this._authorizeService.getUser().pipe(shareReplay()).subscribe({
+    //   next: (user: CurrentUserDto) => {
+    //     if(!user.roles.indexOf('Administrator')){
+    //
+    //     }
+    //
+    //   },
+    //   error : (err: HttpErrorResponse) => {
+    //
+    //   }
+    // });
+    //
+    // this._routeSubs = this._router.events.subscribe((event) => {
+    //   switch (true) {
+    //     case event instanceof NavigationStart:
+    //       this.routerLoading = true;
+    //       break;
+    //     case event instanceof NavigationEnd:
+    //     case event instanceof NavigationCancel:
+    //     case event instanceof NavigationError:
+    //       this.routerLoading = false;
+    //       break;
+    //   }
+    // });
   }
 
   ngOnDestroy(): void {

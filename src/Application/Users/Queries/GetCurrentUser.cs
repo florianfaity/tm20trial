@@ -37,7 +37,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, C
         {
             throw new NotFoundException("GetCurrentUser","id");
         }
-//TODO erreur de mapping
+        
         var userDto = _mapper.Map<CurrentUserDto>(user.UserDetails);
         
         userDto.Roles =_currentUserService.Roles;

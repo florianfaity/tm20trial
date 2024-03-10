@@ -1,8 +1,9 @@
+using tm20trial.Application.Common.Mappings;
 using tm20trial.Domain.Entities;
 
 namespace tm20trial.Application.Users.Queries;
 
-public class UserDto 
+public class UserDto : IMapFrom<Domain.Entities.Users>
 {
     public int IdUser { get; set; }
 
@@ -18,12 +19,11 @@ public class UserDto
 
     public string? TmxId { get; set; }
 
-    private class Mapping : Profile
+
+    
+    public void Mapping(AutoMapper.Profile profile)
     {
-        public Mapping()
-        {
-            CreateMap<Domain.Entities.Users, UserDto>();
-        }
+        profile.CreateMap<Domain.Entities.Users, UserDto>();
     }
 
 }

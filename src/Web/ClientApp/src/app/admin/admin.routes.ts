@@ -9,12 +9,12 @@ export const admin_routes: Routes = [
     path: '',
     component: AdminComponent,
    // canActivate: [IsRoleGuard],
-    data: { role: 'admin' },
+  //  data: { role: 'admin' },
     children: [
       {
         path: 'users',
         pathMatch: 'prefix',
-     //   loadChildren: () => import('../admin-/admin-.module').then((m) => m.),
+      loadChildren: () => import('../admin-users/admin-users.module').then((m) => m.AdminUsersModule),
       },
       {
         path: 'maps',

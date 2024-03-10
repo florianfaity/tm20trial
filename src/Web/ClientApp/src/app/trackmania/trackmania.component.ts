@@ -14,6 +14,7 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isAdmin]="isAdmin"
       [isMapper]="isMapper"
       [isPlayer]="isPlayer"
+      [isConnected]="isConnected"
       [playerName]="userName"
     >
     </app-nav-menu>
@@ -27,7 +28,7 @@ export class TrackmaniaComponent implements OnInit, OnDestroy {
   // public isAdmin$: Observable<boolean>;
   // public isMapper$: Observable<boolean>;
   // public isPlayer$: Observable<boolean>;
- // public userId$: Observable<number>;
+  // public userId$: Observable<number>;
   private _routeSubs: Subscription;
 
   constructor(
@@ -39,21 +40,25 @@ export class TrackmaniaComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   isMapper: boolean = false;
   isPlayer: boolean = false;
+  isConnected: boolean = false;
   userName: string = ''
+
   ngOnInit(): void {
 
     this._authorizeService.getUser().pipe(shareReplay()).subscribe({
       next: (user: CurrentUserDto) => {
-        this.isAdmin = user.roles.indexOf('Administrator') > 0;
-        this.isMapper = user.roles.indexOf('Mapper') > 0;
-        this.isPlayer = user.roles.indexOf('Player') > 0;
+        this.isAdmin = user.roles.indexOf('Administrator') > -1;
+        this.isMapper = user.roles.indexOf('Mapper') > -1;
+        this.isPlayer = user.roles.indexOf('Player') > -1;
+        this.isConnected = this.isAdmin || this.isMapper || this.isPlayer;
         this.userName = user.displayName;
       },
-      error : (err: HttpErrorResponse) => {
-        if(err.status == 401){
+      error: (err: HttpErrorResponse) => {
+        if (err.status == 401) {
           this.isAdmin = false;
           this.isMapper = false;
           this.isPlayer = false;
+          this.isConnected = false;
         }
       }
     });

@@ -41,15 +41,16 @@ registerLocaleData(en);
     FormsModule,
     RouterModule.forRoot([
       {
-        path: '',
+        path: 'trial',
         loadChildren: () => import('./trackmania/trackmania.module').then((m) => m.TrackmaniaModule),
       },
       {
         path: 'admin',
-        canActivate: [IsRoleGuard],
-        data: {role: 'admin'},
+     //   canActivate: [IsRoleGuard],
+     //   data: {role: 'admin'},
         loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
       },
+      {path: '**', redirectTo: 'trial'},
     ]),
     BrowserAnimationsModule,
     ModalModule.forRoot(),

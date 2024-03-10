@@ -23,6 +23,6 @@ public class CurrentUserDto : IMapFrom<Domain.Entities.Users>
     
     public void Mapping(AutoMapper.Profile profile)
     {
-        profile.CreateMap<Domain.Entities.Users, UserDto>();
+        profile.CreateMap<Domain.Entities.Users, CurrentUserDto>();
     }
 }

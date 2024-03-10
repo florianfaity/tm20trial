@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using tm20trial.Domain.Enums;
 
 namespace tm20trial.Infrastructure.Data;
 
@@ -98,23 +99,44 @@ public class ApplicationDbContextInitialiser
             }
         }
 
-        // Default data
-        // Seed, if necessary
-        if (!_context.TodoLists.Any())
+        if (!_context.Maps.Any())
         {
-            _context.TodoLists.Add(new TodoList
+            var maps = new List<Maps>
             {
-                Title = "Todo List",
-                Items =
+                new Maps
                 {
-                    new TodoItem { Title = "Make a todo list 📃" },
-                    new TodoItem { Title = "Check off the first item ✅" },
-                    new TodoItem { Title = "Realise you've already done two things on the list! 🤯"},
-                    new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
-                }
-            });
+                    Name = "Current",
+                    Author = "Giilo.",
+                    Difficulty = EDifficulty.Easy,
+                    TypeTrial = ETypeTrial.Classic,
+                    Points = 5,
+                    TmIoId = "aae56090-e395-40a2-bc1f-9e615cf2c166",
+                    TmxLink = "https://trackmania.exchange/maps/127530/current",
+                    ImageLink = "https://core.trackmania.nadeo.live/storageObjects/adbc3ced-ac4e-4f9f-8082-f99977ec76d4.jpg",
+                    NumberCheckpoint = 0,
+                    Validate = true,
+                    Created = DateTimeOffset.Now
+                },
+                new Maps
+                {
+                    Name = "Storei",
+                    Author = "Adripeal.",
+                    Difficulty = EDifficulty.Easy,
+                    TypeTrial = ETypeTrial.Classic,
+                    Points = 5,
+                    TmIoId = "a0bf44e1-94f7-419a-ace0-9a939e4e4a63",
+                    TmxLink = "https://trackmania.exchange/tracks/view/108447",
+                    ImageLink = "https://core.trackmania.nadeo.live/storageObjects/4b8dee87-14d9-43f9-b94c-735ffa1964e7.jpg",
+                    NumberCheckpoint = 1,
+                    Validate = true,
+                    Created = DateTimeOffset.Now
+                },
+            };
+            
+            _context.Maps.AddRange(maps);
 
             await _context.SaveChangesAsync();
         }
+        
     }
 }

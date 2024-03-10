@@ -6,7 +6,7 @@
         nzMd="2"
         nzLg="2"
         nzXl="7"
-        [routerLink]="['/']"
+        [routerLink]="['/', 'trial', 'home']"
         class="cursor-pointer"
       >
         <img alt="logo" src="assets/img/logo.png" class="logo" />
@@ -14,18 +14,18 @@
       <nz-col nzXs="0" nzLg="8" nzXl="6" >
         <nz-row>
           <nz-col nzSpan="24">
-            <input nz-input type="text" placeholder="Search" class="search" />
+            <input nz-input type="text" placeholder="Search" class="search" *ngIf="!isAdminView" />
           </nz-col>
         </nz-row>
       </nz-col>
       <nz-col nzXs="24" nzMd="22" nzLg="14" nzXl="11">
         <ul nz-menu nzTheme="dark" nzMode="horizontal" class="header-menu-right">
-          <li nz-menu-item [routerLink]="['/home']">Home</li>
-          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/leaderboard']">Leaderboard</li>
-          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/maps']">Maps</li>
-          <li nz-menu-item *ngIf="isAdmin" [routerLink]="['/admin']">Admin</li>
-          <li nz-menu-item *ngIf="!isPlayer" (click)="onClickSignIn()">Sign in</li>
-          <li nz-menu-item class="user-menu" *ngIf="isPlayer">
+          <li nz-menu-item [routerLink]="['/', 'trial', 'home']">Home</li>
+          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/', 'trial','leaderboard']">Leaderboard</li>
+          <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/', 'trial','maps']">Maps</li>
+          <li nz-menu-item *ngIf="isAdmin && !isAdminView" [routerLink]="['/admin']">Admin</li>
+          <li nz-menu-item *ngIf="!isConnected" (click)="onClickSignIn()">Sign in</li>
+          <li nz-menu-item class="user-menu" *ngIf="isConnected">
             <a nz-dropdown [nzDropdownMenu]="menu">
               <span class="username">{{ playerName }} </span>
               <nz-avatar nzIcon="user"></nz-avatar>
@@ -56,22 +56,23 @@
     >
       <div [ngClass]="'sidepanel-menu-items'">
         <ul nz-menu nzTheme="dark" nzMode="inline">
-          <ng-container *ngIf="isAdminView">
+          <ng-container>
             <li nz-menu-item nzMatchRouter [routerLink]="['/', 'admin', 'users']">
               <i nz-icon nzType="team" nzTheme="outline"></i>
               <span>Users</span>
             </li>
             <li nz-submenu nzTitle="Maps" nzIcon="form">
               <ul>
-                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'list']" nz-menu-item>List of maps</li>
+                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps']" nz-menu-item>List of maps</li>
                 <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested</li>
               </ul>
             </li>
             <li nz-submenu nzTitle="Records" nzIcon="database" [routerLink]="['/', 'admin', 'records']">
                 <span>Records</span>
             </li>
-            <li nz-submenu nzTitle="Records" nzIcon="database" [routerLink]="['/', 'api']">
-              <span>Api</span>
+            <li nz-menu-item  [routerLink]="['/', 'api']">
+              <i nz-icon nzType="team" nzTheme="outline"></i>
+              <span>api</span>
             </li>
 
           </ng-container>

@@ -10,6 +10,7 @@ export class NavMenuComponent {
   @Input() isAdminView = false;
   @Input() isMapper = false;
   @Input() isPlayer = false;
+  @Input() isConnected = false;
   @Input() playerName: string = "Test"
 
   isExpanded = false;
@@ -17,7 +18,7 @@ export class NavMenuComponent {
   onClickSignIn(){
     console.log(window.location.href);
     window.location.href = `Identity/Account/Login`;
-   
+
   }
 
   collapse() {
