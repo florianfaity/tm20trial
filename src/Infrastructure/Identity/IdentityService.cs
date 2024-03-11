@@ -3,6 +3,7 @@ using tm20trial.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using tm20trial.Domain.Entities;
 using tm20trial.Domain.Interfaces;
 
 namespace tm20trial.Infrastructure.Identity;
@@ -30,16 +31,36 @@ public class IdentityService : IIdentityService
         return user.UserName;
     }
 
-    public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
-    {
+    public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, List<string> roles, Users userDetail)
+    {     
+        if (userDetail == null)
+        {
+            throw new Exception("Error during user creation: userDetail cannot be null");
+        }
+        
         var user = new ApplicationUser
         {
             UserName = userName,
             Email = userName,
+            UserDetails = userDetail
         };
 
         var result = await _userManager.CreateAsync(user, password);
 
+        user = await _userManager.FindByIdAsync(user.Id);
+        if (user == null)
+        {
+            throw new Exception("Error during user creation: user null for no reason");
+        }
+        
+        foreach (var role in roles)
+        {
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                await _userManager.AddToRoleAsync(user, role); 
+            }
+        }
+        
         return (result.ToApplicationResult(), user.Id);
     }
 
@@ -92,4 +113,12 @@ public class IdentityService : IIdentityService
          
         return user?? new ApplicationUser();
     }
+    
+    public async Task<bool> UserExistAsync(string username, CancellationToken token = default)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == username, cancellationToken: token);
+
+        return user != null;
+    }
+
 }

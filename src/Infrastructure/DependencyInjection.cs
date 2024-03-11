@@ -1,4 +1,5 @@
-﻿using tm20trial.Application.Common.Interfaces;
+﻿using Duende.IdentityServer.Services;
+using tm20trial.Application.Common.Interfaces;
 using tm20trial.Domain.Constants;
 using tm20trial.Infrastructure.Data;
 using tm20trial.Infrastructure.Data.Interceptors;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using tm20trial.Domain.Interfaces;
+using tm20trial.Domain.Service;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -41,7 +44,8 @@ public static class DependencyInjection
         
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
-
+        services.AddTransient<IEncryptionService, EncryptionService>();
+  //      services.AddTransient<IProfileService, ProfileService>();
     
         services.AddAuthorization(ApplicationPolicy.AddTmTrialPolicies);
         

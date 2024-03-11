@@ -19,7 +19,6 @@ public class UserDto : IMapFrom<Domain.Entities.Users>
 
     public string? TmxId { get; set; }
 
-
     
     public void Mapping(AutoMapper.Profile profile)
     {

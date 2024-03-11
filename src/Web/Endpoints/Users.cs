@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using tm20trial.Application.Common.Models;
+using tm20trial.Application.Users.Command.CreateUser;
 using tm20trial.Application.Users.Queries;
 
 namespace tm20trial.Web.Endpoints;
@@ -13,7 +14,8 @@ public class Users : EndpointGroupBase
             .MapGet(GetUser, "{id}")
             .MapGet(GetUsers)
             .MapGet(GetUsersRoles, "roles")
-            .MapGet(GetCurrentUser, "current-user");
+            .MapGet(GetCurrentUser, "current-user")
+            .MapPost(CreateUser);
     }
     
     public async Task<UserDto> GetUser(ISender sender, int id)
@@ -35,5 +37,11 @@ public class Users : EndpointGroupBase
     public async Task<CurrentUserDto> GetCurrentUser(ISender sender)
     {
         return await sender.Send(new GetCurrentUserQuery());
+    }
+    
+    [Authorize(Policy = Constants.UserPolicies.AdministratorPolicy)]
+    public async Task<int> CreateUser(ISender sender, CreateUserCommand command)
+    {
+        return await sender.Send(command);
     }
 }

@@ -11,11 +11,14 @@ public interface IIdentityService
 
     Task<bool> AuthorizeAsync(string userId, string policyName);
 
-    Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
+    Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, List<string> roles, Domain.Entities.Users userDetail);
 
     Task<Result> DeleteUserAsync(string userId);
     
     Task<IApplicationUser> FindUserByIdAsync(string id, CancellationToken token = default);
 
     Task<IApplicationUser> FindUserByIdAsync(int id, CancellationToken token = default);
+    
+    Task<bool> UserExistAsync(string username, CancellationToken token = default);
+
 }

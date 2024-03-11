@@ -22,7 +22,7 @@ public class ProfileService : IProfileService
         {
             var subject = context.Subject ?? throw new ArgumentNullException(nameof(context.Subject));
 
-            ApplicationUser user = null;
+            ApplicationUser? user = new ApplicationUser();
 
             if (subject.HasClaim(x => x.Type == "name"))
             {
@@ -39,7 +39,7 @@ public class ProfileService : IProfileService
                 throw new ArgumentException("Invalid name identifier");
             }
 
-            var claims = await GetClaimsFromUser(user);
+            var claims = GetClaimsFromUser(user);
 
             context.IssuedClaims = claims.ToList();
         }
@@ -51,7 +51,7 @@ public class ProfileService : IProfileService
             return Task.CompletedTask;
         }
 
-        private async Task<IEnumerable<Claim>> GetClaimsFromUser(ApplicationUser user)
+        private IEnumerable<Claim> GetClaimsFromUser(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
