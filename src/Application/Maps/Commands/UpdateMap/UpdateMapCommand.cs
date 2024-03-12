@@ -32,7 +32,7 @@ public record UpdateMapCommand: IRequest
     
     public int NumberCheckpoint { get; set; }
     
-    public bool Validate { get; set; }
+    public EStateValidation State { get; set; }
 }
 
 public class UpdateMapCommandValidator : AbstractValidator<UpdateMapCommand>
@@ -45,6 +45,8 @@ public class UpdateMapCommandValidator : AbstractValidator<UpdateMapCommand>
             .NotEmpty();
         RuleFor(v => v.Author)
             .NotEmpty();
+        RuleFor(v => v.State)
+            .NotNull();
     }
 }
 
@@ -74,7 +76,7 @@ public class UpdateMapCommandHandler : IRequestHandler<UpdateMapCommand>
         entity.VideoLink = request.VideoLink;
         entity.ImageLink = request.ImageLink;
         entity.NumberCheckpoint = request.NumberCheckpoint;
-        entity.Validate = request.Validate;
+        entity.State = request.State;
 
         await _context.SaveChangesAsync(cancellationToken);
     }

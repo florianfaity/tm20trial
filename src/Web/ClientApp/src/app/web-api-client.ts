@@ -874,6 +874,7 @@ export class TodoListsClient implements ITodoListsClient {
 export interface IUsersClient {
     getUser(id: number): Observable<UserDto>;
     getUsers(): Observable<UserDto[]>;
+    createUser(command: CreateUserCommand): Observable<number>;
     getUsersRoles(): Observable<string[]>;
     getCurrentUser(): Observable<CurrentUserDto>;
 }
@@ -987,6 +988,59 @@ export class UsersClient implements IUsersClient {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    createUser(command: CreateUserCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Users";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreateUser(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1187,6 +1241,7 @@ export class MapDto implements IMapDto {
     numberCheckpoint?: number;
     numberFinisher?: number;
     bestTime?: string;
+    state?: EStateValidation;
 
     constructor(data?: IMapDto) {
         if (data) {
@@ -1211,6 +1266,7 @@ export class MapDto implements IMapDto {
             this.numberCheckpoint = _data["numberCheckpoint"];
             this.numberFinisher = _data["numberFinisher"];
             this.bestTime = _data["bestTime"];
+            this.state = _data["state"];
         }
     }
 
@@ -1235,6 +1291,7 @@ export class MapDto implements IMapDto {
         data["numberCheckpoint"] = this.numberCheckpoint;
         data["numberFinisher"] = this.numberFinisher;
         data["bestTime"] = this.bestTime;
+        data["state"] = this.state;
         return data;
     }
 }
@@ -1252,6 +1309,7 @@ export interface IMapDto {
     numberCheckpoint?: number;
     numberFinisher?: number;
     bestTime?: string;
+    state?: EStateValidation;
 }
 
 export enum EDifficulty {
@@ -1268,6 +1326,13 @@ export enum ETypeTrial {
     Classic = 0,
     Fun = 1,
     Mini = 2,
+}
+
+export enum EStateValidation {
+    New = 0,
+    InProgress = 1,
+    Refuse = 2,
+    Validate = 3,
 }
 
 export class CreateMapCommand implements ICreateMapCommand {
@@ -1354,7 +1419,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
     videoLink?: string | undefined;
     imageLink?: string | undefined;
     numberCheckpoint?: number;
-    validate?: boolean;
+    state?: EStateValidation;
 
     constructor(data?: IUpdateMapCommand) {
         if (data) {
@@ -1378,7 +1443,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
             this.videoLink = _data["videoLink"];
             this.imageLink = _data["imageLink"];
             this.numberCheckpoint = _data["numberCheckpoint"];
-            this.validate = _data["validate"];
+            this.state = _data["state"];
         }
     }
 
@@ -1402,7 +1467,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
         data["videoLink"] = this.videoLink;
         data["imageLink"] = this.imageLink;
         data["numberCheckpoint"] = this.numberCheckpoint;
-        data["validate"] = this.validate;
+        data["state"] = this.state;
         return data;
     }
 }
@@ -1419,7 +1484,7 @@ export interface IUpdateMapCommand {
     videoLink?: string | undefined;
     imageLink?: string | undefined;
     numberCheckpoint?: number;
-    validate?: boolean;
+    state?: EStateValidation;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
@@ -2087,6 +2152,78 @@ export interface ICurrentUserDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     roles?: string[];
+}
+
+export class CreateUserCommand implements ICreateUserCommand {
+    email?: string;
+    displayName?: string;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    admin?: boolean;
+    mapper?: boolean;
+    player?: boolean;
+
+    constructor(data?: ICreateUserCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.displayName = _data["displayName"];
+            this.loginUplay = _data["loginUplay"];
+            this.nation = _data["nation"];
+            this.twitchUsername = _data["twitchUsername"];
+            this.twitterUsername = _data["twitterUsername"];
+            this.tmxId = _data["tmxId"];
+            this.admin = _data["admin"];
+            this.mapper = _data["mapper"];
+            this.player = _data["player"];
+        }
+    }
+
+    static fromJS(data: any): CreateUserCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateUserCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["displayName"] = this.displayName;
+        data["loginUplay"] = this.loginUplay;
+        data["nation"] = this.nation;
+        data["twitchUsername"] = this.twitchUsername;
+        data["twitterUsername"] = this.twitterUsername;
+        data["tmxId"] = this.tmxId;
+        data["admin"] = this.admin;
+        data["mapper"] = this.mapper;
+        data["player"] = this.player;
+        return data;
+    }
+}
+
+export interface ICreateUserCommand {
+    email?: string;
+    displayName?: string;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    admin?: boolean;
+    mapper?: boolean;
+    player?: boolean;
 }
 
 export class WeatherForecast implements IWeatherForecast {

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using tm20trial.Application.Common.Interfaces;
 using tm20trial.Application.Common.Models;
 using tm20trial.Application.Common.Security;
+using tm20trial.Domain.Enums;
 
 namespace tm20trial.Application.Maps.Queries;
 
@@ -23,7 +24,7 @@ public class GetMapsQueryHandler : IRequestHandler<GetMapsQuery, IEnumerable<Map
 
     public async Task<IEnumerable<MapDto>> Handle(GetMapsQuery request, CancellationToken cancellationToken)
     {
-        var maps = await _context.Maps.Where(x => x.Validate).Include(x => x.Records).ToListAsync(cancellationToken);
+        var maps = await _context.Maps.Where(x => x.State == EStateValidation.Validate).Include(x => x.Records).ToListAsync(cancellationToken);
         return _mapper.Map<IEnumerable<MapDto>>(maps);
     }
 }

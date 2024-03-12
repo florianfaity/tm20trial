@@ -22,7 +22,7 @@ public class Maps : BaseAuditableEntity
 
     public int NumberCheckpoint { get; set; }
 
-    public bool Validate { get; set; } = false;
+    public EStateValidation State { get; set; } 
     
     public virtual ICollection<Records> Records { get; set; } = new HashSet<Records>();
 }

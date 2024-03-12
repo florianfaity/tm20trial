@@ -98,7 +98,7 @@ public class ApplicationDbContextInitialiser
                 await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
             }
         }
-
+        
         if (!_context.Maps.Any())
         {
             var maps = new List<Maps>
@@ -114,8 +114,9 @@ public class ApplicationDbContextInitialiser
                     TmxLink = "https://trackmania.exchange/maps/127530/current",
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/adbc3ced-ac4e-4f9f-8082-f99977ec76d4.jpg",
                     NumberCheckpoint = 0,
-                    Validate = true,
-                    Created = DateTimeOffset.Now
+                    State = EStateValidation.Validate,
+                    Created = DateTime.Now,
+                    LastModified = DateTime.Now
                 },
                 new Maps
                 {
@@ -128,15 +129,15 @@ public class ApplicationDbContextInitialiser
                     TmxLink = "https://trackmania.exchange/tracks/view/108447",
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/4b8dee87-14d9-43f9-b94c-735ffa1964e7.jpg",
                     NumberCheckpoint = 1,
-                    Validate = true,
-                    Created = DateTimeOffset.Now
+                    State = EStateValidation.Validate,
+                    Created = DateTime.Now,
+                    LastModified = DateTime.Now
                 },
             };
             
             _context.Maps.AddRange(maps);
-
+        
             await _context.SaveChangesAsync();
         }
-        
     }
 }

@@ -55,6 +55,7 @@ public class CreateMapCommandHandler : IRequestHandler<CreateMapCommand, int>
             VideoLink = request.VideoLink,
             ImageLink = request.ImageLink,
             NumberCheckpoint = request.NumberCheckpoint,
+            State = EStateValidation.New,
         };
 
         _context.Maps.Add(entity);

@@ -29,7 +29,8 @@ public class MapDto
 
     public TimeSpan BestTime { get; set; }
 
-
+    public EStateValidation State { get; set; }
+    
     private class Mapping : Profile
     {
         public Mapping()

@@ -517,6 +517,37 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "CreateUser",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/Users/roles": {
@@ -637,6 +668,9 @@
           "bestTime": {
             "type": "string",
             "format": "duration"
+          },
+          "state": {
+            "$ref": "#/components/schemas/EStateValidation"
           }
         }
       },
@@ -674,6 +708,22 @@
           0,
           1,
           2
+        ]
+      },
+      "EStateValidation": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "New",
+          "InProgress",
+          "Refuse",
+          "Validate"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
         ]
       },
       "CreateMapCommand": {
@@ -762,8 +812,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "validate": {
-            "type": "boolean"
+          "state": {
+            "$ref": "#/components/schemas/EStateValidation"
           }
         }
       },
@@ -1066,6 +1116,47 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "CreateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "loginUplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "nation": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitchUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitterUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "mapper": {
+            "type": "boolean"
+          },
+          "player": {
+            "type": "boolean"
           }
         }
       },
