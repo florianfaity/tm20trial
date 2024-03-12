@@ -119,12 +119,28 @@
         }
       }
     },
-    "/api/Maps": {
+    "/api/Maps/state/{state}": {
       "get": {
         "tags": [
           "Maps"
         ],
         "operationId": "GetMaps",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/EStateValidation"
+                }
+              ]
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -140,7 +156,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Maps": {
       "post": {
         "tags": [
           "Maps"
@@ -667,7 +685,8 @@
           },
           "bestTime": {
             "type": "string",
-            "format": "duration"
+            "format": "duration",
+            "nullable": true
           },
           "state": {
             "$ref": "#/components/schemas/EStateValidation"

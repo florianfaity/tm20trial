@@ -6,11 +6,12 @@ using tm20trial.Domain.Enums;
 
 namespace tm20trial.Application.Maps.Queries;
 
-public record GetMapsQuery : IRequest<IEnumerable<MapDto>>
+public record GetMapsQuery : IRequest<List<MapDto>>
 {
+    public EStateValidation? State { get; set; }
 }
 
-public class GetMapsQueryHandler : IRequestHandler<GetMapsQuery, IEnumerable<MapDto>>
+public class GetMapsQueryHandler : IRequestHandler<GetMapsQuery, List<MapDto>>
 {
 
     private readonly IApplicationDbContext _context;
@@ -22,9 +23,16 @@ public class GetMapsQueryHandler : IRequestHandler<GetMapsQuery, IEnumerable<Map
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<MapDto>> Handle(GetMapsQuery request, CancellationToken cancellationToken)
+    public async Task<List<MapDto>> Handle(GetMapsQuery request, CancellationToken cancellationToken)
     {
-        var maps = await _context.Maps.Where(x => x.State == EStateValidation.Validate).Include(x => x.Records).ToListAsync(cancellationToken);
-        return _mapper.Map<IEnumerable<MapDto>>(maps);
+        var query = _context.Maps.AsQueryable().Where(x => x.TypeTrial == ETypeTrial.Classic);
+
+        if (request.State != null)
+        {
+            query = query.Where(x => x.State == request.State);
+        }
+
+        var listMap = await query.Include(x => x.Records).ToListAsync(cancellationToken);
+        return _mapper.Map<List<MapDto>>(listMap);
     }
 }

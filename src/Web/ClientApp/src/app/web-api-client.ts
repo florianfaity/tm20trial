@@ -92,7 +92,7 @@ export interface IMapsClient {
     getMap(id: number): Observable<MapDto>;
     updateMap(id: number, command: UpdateMapCommand): Observable<void>;
     deleteMap(id: number): Observable<void>;
-    getMaps(): Observable<MapDto[]>;
+    getMaps(state: EStateValidation | null): Observable<MapDto[]>;
     createMap(command: CreateMapCommand): Observable<number>;
 }
 
@@ -258,8 +258,11 @@ export class MapsClient implements IMapsClient {
         return _observableOf(null as any);
     }
 
-    getMaps(): Observable<MapDto[]> {
-        let url_ = this.baseUrl + "/api/Maps";
+    getMaps(state: EStateValidation | null): Observable<MapDto[]> {
+        let url_ = this.baseUrl + "/api/Maps/state/{state}";
+        if (state === undefined || state === null)
+            throw new Error("The parameter 'state' must be defined.");
+        url_ = url_.replace("{state}", encodeURIComponent("" + state));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1240,7 +1243,7 @@ export class MapDto implements IMapDto {
     imageLink?: string | undefined;
     numberCheckpoint?: number;
     numberFinisher?: number;
-    bestTime?: string;
+    bestTime?: string | undefined;
     state?: EStateValidation;
 
     constructor(data?: IMapDto) {
@@ -1308,7 +1311,7 @@ export interface IMapDto {
     imageLink?: string | undefined;
     numberCheckpoint?: number;
     numberFinisher?: number;
-    bestTime?: string;
+    bestTime?: string | undefined;
     state?: EStateValidation;
 }
 

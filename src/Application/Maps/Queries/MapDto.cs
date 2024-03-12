@@ -27,7 +27,7 @@ public class MapDto
 
     public int NumberFinisher { get; set; }
 
-    public TimeSpan BestTime { get; set; }
+    public TimeSpan? BestTime { get; set; }
 
     public EStateValidation State { get; set; }
     
@@ -37,7 +37,7 @@ public class MapDto
         {
             CreateMap<Domain.Entities.Maps, MapDto>()
                 .ForMember(d => d.NumberFinisher, opt => opt.MapFrom(s => s.Records.Count()))
-                .ForMember(d => d.BestTime, opt => opt.MapFrom(s => s.Records.Min(r => r.Time)));
+                .ForMember(d => d.BestTime, opt => opt.MapFrom(s => s.Records.Any() ? (TimeSpan?)s.Records.Min(r => r.Time) : null));
         }
     }
 }

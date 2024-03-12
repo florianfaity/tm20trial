@@ -115,8 +115,8 @@ public class ApplicationDbContextInitialiser
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/adbc3ced-ac4e-4f9f-8082-f99977ec76d4.jpg",
                     NumberCheckpoint = 0,
                     State = EStateValidation.Validate,
-                    Created = DateTime.Now,
-                    LastModified = DateTime.Now
+                    Created = DateTimeOffset.Now,
+                    LastModified = DateTimeOffset.Now
                 },
                 new Maps
                 {
@@ -130,8 +130,8 @@ public class ApplicationDbContextInitialiser
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/4b8dee87-14d9-43f9-b94c-735ffa1964e7.jpg",
                     NumberCheckpoint = 1,
                     State = EStateValidation.Validate,
-                    Created = DateTime.Now,
-                    LastModified = DateTime.Now
+                    Created = DateTimeOffset.Now,
+                    LastModified = DateTimeOffset.Now
                 },
             };
             

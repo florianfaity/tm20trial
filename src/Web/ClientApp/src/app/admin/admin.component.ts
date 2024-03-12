@@ -15,8 +15,8 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isConnected]="true"
       [playerName]="userName"
     >
+      <router-outlet></router-outlet>
     </app-nav-menu>
-    <router-outlet></router-outlet>
 
 <!--      -->
   `,

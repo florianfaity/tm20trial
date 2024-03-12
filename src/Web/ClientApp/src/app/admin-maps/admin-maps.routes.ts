@@ -14,6 +14,7 @@ export const adminMaps_routes: Routes = [
       {
         path: '',
         component: AdminMapsListComponent,
+        pathMatch: 'full'
       },
       {
         path: 'suggested',
@@ -23,8 +24,6 @@ export const adminMaps_routes: Routes = [
         path: ':id/edit',
         component: AdminMapsEditComponent,
       },
-      { path: '', redirectTo: '', pathMatch: 'full' },
-      { path: '**', redirectTo: '', pathMatch: 'full' }
     ],
   },
 ];
