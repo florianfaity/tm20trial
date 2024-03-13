@@ -5,7 +5,7 @@ namespace tm20trial.Application.Maps.Queries;
 
 public class MapDto
 {
-    public int IdMap { get; set; }
+    public int Id { get; set; }
 
     public string? Name { get; set; }
 

@@ -61,6 +61,8 @@ import {SpinnerComponent} from "./components/spinner/spinner.component";
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {NavMenuComponent} from "../nav-menu/nav-menu.component";
 import {RouterLink} from "@angular/router";
+import {DifficultyPipe} from "./pipes/difficulty-pipe";
+import {ToastService} from "./services/toast.service";
 
 const ngZorroModule = [
   NzIconModule,
@@ -132,16 +134,21 @@ const modules = [
 
 
 @NgModule({
-  providers: [ ],
+  providers: [
+    DifficultyPipe,
+    ToastService
+  ],
   imports: [...modules, RouterLink],
   declarations: [
     SpinnerComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    DifficultyPipe,
   ],
   exports: [
     ...modules,
     SpinnerComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    DifficultyPipe
   ],
 })
 export class SharedModule {

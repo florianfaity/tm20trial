@@ -126,7 +126,7 @@ public class ApplicationDbContextInitialiser
                     TypeTrial = ETypeTrial.Classic,
                     Points = 5,
                     TmIoId = "a0bf44e1-94f7-419a-ace0-9a939e4e4a63",
-                    TmxLink = "https://trackmania.exchange/tracks/view/108447",
+                    TmxLink = "https://trackmania.exchange/maps/108447/trial-storei",
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/4b8dee87-14d9-43f9-b94c-735ffa1964e7.jpg",
                     NumberCheckpoint = 1,
                     State = EStateValidation.Validate,

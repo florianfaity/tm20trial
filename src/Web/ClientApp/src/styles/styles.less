@@ -3,3 +3,18 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.ant-table-column {
+  &-sort {
+    span:first-child {
+      text-decoration: underline;
+    }
+  }
+
+  &-sorter-down,
+  &-sorter-up {
+    &.active {
+      color: white;
+    }
+  }
+}

@@ -32,3 +32,41 @@ html {
 .sidepanel-menu-items {
   height: calc(100vh - 155px);
 }
+
+//
+//@height-progress: 2px;
+//
+//.layout-body {
+//  min-height: 100vh;
+//  max-height: 100vh;
+//  overflow:hidden;
+//
+//  &-loading {
+//    min-height: calc(100vh - @height-progress);
+//  }
+//}
+
+
+.inner-layout {
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow: auto;
+
+  &::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+  }
+
+  &::-webkit-scrollbar
+  {
+    width: 6px;
+    background-color: #F5F5F5;
+  }
+
+
+
+  nz-content {
+    padding-top: 15px;
+  }
+}

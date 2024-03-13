@@ -1232,7 +1232,7 @@ export class WeatherForecastsClient implements IWeatherForecastsClient {
 }
 
 export class MapDto implements IMapDto {
-    idMap?: number;
+    id?: number;
     name?: string | undefined;
     author?: string | undefined;
     difficulty?: EDifficulty;
@@ -1257,7 +1257,7 @@ export class MapDto implements IMapDto {
 
     init(_data?: any) {
         if (_data) {
-            this.idMap = _data["idMap"];
+            this.id = _data["id"];
             this.name = _data["name"];
             this.author = _data["author"];
             this.difficulty = _data["difficulty"];
@@ -1282,7 +1282,7 @@ export class MapDto implements IMapDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["idMap"] = this.idMap;
+        data["id"] = this.id;
         data["name"] = this.name;
         data["author"] = this.author;
         data["difficulty"] = this.difficulty;
@@ -1300,7 +1300,7 @@ export class MapDto implements IMapDto {
 }
 
 export interface IMapDto {
-    idMap?: number;
+    id?: number;
     name?: string | undefined;
     author?: string | undefined;
     difficulty?: EDifficulty;

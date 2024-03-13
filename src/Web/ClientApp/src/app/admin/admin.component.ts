@@ -17,8 +17,6 @@ import {HttpErrorResponse} from "@angular/common/http";
     >
       <router-outlet></router-outlet>
     </app-nav-menu>
-
-<!--      -->
   `,
 })
 export class AdminComponent implements OnInit, OnDestroy  {

@@ -641,7 +641,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "idMap": {
+          "id": {
             "type": "integer",
             "format": "int32"
           },
