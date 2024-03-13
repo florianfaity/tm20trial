@@ -7,7 +7,6 @@ import {EStateValidation, MapDto, MapsClient} from "../../../web-api-client";
     <nz-row [nzGutter]="[16, 16]">
       <nz-col nzSpan="24">
         <nz-page-header>
-
           <nz-breadcrumb nz-page-header-breadcrumb>
             <nz-breadcrumb-item>Maps</nz-breadcrumb-item>
             <nz-breadcrumb-item>List</nz-breadcrumb-item>
@@ -18,7 +17,7 @@ import {EStateValidation, MapDto, MapsClient} from "../../../web-api-client";
 
       <nz-col nzSpan="24">
         <nz-card nzBorderless>
-              <nz-table #nzTable [nzData]="maps" [nzPageSize]="10" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true">
+              <nz-table #nzTable [nzData]="maps" [nzPageSize]="10" [nzShowSizeChanger]="true" nzShowSizeChanger>
                 <thead >
                 <tr>
                   <th>Name</th>
@@ -27,6 +26,7 @@ import {EStateValidation, MapDto, MapsClient} from "../../../web-api-client";
                   <th>Points</th>
                   <th>Checkpoints</th>
                   <th>Finishers</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody >
