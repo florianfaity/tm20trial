@@ -21,6 +21,10 @@ export const adminMaps_routes: Routes = [
         component: AdminMapsSuggestedListComponent,
       },
       {
+        path: 'add',
+        component: AdminMapsEditComponent,
+      },
+      {
         path: ':id/edit',
         component: AdminMapsEditComponent,
       },

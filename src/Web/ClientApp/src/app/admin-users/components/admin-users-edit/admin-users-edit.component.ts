@@ -1,12 +1,13 @@
-import {Component} from "@angular/core";
+import {Component, OnChanges, SimpleChanges} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastService} from "../../../shared/services/toast.service";
 import {of, switchMap} from "rxjs";
 import {UserDto, UsersClient} from "../../../web-api-client";
+import {UntypedFormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-admin-users-edit',
-  template:`
+  template: `
     <nz-row [nzGutter]="[16, 16]">
       <nz-col nzSpan="24">
         <nz-page-header nzBackIcon (nzBack)="goBack()" [nzGhost]="false">
@@ -21,18 +22,19 @@ import {UserDto, UsersClient} from "../../../web-api-client";
       </nz-col>
     </nz-row>
     <nz-row *ngIf="!loading; else loadingView">
-<pre>{{user | json}}</pre>
+      <pre>{{ user | json }}</pre>
     </nz-row>
     <ng-template #loadingView>
       <app-spinner></app-spinner>
     </ng-template>
   `
 })
-export class AdminUsersEditComponent{
+export class AdminUsersEditComponent implements OnChanges {
   id: number;
   user: UserDto;
   loading = false;
   isEdit = false;
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
   constructor(
     private _route: ActivatedRoute,
@@ -67,21 +69,13 @@ export class AdminUsersEditComponent{
       }
     });
 
-    // const user$ = this._route.params.pipe(
-    //   switchMap((params) => {
-    //     if(params['id']){
-    //       return this._userClient.getUser(params['id'])
-    //         .subscribe({
-    //           next: result => this.user = result,
-    //           error: error => console.error(error)
-    //         });
-    //   }
-    //     else {
-    //       this.user = new UserDto();
-    //     }
-    //     return of<UserDto>(new UserDto());
-    //   })
-    // );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const {user} = changes;
+    if (user && user.currentValue) {
+
+    }
   }
 
   goBack(){

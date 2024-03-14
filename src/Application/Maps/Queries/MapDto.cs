@@ -16,6 +16,8 @@ public class MapDto
     public ETypeTrial TypeTrial { get; set; }
 
     public int Points { get; set; }
+    
+    public string? TmIoId { get; set; }
 
     public string? TmxLink { get; set; }
 

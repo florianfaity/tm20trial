@@ -94,6 +94,7 @@ export interface IMapsClient {
     deleteMap(id: number): Observable<void>;
     getMaps(state: EStateValidation | null): Observable<MapDto[]>;
     createMap(command: CreateMapCommand): Observable<number>;
+    updateStateMap(id: number, state: EStateValidation): Observable<void>;
 }
 
 @Injectable({
@@ -360,6 +361,56 @@ export class MapsClient implements IMapsClient {
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateStateMap(id: number, state: EStateValidation): Observable<void> {
+        let url_ = this.baseUrl + "/api/Maps/{id}/state/{state}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (state === undefined || state === null)
+            throw new Error("The parameter 'state' must be defined.");
+        url_ = url_.replace("{state}", encodeURIComponent("" + state));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStateMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStateMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateStateMap(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1286,6 +1337,7 @@ export class MapDto implements IMapDto {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
     imageLink?: string | undefined;
@@ -1311,6 +1363,7 @@ export class MapDto implements IMapDto {
             this.difficulty = _data["difficulty"];
             this.typeTrial = _data["typeTrial"];
             this.points = _data["points"];
+            this.tmIoId = _data["tmIoId"];
             this.tmxLink = _data["tmxLink"];
             this.videoLink = _data["videoLink"];
             this.imageLink = _data["imageLink"];
@@ -1336,6 +1389,7 @@ export class MapDto implements IMapDto {
         data["difficulty"] = this.difficulty;
         data["typeTrial"] = this.typeTrial;
         data["points"] = this.points;
+        data["tmIoId"] = this.tmIoId;
         data["tmxLink"] = this.tmxLink;
         data["videoLink"] = this.videoLink;
         data["imageLink"] = this.imageLink;
@@ -1354,6 +1408,7 @@ export interface IMapDto {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
     imageLink?: string | undefined;

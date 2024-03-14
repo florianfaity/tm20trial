@@ -37,6 +37,22 @@ import {ActivatedRoute, Router} from "@angular/router";
               <td>{{map.points}}</td>
               <td nzAlign="center">
                 <nz-button-group nzSize="small">
+                  <button nz-button nzType="link" nz-tooltip nzTooltipTitle="Validate"
+                          (click)="changeStateMap(enumStateValidation.Validate, map.id)">
+
+                    <span nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></span>
+
+                  </button>
+                  <button
+                    nz-button
+                    nzType="link"
+                    nz-tooltip
+                    nzTooltipTitle="Refuse"
+                    (click)="changeStateMap(enumStateValidation.Refuse, map.id)">
+                    <span nz-icon nzType="close-circle" nzTheme="outline"></span>
+<!--                    <span nz-icon [nzType]="'check-close'" [nzTheme]="'twotone'"></span>-->
+                    <!--                    <i nz-icon nzType="Close" nzTheme="outline"></i>-->
+                  </button>
                   <button
                     nz-button
                     nzType="link"
@@ -103,6 +119,7 @@ export class AdminMapsSuggestedListComponent{
   loading = false;
   modalDeleteDisplay = false;
   idMap:number;
+  enumStateValidation = EStateValidation;
   constructor(private mapsClient: MapsClient,
   private _route: ActivatedRoute,
   private _router: Router ) {
@@ -117,7 +134,6 @@ export class AdminMapsSuggestedListComponent{
         this.loading = false}
     });
   }
-
 
   showModalDelete(id: number): void {
     this.modalDeleteDisplay = true;
@@ -144,8 +160,24 @@ export class AdminMapsSuggestedListComponent{
     this.modalDeleteDisplay = false;
   }
 
-  goToEdit(id: number){
-    console.log(id);
-    this._router.navigate([id], { relativeTo: this._route });
+  changeStateMap(state: EStateValidation, id: number) {
+    this.loading = true;
+    this.mapsClient.updateStateMap(id, state).subscribe({
+      next: result => {
+        this.maps = this.maps.filter(m => m.id !== id)
+        this.loading = false
+      },
+      error: error => {
+        console.error(error)
+        this.loading = false
+      }
+    });
+    this.modalDeleteDisplay = false;
   }
+
+
+  goToEdit(id: number) {
+    this._router.navigate([id, 'edit'], {relativeTo: this._route});
+  }
+
 }

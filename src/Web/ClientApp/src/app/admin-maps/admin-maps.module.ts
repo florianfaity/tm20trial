@@ -9,9 +9,10 @@ import {AdminMapsListComponent} from "./components/admin-maps-list/admin-maps-li
 import {
   AdminMapsSuggestedListComponent
 } from "./components/admin-maps-suggested-list/admin-maps-suggested-list.component";
+import {NzImageModule} from "ng-zorro-antd/image";
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(adminMaps_routes)],
+    imports: [SharedModule, RouterModule.forChild(adminMaps_routes)],
   declarations: [
     AdminMapsComponent,
     AdminMapsEditComponent,

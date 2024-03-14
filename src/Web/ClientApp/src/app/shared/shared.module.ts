@@ -63,6 +63,7 @@ import {NavMenuComponent} from "../nav-menu/nav-menu.component";
 import {RouterLink} from "@angular/router";
 import {DifficultyPipe} from "./pipes/difficulty-pipe";
 import {ToastService} from "./services/toast.service";
+import {NzImageModule} from "ng-zorro-antd/image";
 
 const ngZorroModule = [
   NzIconModule,
@@ -121,7 +122,8 @@ const ngZorroModule = [
   NzSpaceModule,
   NzAutocompleteModule,
   NzPipesModule,
-  NzCascaderModule
+  NzCascaderModule,
+  NzImageModule
 ];
 
 const modules = [

@@ -1,7 +1,9 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {EStateValidation, MapDto, MapsClient} from "../../../web-api-client";
 import {ActivatedRoute, Router} from "@angular/router";
 import { ToastService } from "src/app/shared/services/toast.service";
+import {gridResponsiveMap, NzBreakpointService} from "ng-zorro-antd/core/services";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-admin-maps-list',
@@ -14,6 +16,11 @@ import { ToastService } from "src/app/shared/services/toast.service";
             <nz-breadcrumb-item>Validate</nz-breadcrumb-item>
           </nz-breadcrumb>
           <nz-page-header-title>List of validate maps</nz-page-header-title>
+          <nz-page-header-extra>
+            <button nz-button nzType="primary" (click)="goToAdd()" [nzShape]="(currentBreakpoint == 'xs') ? 'circle' : null">
+              <i nz-icon nzType="plus" nzTheme="outline"></i><span *ngIf="currentBreakpoint != 'xs'">Create a map</span>
+            </button>
+          </nz-page-header-extra>
         </nz-page-header>
       </nz-col>
 
@@ -41,7 +48,21 @@ import { ToastService } from "src/app/shared/services/toast.service";
               <td>{{ map.numberCheckpoint }}</td>
               <td>{{ map.numberFinisher }}</td>
               <td nzAlign="center">
-                <nz-button-group nzSize="small">     <button
+                <ng-template #imagePreviewTemplate>
+                  <img
+                    nz-image
+                    width="400px;" height="400px;"
+                    *ngIf="map.imageLink"
+                    [nzSrc]="map.imageLink"
+                    alt=""
+                  />
+                </ng-template>
+                <nz-button-group nzSize="small">
+                  <button nz-button nzType="link" nz-popover
+                          [nzPopoverContent]="imagePreviewTemplate" nzPopoverTrigger="hover">
+                    <i nz-icon nzType="file-image" nzTheme="outline"></i>
+                  </button>
+                  <button
                   nz-button
                   nzType="link"
                   nz-tooltip
@@ -101,16 +122,18 @@ import { ToastService } from "src/app/shared/services/toast.service";
     </nz-modal>
   `
 })
-export class AdminMapsListComponent {
+export class AdminMapsListComponent implements OnDestroy {
   maps: MapDto[] = [];
   loading = false;
   modalDeleteDisplay = false;
   idMap: number;
+  currentBreakpoint: string = '';
 
   constructor(private mapsClient: MapsClient,
               private _route: ActivatedRoute,
               private _router: Router,
-              private _toastService: ToastService
+              private _toastService: ToastService,
+              private _nzBreakpoint: NzBreakpointService
   ) {
     this.loading = true;
     mapsClient.getMaps(EStateValidation.Validate).subscribe({
@@ -123,14 +146,18 @@ export class AdminMapsListComponent {
         this.loading = false
       }
     });
-  }
 
+    this._nzBreakpoint.subscribe(gridResponsiveMap)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((c) => {
+        this.currentBreakpoint = c;
+      });
+  }
 
   showModalDelete(id: number): void {
     this.modalDeleteDisplay = true;
     this.idMap = id;
   }
-
 
   handleCancel(): void {
     this.modalDeleteDisplay = false;
@@ -154,7 +181,16 @@ export class AdminMapsListComponent {
   }
 
   goToEdit(id: number) {
-    console.log(id);
     this._router.navigate([id, 'edit'], {relativeTo: this._route});
+  }
+
+  goToAdd() {
+    this._router.navigate(['add'], {relativeTo: this._route});
+  }
+
+  private readonly destroy$ = new Subject<void>();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

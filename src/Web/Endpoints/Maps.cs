@@ -1,6 +1,7 @@
 ﻿using tm20trial.Application.Maps.Commands.CreateMap;
 using tm20trial.Application.Maps.Commands.DeleteMap;
 using tm20trial.Application.Maps.Commands.UpdateMap;
+using tm20trial.Application.Maps.Commands.UpdateStateMap;
 using tm20trial.Application.Maps.Queries;
 using tm20trial.Domain.Enums;
 
@@ -15,6 +16,7 @@ public class Maps : EndpointGroupBase
             .MapGet(GetMaps, "state/{state}")
             .MapPost(CreateMap)
             .MapPut(UpdateMap, "{id}")
+            .MapPut(UpdateStateMap, "{id}/state/{state}")
             .MapDelete(DeleteMap, "{id}")
             ;
     }
@@ -46,4 +48,12 @@ public class Maps : EndpointGroupBase
         await sender.Send(new DeleteMapCommand(id));
         return Results.NoContent();
     }
+    
+    
+    public async Task<IResult> UpdateStateMap(ISender sender, int id, EStateValidation state)
+    {
+        await sender.Send(new UpdateStateMapCommand { Id = id, State = state });
+        return Results.NoContent();
+    }
+    
 }

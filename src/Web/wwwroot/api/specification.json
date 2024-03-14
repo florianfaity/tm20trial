@@ -191,6 +191,40 @@
         }
       }
     },
+    "/api/Maps/{id}/state/{state}": {
+      "put": {
+        "tags": [
+          "Maps"
+        ],
+        "operationId": "UpdateStateMap",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EStateValidation"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/TodoItems": {
       "get": {
         "tags": [
@@ -685,6 +719,10 @@
           "points": {
             "type": "integer",
             "format": "int32"
+          },
+          "tmIoId": {
+            "type": "string",
+            "nullable": true
           },
           "tmxLink": {
             "type": "string",

@@ -115,8 +115,6 @@ public class ApplicationDbContextInitialiser
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/adbc3ced-ac4e-4f9f-8082-f99977ec76d4.jpg",
                     NumberCheckpoint = 0,
                     State = EStateValidation.Validate,
-                    Created = DateTimeOffset.Now,
-                    LastModified = DateTimeOffset.Now
                 },
                 new Maps
                 {
@@ -130,8 +128,47 @@ public class ApplicationDbContextInitialiser
                     ImageLink = "https://core.trackmania.nadeo.live/storageObjects/4b8dee87-14d9-43f9-b94c-735ffa1964e7.jpg",
                     NumberCheckpoint = 1,
                     State = EStateValidation.Validate,
-                    Created = DateTimeOffset.Now,
-                    LastModified = DateTimeOffset.Now
+                },
+                
+                new Maps
+                {
+                    Name = "SMC - Toccata",
+                    Author = "Vst2m.",
+                    Difficulty = EDifficulty.Easy,
+                    TypeTrial = ETypeTrial.Classic,
+                    Points = 5,
+                    TmIoId = "94890b64-c71e-4b94-a109-cd6d4bf71ed2",
+                    TmxLink = "https://trackmania.exchange/maps/107597/smc-toccata",
+                    ImageLink = "https://core.trackmania.nadeo.live/storageObjects/f3649e8e-acf8-4984-ae30-7c33977cfed0.jpg",
+                    NumberCheckpoint = 1,
+                    State = EStateValidation.Validate,
+                },
+                new Maps
+                {
+                    Name = "Obstruction",
+                    Author = "Naxanria",
+                    Difficulty = EDifficulty.Easy,
+                    TypeTrial = ETypeTrial.Classic,
+                    Points = 5,
+                    TmIoId = "00f1569a-c5ab-4c90-914e-741fa621cb1a",
+                    TmxLink = "https://trackmania.exchange/maps/128070/obstruction",
+                    ImageLink = "https://core.trackmania.nadeo.live/storageObjects/59356e8c-9fe2-45ba-abcb-c2431f0b50bd.jpg",
+                    NumberCheckpoint = 16,
+                    State = EStateValidation.Validate,
+                },
+                new Maps
+                {
+                    Name = "Gordian Knot",
+                    Author = "Xefas.",
+                    Difficulty = EDifficulty.Intermediate,
+                    TypeTrial = ETypeTrial.Classic,
+                    Points = 10,
+                    TmIoId = "6913628e-ec44-4d0c-804b-4becd3728681",
+                    TmxLink = "https://trackmania.exchange/tracks/view/109781",
+                    VideoLink = "https://www.youtube.com/watch?v=Fjw94AJj_FY",
+                    ImageLink = "https://core.trackmania.nadeo.live/storageObjects/335c371d-4673-4c89-9e7c-3f52ed18462a.jpg",
+                    NumberCheckpoint = 1,
+                    State = EStateValidation.Validate,
                 },
             };
             
