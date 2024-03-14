@@ -99,7 +99,6 @@ import { ToastService } from "src/app/shared/services/toast.service";
         <button nz-button nzType="primary" (click)="removeMap()">Confirm</button>
       </ng-template>
     </nz-modal>
-
   `
 })
 export class AdminMapsListComponent {

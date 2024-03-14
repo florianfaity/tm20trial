@@ -24,6 +24,8 @@ public record CreateUserCommand : IRequest<int>
 
     public string? TmxId { get; set; }
     
+    public string? TmIoId { get; set; }
+    
     public bool Admin { get; set; }
     
     public bool Mapper { get; set; }
@@ -58,9 +60,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var userExist = await _identityService.UserExistAsync(request.Email, cancellationToken);
-
-        
-        
+       
         if (userExist)
         {
             throw new ConflictException("Email already exist.");
@@ -74,6 +74,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
             TwitchUsername = request.TwitchUsername,
             TwitterUsername = request.TwitterUsername,
             TmxId = request.TmxId,
+            TmIoId = request.TmIoId,
         };
 
         _context.Users.Add(user);

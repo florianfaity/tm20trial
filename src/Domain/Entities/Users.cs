@@ -18,6 +18,8 @@ public class Users
     public string? TwitterUsername { get; set; }
 
     public string? TmxId { get; set; }
+    
+    public string? TmIoId { get; set; }
 
     public virtual ICollection<Records> Records { get; set; } = new HashSet<Records>();
 }

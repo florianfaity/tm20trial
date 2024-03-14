@@ -876,9 +876,10 @@ export class TodoListsClient implements ITodoListsClient {
 
 export interface IUsersClient {
     getUser(id: number): Observable<UserDto>;
+    deleteUser(id: number): Observable<void>;
     getUsers(): Observable<UserDto[]>;
     createUser(command: CreateUserCommand): Observable<number>;
-    getUsersRoles(): Observable<string[]>;
+    getUserRoles(): Observable<string[]>;
     getCurrentUser(): Observable<CurrentUserDto>;
 }
 
@@ -937,6 +938,53 @@ export class UsersClient implements IUsersClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = UserDto.fromJS(resultData200);
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    deleteUser(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1054,7 +1102,7 @@ export class UsersClient implements IUsersClient {
         return _observableOf(null as any);
     }
 
-    getUsersRoles(): Observable<string[]> {
+    getUserRoles(): Observable<string[]> {
         let url_ = this.baseUrl + "/api/Users/roles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1067,11 +1115,11 @@ export class UsersClient implements IUsersClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUsersRoles(response_);
+            return this.processGetUserRoles(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetUsersRoles(response_ as any);
+                    return this.processGetUserRoles(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<string[]>;
                 }
@@ -1080,7 +1128,7 @@ export class UsersClient implements IUsersClient {
         }));
     }
 
-    protected processGetUsersRoles(response: HttpResponseBase): Observable<string[]> {
+    protected processGetUserRoles(response: HttpResponseBase): Observable<string[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2033,6 +2081,7 @@ export class UserDto implements IUserDto {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -2052,6 +2101,7 @@ export class UserDto implements IUserDto {
             this.twitchUsername = _data["twitchUsername"];
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
         }
     }
 
@@ -2071,6 +2121,7 @@ export class UserDto implements IUserDto {
         data["twitchUsername"] = this.twitchUsername;
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
         return data;
     }
 }
@@ -2083,6 +2134,7 @@ export interface IUserDto {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
 }
 
 export class CurrentUserDto implements ICurrentUserDto {
@@ -2093,6 +2145,7 @@ export class CurrentUserDto implements ICurrentUserDto {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
     roles?: string[];
 
     constructor(data?: ICurrentUserDto) {
@@ -2113,6 +2166,7 @@ export class CurrentUserDto implements ICurrentUserDto {
             this.twitchUsername = _data["twitchUsername"];
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
             if (Array.isArray(_data["roles"])) {
                 this.roles = [] as any;
                 for (let item of _data["roles"])
@@ -2137,6 +2191,7 @@ export class CurrentUserDto implements ICurrentUserDto {
         data["twitchUsername"] = this.twitchUsername;
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
         if (Array.isArray(this.roles)) {
             data["roles"] = [];
             for (let item of this.roles)
@@ -2154,6 +2209,7 @@ export interface ICurrentUserDto {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
     roles?: string[];
 }
 
@@ -2165,6 +2221,7 @@ export class CreateUserCommand implements ICreateUserCommand {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
     admin?: boolean;
     mapper?: boolean;
     player?: boolean;
@@ -2187,6 +2244,7 @@ export class CreateUserCommand implements ICreateUserCommand {
             this.twitchUsername = _data["twitchUsername"];
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
             this.admin = _data["admin"];
             this.mapper = _data["mapper"];
             this.player = _data["player"];
@@ -2209,6 +2267,7 @@ export class CreateUserCommand implements ICreateUserCommand {
         data["twitchUsername"] = this.twitchUsername;
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
         data["admin"] = this.admin;
         data["mapper"] = this.mapper;
         data["player"] = this.player;
@@ -2224,6 +2283,7 @@ export interface ICreateUserCommand {
     twitchUsername?: string | undefined;
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
+    tmIoId?: string | undefined;
     admin?: boolean;
     mapper?: boolean;
     player?: boolean;

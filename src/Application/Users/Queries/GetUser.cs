@@ -28,11 +28,11 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
         var user = await _identityService.FindUserByIdAsync(request.IdUser, cancellationToken);
         
-        if (user == null)
+        if (user == null || user.UserDetails == null)
         {
-            throw new NotFoundException("GetUser","id");
+            throw new NotFoundException("GetCurrentUser","id");
         }
-
-        return _mapper.Map<UserDto>(user);
+        
+        return  _mapper.Map<UserDto>(user.UserDetails);
     }
 }

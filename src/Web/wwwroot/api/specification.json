@@ -512,6 +512,29 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "DeleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
     },
     "/api/Users": {
@@ -573,7 +596,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "GetUsersRoles",
+        "operationId": "GetUserRoles",
         "responses": {
           "200": {
             "description": "",
@@ -1095,6 +1118,10 @@
           "tmxId": {
             "type": "string",
             "nullable": true
+          },
+          "tmIoId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1127,6 +1154,10 @@
             "nullable": true
           },
           "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmIoId": {
             "type": "string",
             "nullable": true
           },
@@ -1165,6 +1196,10 @@
             "nullable": true
           },
           "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmIoId": {
             "type": "string",
             "nullable": true
           },

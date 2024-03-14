@@ -87,8 +87,7 @@ export class AuthorizeService {
   }
 
   public isAuthenticated(): Observable<boolean> {
-    return this.usersClient.getUsersRoles().pipe(map((u) => !!u));
-
+    return this.usersClient.getUserRoles().pipe(map((u) => !!u));
   //  return this.getUser().pipe(map((u) => !!u));
   }
 

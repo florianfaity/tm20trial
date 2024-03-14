@@ -15,7 +15,7 @@ export class AdminMapsEditComponent  {
   //  private _toastService: ToastService,
     private _mapsClient: MapsClient
   ) {
-    var test$ = this._route.params.pipe(
+    this._route.params.pipe(
       switchMap((params) => {
         return params['id'] ? this._mapsClient.getMap(params['id']) : of(null);
       })
