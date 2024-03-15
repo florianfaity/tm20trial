@@ -17,6 +17,8 @@ public class MapDto
 
     public int Points { get; set; }
     
+    public string? FileUrl { get; set; }
+    
     public string? TmIoId { get; set; }
 
     public string? TmxLink { get; set; }

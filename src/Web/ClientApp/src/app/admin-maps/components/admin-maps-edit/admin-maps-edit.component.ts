@@ -13,6 +13,7 @@ import {of, switchMap} from "rxjs";
 import {ToastService} from "../../../shared/services/toast.service";
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import { NzImageService } from "ng-zorro-antd/image";
+import {MapsService} from "../../../shared/services/maps.service";
 
 @Component({
   selector: 'app-admin-maps-edit',
@@ -31,8 +32,8 @@ import { NzImageService } from "ng-zorro-antd/image";
           <nz-breadcrumb nz-page-header-breadcrumb>
             <nz-breadcrumb-item>Maps</nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="!isEdit">Add</nz-breadcrumb-item>
-            <nz-breadcrumb-item *ngIf="isEdit && map.state == enumStateValidation.Validate" (click)="goBack()" class="cursor-pointer">List of validate map </nz-breadcrumb-item>
-            <nz-breadcrumb-item *ngIf="isEdit && map.state == enumStateValidation.New" (click)="goBack()" class="cursor-pointer">List of suggested map </nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngIf="isEdit && map != null && map.state == enumStateValidation.Validate" (click)="goBack()" class="cursor-pointer">List of validate map </nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngIf="isEdit && map != null && map.state == enumStateValidation.New" (click)="goBack()" class="cursor-pointer">List of suggested map </nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="isEdit">Edit</nz-breadcrumb-item>
           </nz-breadcrumb>
           <nz-page-header-title *ngIf="!isEdit">Create Map</nz-page-header-title>
@@ -52,7 +53,7 @@ import { NzImageService } from "ng-zorro-antd/image";
                   </nz-form-label>
                   <nz-form-control nz-col [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
                     <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-                      <input type="text" nz-input formControlName="tmIoId"/>
+                      <input type="text" nz-input formControlName="tmIoId" (blur)="setTmIoId($event.target)"/>
                     </nz-input-group>
                     <ng-template #suffixButton>
                       <button nz-button nzType="primary" (click)="clickTmIoId()" nzSearch>Search</button>
@@ -220,11 +221,14 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
   enumStateValidation = EStateValidation;
   form: UntypedFormGroup = new UntypedFormGroup({});
   srcImage = '';
+  idMap = '';
+
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
     private _toastService: ToastService,
-    private _mapsClient: MapsClient,private nzImageService: NzImageService,
+    private _mapsClient: MapsClient, private nzImageService: NzImageService,
+    private mapsService: MapsService,
     fb: UntypedFormBuilder
   ) {
     this.loading = true;
@@ -293,6 +297,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       this.form.get('tmIoId').setValue(this.map.tmIoId);
       this.form.get('state').setValue(this.map.state);
       this.srcImage = this.map.imageLink;
+      this.idMap = this.map.tmIoId;
     }
   }
 
@@ -332,10 +337,31 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
     }
   }
 
+  setTmIoId(id: any) {
+    console.log('clickTmIoId');
+    console.log(id);
+    var idMap = id.value;
+    console.log(idMap);
+
+  }
+
 
   clickTmIoId() {
-    console.log('clickTmIoId');
+    console.log(this.idMap);
+    if(this.idMap.includes("-")){
+      this.mapsService.getMapsById([this.idMap]).subscribe(data => {
+        //this.maps = data;
+        console.log(data); // Handle data as needed
+      });
+    }
+    else{
+      this.mapsService.getMapsByUid([this.idMap]).subscribe(data => {
+        //this.maps = data;
+        console.log(data); // Handle data as needed
+      });
+    }
     //TODO API OPENPLANET AUTO COMPLETE TRACKMANIA.IO
+
   }
 
 

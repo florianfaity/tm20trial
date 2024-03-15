@@ -21,10 +21,11 @@ public record UpdateMapCommand: IRequest
     
     public int Points { get; set; }
     
+    public string? FileUrl { get; set; }
+    
     public string? TmIoId { get; set; }
     
     public string? TmxLink { get; set; }
-    
     
     public string? VideoLink { get; set; }
     
@@ -71,6 +72,7 @@ public class UpdateMapCommandHandler : IRequestHandler<UpdateMapCommand>
         entity.Difficulty = request.Difficulty;
         entity.TypeTrial = request.TypeTrial;
         entity.Points = request.Points;
+        entity.FileUrl = request.FileUrl;
         entity.TmIoId = request.TmIoId;
         entity.TmxLink = request.TmxLink;
         entity.VideoLink = request.VideoLink;

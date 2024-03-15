@@ -13,6 +13,7 @@ public record CreateMapCommand : IRequest<int>
     public EDifficulty Difficulty { get; set; }
     public ETypeTrial TypeTrial { get; set; }
     public int Points { get; set; }
+    public string? FileUrl { get; set; }
     public string? TmIoId { get; set; }
     public string? TmxLink { get; set; }
     public string? VideoLink { get; set; }
@@ -50,6 +51,7 @@ public class CreateMapCommandHandler : IRequestHandler<CreateMapCommand, int>
             Difficulty = request.Difficulty,
             TypeTrial = request.TypeTrial,
             Points = request.Points,
+            FileUrl = request.FileUrl,
             TmIoId = request.TmIoId,
             TmxLink = request.TmxLink,
             VideoLink = request.VideoLink,

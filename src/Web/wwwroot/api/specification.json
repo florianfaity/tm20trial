@@ -720,6 +720,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
+          },
           "tmIoId": {
             "type": "string",
             "nullable": true
@@ -826,6 +830,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
+          },
           "tmIoId": {
             "type": "string",
             "nullable": true
@@ -871,6 +879,10 @@
           "points": {
             "type": "integer",
             "format": "int32"
+          },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
           },
           "tmIoId": {
             "type": "string",

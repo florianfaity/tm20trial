@@ -64,6 +64,7 @@ import {RouterLink} from "@angular/router";
 import {DifficultyPipe} from "./pipes/difficulty-pipe";
 import {ToastService} from "./services/toast.service";
 import {NzImageModule} from "ng-zorro-antd/image";
+import {MapsService} from "./services/maps.service";
 
 const ngZorroModule = [
   NzIconModule,
@@ -138,7 +139,8 @@ const modules = [
 @NgModule({
   providers: [
     DifficultyPipe,
-    ToastService
+    ToastService,
+    MapsService
   ],
   imports: [...modules, RouterLink],
   declarations: [

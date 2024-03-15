@@ -1337,6 +1337,7 @@ export class MapDto implements IMapDto {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
@@ -1363,6 +1364,7 @@ export class MapDto implements IMapDto {
             this.difficulty = _data["difficulty"];
             this.typeTrial = _data["typeTrial"];
             this.points = _data["points"];
+            this.fileUrl = _data["fileUrl"];
             this.tmIoId = _data["tmIoId"];
             this.tmxLink = _data["tmxLink"];
             this.videoLink = _data["videoLink"];
@@ -1389,6 +1391,7 @@ export class MapDto implements IMapDto {
         data["difficulty"] = this.difficulty;
         data["typeTrial"] = this.typeTrial;
         data["points"] = this.points;
+        data["fileUrl"] = this.fileUrl;
         data["tmIoId"] = this.tmIoId;
         data["tmxLink"] = this.tmxLink;
         data["videoLink"] = this.videoLink;
@@ -1408,6 +1411,7 @@ export interface IMapDto {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
@@ -1447,6 +1451,7 @@ export class CreateMapCommand implements ICreateMapCommand {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
@@ -1469,6 +1474,7 @@ export class CreateMapCommand implements ICreateMapCommand {
             this.difficulty = _data["difficulty"];
             this.typeTrial = _data["typeTrial"];
             this.points = _data["points"];
+            this.fileUrl = _data["fileUrl"];
             this.tmIoId = _data["tmIoId"];
             this.tmxLink = _data["tmxLink"];
             this.videoLink = _data["videoLink"];
@@ -1491,6 +1497,7 @@ export class CreateMapCommand implements ICreateMapCommand {
         data["difficulty"] = this.difficulty;
         data["typeTrial"] = this.typeTrial;
         data["points"] = this.points;
+        data["fileUrl"] = this.fileUrl;
         data["tmIoId"] = this.tmIoId;
         data["tmxLink"] = this.tmxLink;
         data["videoLink"] = this.videoLink;
@@ -1506,6 +1513,7 @@ export interface ICreateMapCommand {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
@@ -1520,6 +1528,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
@@ -1544,6 +1553,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
             this.difficulty = _data["difficulty"];
             this.typeTrial = _data["typeTrial"];
             this.points = _data["points"];
+            this.fileUrl = _data["fileUrl"];
             this.tmIoId = _data["tmIoId"];
             this.tmxLink = _data["tmxLink"];
             this.videoLink = _data["videoLink"];
@@ -1568,6 +1578,7 @@ export class UpdateMapCommand implements IUpdateMapCommand {
         data["difficulty"] = this.difficulty;
         data["typeTrial"] = this.typeTrial;
         data["points"] = this.points;
+        data["fileUrl"] = this.fileUrl;
         data["tmIoId"] = this.tmIoId;
         data["tmxLink"] = this.tmxLink;
         data["videoLink"] = this.videoLink;
@@ -1585,6 +1596,7 @@ export interface IUpdateMapCommand {
     difficulty?: EDifficulty;
     typeTrial?: ETypeTrial;
     points?: number;
+    fileUrl?: string | undefined;
     tmIoId?: string | undefined;
     tmxLink?: string | undefined;
     videoLink?: string | undefined;
