@@ -6,8 +6,8 @@ public interface ICurrentUserService
     
     int UserId { get; }
 
-    bool IsAdmin { get; set; }
+    bool IsAdmin { get; }
     
-    List<string> Roles { get; set; }
+    List<string> Roles { get;  }
 
 }

@@ -1,4 +1,4 @@
-import {Observable, shareReplay, Subscription} from "rxjs";
+import {Observable, of, shareReplay, Subscription, switchMap, tap} from "rxjs";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {map} from "rxjs/operators";
@@ -22,13 +22,27 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class AdminComponent implements OnInit, OnDestroy  {
 
   public routerLoading = false;
+  isAuthenticated$: Observable<boolean>;
+  loading = false;
 
  userName: string;
 
   private _routeSubs: Subscription;
   constructor(
     private _authorizeService: AuthorizeService,
-    private _router: Router,) {}
+    private _router: Router,) {
+    this.loading = true;
+    this.isAuthenticated$ = this._authorizeService.isAuthenticated().pipe(
+      tap(() => (this.loading = false)),
+      switchMap((authenticated) => {
+        if (authenticated) {
+          return of(authenticated);
+        } else {
+          return this._router.navigateByUrl(`/authentication/login?action=login&returnUrl=/`);
+        }
+      })
+    );
+  }
 
   ngOnInit(): void {
     console.log("admin")

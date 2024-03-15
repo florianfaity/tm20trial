@@ -6,36 +6,25 @@ namespace tm20trial.Web.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
-    public string? IdentityId { get; }
-    public int UserId { get; }
+    public string? IdentityId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
     
-    public bool IsAdmin { get; set; }
+    public int UserId  => _httpContextAccessor.HttpContext?.User?.GetUserId() ?? 0;
     
-    public bool IsMapper { get; set; }
+    public bool IsAdmin => _httpContextAccessor.HttpContext?.User?.IsAdmin() ?? false;
     
-    public bool IsPlayer { get; set; }
+    public bool IsMapper => _httpContextAccessor.HttpContext?.User?.IsMapper() ?? false;
     
-    public List<string> Roles { get; set; }
+    public bool IsPlayer => _httpContextAccessor.HttpContext?.User?.IsPlayer() ?? false;
     
+    public List<string> Roles => _httpContextAccessor.HttpContext?.User?.GetRoles() ?? new List<string>();
+    
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
-        IdentityId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-        try
-        {
-            UserId = httpContextAccessor.HttpContext?.User?.GetUserId() ?? 0;
-            IsAdmin = httpContextAccessor.HttpContext?.User?.IsAdmin() ?? false;
-            IsMapper = httpContextAccessor.HttpContext?.User?.IsMapper() ?? false;
-            IsPlayer = httpContextAccessor.HttpContext?.User?.IsPlayer() ?? false;
-            Roles = httpContextAccessor.HttpContext?.User?.GetRoles() ?? new List<string>();
-        }
-        catch (Exception)
-        {
-            UserId = 0;
-            Roles = new List<string>();
-        }
+        _httpContextAccessor = httpContextAccessor;
     }
 
-   // public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
 }

@@ -1,5 +1,5 @@
 ﻿using tm20trial.Application.Common.Exceptions;
-using tm20trial.Application.Common.Security;
+using Microsoft.AspNetCore.Authorization;
 using tm20trial.Application.TodoLists.Commands.CreateTodoList;
 using tm20trial.Application.TodoLists.Commands.PurgeTodoLists;
 using tm20trial.Domain.Entities;

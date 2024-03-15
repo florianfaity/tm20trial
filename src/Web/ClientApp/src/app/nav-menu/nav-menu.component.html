@@ -57,21 +57,31 @@
       <div [ngClass]="'sidepanel-menu-items'">
         <ul nz-menu nzTheme="dark" nzMode="inline">
           <ng-container>
-            <li nz-menu-item nzMatchRouter [routerLink]="['/', 'admin', 'users']">
+            <li nz-menu-item
+                nzMatchRouter
+                nzMatchRouterExact [routerLink]="['/', 'admin', 'users']">
               <i nz-icon nzType="team" nzTheme="outline"></i>
               <span>Users</span>
             </li>
             <li nz-submenu nzTitle="Maps" nzIcon="form">
               <ul>
-                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps']" nz-menu-item>Validate list</li>
-                <li nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested list</li>
+                <li
+                  nzMatchRouter
+                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps']" nz-menu-item>Validate list</li>
+                <li
+                  nzMatchRouter
+                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested list</li>
               </ul>
             </li>
-            <li nz-menu-item  [routerLink]="['/', 'admin', 'records']">
+            <li nz-menu-item
+                nzMatchRouter
+                nzMatchRouterExact  [routerLink]="['/', 'admin', 'records']">
               <i nz-icon nzType="database"></i>
                 <span>Records</span>
             </li>
-            <li nz-menu-item href="/api" target="_blank">
+            <li nz-menu-item
+                nzMatchRouter
+                nzMatchRouterExact href="/api" target="_blank">
               <i nz-icon nzType="team" nzTheme="outline"></i>
               <span>api</span>
             </li>

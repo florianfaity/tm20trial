@@ -8,8 +8,8 @@ export const admin_routes: Routes = [
   {
     path: '',
     component: AdminComponent,
-   // canActivate: [IsRoleGuard],
-  //  data: { role: 'admin' },
+    canActivate: [IsRoleGuard],
+    data: { role: 'admin' },
     children: [
       {
         path: 'users',
