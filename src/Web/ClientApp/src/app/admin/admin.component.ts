@@ -38,7 +38,8 @@ export class AdminComponent implements OnInit, OnDestroy  {
         if (authenticated) {
           return of(authenticated);
         } else {
-          return this._router.navigateByUrl(`/authentication/login?action=login&returnUrl=/`);
+          return this._router.navigateByUrl(`/trial`);
+        //  return this._router.navigateByUrl(`/authentication/login?action=login&returnUrl=/`);
         }
       })
     );

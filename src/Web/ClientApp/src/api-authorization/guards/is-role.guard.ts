@@ -13,7 +13,7 @@ export class IsRoleGuard {
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean> {
     return this._authorizeService.getUser().pipe(
       shareReplay(),
-      map((u) => ({ hasRole: this.hasRole(u, next.data.role), redirectUrl: '/' })),
+      map((u) => ({ hasRole: this.hasRole(u, next.data.role), redirectUrl: '/trial' })),
       tap((x) => (x.hasRole ? x.hasRole : this.router.navigateByUrl(x.redirectUrl, { replaceUrl: true }))),
       map((x) => x.hasRole)
     );
@@ -23,14 +23,14 @@ export class IsRoleGuard {
     if (!user) {
       return false;
     }
-    if (roleName === 'player') {
-      return user.roles.indexOf('Player') >= 0;
-    }
     if (roleName === 'admin') {
       return user.roles.indexOf('Administrator') >= 0;
     }
     if (roleName === 'mapper') {
       return user.roles.indexOf('Mapper') >= 0;
+    }
+    if (roleName === 'player') {
+      return user.roles.indexOf('Player') >= 0;
     }
     return false;
   }
