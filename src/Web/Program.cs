@@ -1,9 +1,20 @@
 using tm20trial.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using tm20trial.Domain.Entities;
 using tm20trial.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//     .AddEntityFrameworkStores<ApplicationDbContext>();
+// builder.Services.AddIdentity<Users, IdentityRole>(options =>
+//     {
+//         options.User.RequireUniqueEmail = false;
+//     })
+//     .AddEntityFrameworkStores<ApplicationDbContext>()
+//     .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddKeyVaultIfConfigured(builder.Configuration);

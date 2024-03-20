@@ -5,7 +5,7 @@ using tm20trial.Application.Common.Security;
 
 namespace tm20trial.Application.Users.Queries;
 
-[Authorize(Policy = Constants.UserPolicies.ConnectedPolicy)]
+// [Authorize(Policy = Constants.UserPolicies.ConnectedPolicy)]
 public record GetCurrentUserQuery : IRequest<CurrentUserDto>
 {
 }
