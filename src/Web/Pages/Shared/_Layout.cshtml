@@ -6,9 +6,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    @RenderSection("styles", required: false)
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web</title>
-
+    <link rel="stylesheet" href="src/Web/wwwroot/css/login.css"> 
+    
     <environment include="Development">
         <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/Identity/css/site.css" />
@@ -23,9 +25,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #1f2d3f !important;">
             <div class="container">
-                <a class="navbar-brand" href="~/">Web</a>
+                <a class="navbar-brand text-white" href="~/trial">Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -55,9 +57,9 @@
             @RenderBody()
         </main>
     </div>
-    <footer class="footer border-top pl-3 text-muted">
+    <footer class="footer-custom border-top pl-3 text-muted">
         <div class="container">
-        &copy; 2024 - Web
+        &copy; 2024 - Trackmania 2020 Trial
             @{
                 var foundPrivacy = Url.Page("/Privacy", new { area = "" });
             }
