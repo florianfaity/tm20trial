@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using tm20trial.Application.Common.Interfaces;
+using tm20trial.Application.Common.Models;
 using tm20trial.Infrastructure.Identity;
 
 namespace tm20trial.Web.Areas.Identity.Pages.Account
@@ -30,13 +32,14 @@ namespace tm20trial.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IIdentityService _identityService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IIdentityService identityService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +47,7 @@ namespace tm20trial.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _identityService = identityService;
         }
 
         /// <summary>
@@ -98,6 +102,38 @@ namespace tm20trial.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            
+            /// <summary>
+           /// </summary>
+            [Required]
+            [Display(Name = "Display Name")]
+            public string DisplayName { get; set; }
+            
+            /// <summary>
+            /// </summary>
+            [Display(Name = "Login uplay")]
+            public string LoginUplay { get; set; }
+            
+            
+            /// <summary>
+            /// </summary>
+            [Display(Name = "Twitch username")]
+            public string TwitchUsername { get; set; }
+
+            /// <summary>
+            /// </summary>
+            [Display(Name = "Twitter username")]
+            public string TwitterUsername { get; set; }
+            
+            /// <summary>
+            /// </summary>
+            [Display(Name = "Trackmania Io id")]
+            public string TmIoId { get; set; }
+
+            /// <summary>
+            /// </summary>
+            [Display(Name = "Is Mapper")]
+            public bool IsMapper { get; set; }
         }
 
 
@@ -115,10 +151,38 @@ namespace tm20trial.Web.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                var userDetail = new Domain.Entities.Users
+                {
+                    DisplayName = Input.DisplayName,
+                    LoginUplay = Input.LoginUplay,
+                    TwitchUsername = Input.TwitchUsername,
+                    TwitterUsername = Input.TwitterUsername,
+                    TmIoId = Input.TmIoId,
+                };
+                //
+                user.UserDetails = userDetail;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
+                
+                //
+                List<string> roles = new List<string>();
+        
+                if (Input.IsMapper)
+                    roles.Add(Constants.UserRoles.Mapper);
+                
+                roles.Add(Constants.UserRoles.Player);
+  
+                foreach (var role in roles)
+                {
+                    if (!string.IsNullOrWhiteSpace(role))
+                    {
+                        await _userManager.AddToRoleAsync(user, role); 
+                    }
+                }
+                
+             //   var user = await _identityService.CreateUserAsync(Input.Email, Input.Password, roles, userDetail);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

@@ -2,6 +2,10 @@
     color: white;
 }
 
+.background-color-primary {
+    background-color: #1f2d3f !important;;
+}
+
 .footer-custom {
     position: absolute;
     bottom: 0;
