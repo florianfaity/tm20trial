@@ -18,7 +18,10 @@ export class NavMenuComponent {
   onClickSignIn(){
     console.log(window.location.href);
     window.location.href = `Identity/Account/Login`;
-
+  }
+  onClickSignOut(){
+    console.log(window.location.href);
+    window.location.href = "Identity/Account/Logout";
   }
 
   collapse() {
