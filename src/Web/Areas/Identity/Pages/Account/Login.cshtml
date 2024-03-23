@@ -5,51 +5,111 @@
     ViewData["Title"] = "Log in";
 }
 
-    <link rel="stylesheet" href="~/Identity/css/login.css"> 
+<link rel="stylesheet" href="~/Identity/css/show-hide-password.css">
+<link rel="stylesheet" href="~/Identity/css/login.css"> 
+<section class="vh-100 main-section">
+    <div class="container-fluid h-100">
+        <div class="row d-flex main-container justify-content-center align-items-center h-100">
+            <div class="col-md-0 col-lg-6 col-xl-8" >
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-4 form-container">
+                <form class="form" id="account" method="post">
 
-<h1>@ViewData["Title"]</h1>
-<div class="row color-blue">
-    <div class="col-md-4 col-md-offset-2">
-        <section>
-            <form id="account" method="post">
-                <h2>Hello test</h2>
-                <h2>Use a local account to log in.</h2>
-                <br />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
+                    <h1 class="text-center"> <span>Trial Classics</span> </h1>
+                    <hr />
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form3Example3">Email</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username"/>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label class="form-label" asp-for="Input.Password" for="form3Example4">Password</label>
+                        <div class="input-group">
+                            <input asp-for="Input.Password" type="password" id="password"  autocomplete="current-password"
+                                   class="form-control input-password rounded" spellcheck="false" autocorrect="off" autocapitalize="off">
+                            <span role="button" id="toggle-password" type="button" class="pt-1">
+                                <img id="img-eye-open" src="~/Identity/img/open-eye.svg" />
+                                <img id="img-eye-close" src="~/Identity/img/close-eye.svg" hidden="true" />
+                            </span>
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+                    {
+                        <div class="text-danger text-center">
+                            <span>@ViewData["ErrorMessage"]</span>
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="mb-0">
+                            <label asp-for="Input.RememberMe">
+                                <input asp-for="Input.RememberMe"/>&nbsp;
+                                @Html.DisplayNameFor(m => m.Input.RememberMe) 
+                            </label>
+                        </div>
                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </div>
+
+                    <div class="text-center mt-4 pt-2">
+                        <button id="login-submit" type="submit"  class="btn btn-primary" style="padding-left: 2.5rem; padding-right: 2.5rem;">Log in</button>
+                    </div>
+                    <p> 
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a> 
                     </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    @* <p> *@
-                    @*     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a> *@
-                    @* </p> *@
-                </div>
-            </form>
-        </section>
+                </form>
+            </div>
+        </div>
     </div>
+</section>
+
     
+    
+    @* <div class="row color-blue"> *@
+    @* <div class="col-md-4 col-md-offset-2"> *@
+    @*     <section> *@
+    @*         <form id="account" method="post"> *@
+    @*             <h2>Log in.</h2> *@
+    @*             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div> *@
+    @*             <div class="form-floating mb-3"> *@
+    @*                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" /> *@
+    @*                 <label asp-for="Input.Email" class="form-label">Email</label> *@
+    @*                 <span asp-validation-for="Input.Email" class="text-danger"></span> *@
+    @*             </div> *@
+    @*             <div class="form-floating mb-3"> *@
+    @*                 <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" /> *@
+    @*                 <label asp-for="Input.Password" class="form-label">Password</label> *@
+    @*                 <span asp-validation-for="Input.Password" class="text-danger"></span> *@
+    @*             </div> *@
+    @*             <div class="checkbox mb-3"> *@
+    @*                 <label asp-for="Input.RememberMe" class="form-label"> *@
+    @*                     <input class="form-check-input" asp-for="Input.RememberMe" /> *@
+    @*                     @Html.DisplayNameFor(m => m.Input.RememberMe) *@
+    @*                 </label> *@
+    @*             </div> *@
+    @*             <div> *@
+    @*                 <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button> *@
+    @*             </div> *@
+    @*             <div> *@
+    @*                 <p> *@
+    @*                     <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a> *@
+    @*                 </p> *@
+    @*                 <p> *@
+    @*                     <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a> *@
+    @*                 </p> *@
+    @*                 $1$ <p> #1# *@
+    @*                 $1$     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a> #1# *@
+    @*                 $1$ </p> #1# *@
+    @*             </div> *@
+    @*         </form> *@
+    @*     </section> *@
+    @* </div> *@
+    @* *@
     @* <div class="col-md-6 col-md-offset-2"> *@
     @*     <section> *@
     @*         <h3>Use another service to log in.</h3> *@
@@ -80,8 +140,22 @@
     @*         } *@
     @*     </section> *@
     @* </div> *@
-</div>
+@* </div> *@
 
+
+<script type="text/javascript" src="~/Identity/js/show-hide-password.js"></script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script type="text/javascript">
+    document.onkeypress = keyPress;
+
+    function keyPress(e){
+        var x = e || window.event;
+        var key = (x.keyCode || x.which);
+
+        if(key == 13 || key == 3)
+            document.getElementById("login-submit").click();
+    }
+</script>

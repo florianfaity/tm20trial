@@ -19,7 +19,7 @@ import {HttpErrorResponse} from "@angular/common/http";
     </app-nav-menu>
   `,
 })
-export class AdminComponent implements OnInit, OnDestroy  {
+export class AdminComponent implements OnDestroy  {
 
   public routerLoading = false;
   isAuthenticated$: Observable<boolean>;
@@ -32,6 +32,14 @@ export class AdminComponent implements OnInit, OnDestroy  {
     private _authorizeService: AuthorizeService,
     private _router: Router,) {
     this.loading = true;
+
+    this._authorizeService.getUser().pipe(shareReplay()).subscribe({
+      next: (user: CurrentUserDto) => {
+        this.userName = user.displayName;
+      },
+      error: (err: HttpErrorResponse) =>console.error(err)
+    });
+
     this.isAuthenticated$ = this._authorizeService.isAuthenticated().pipe(
       tap(() => (this.loading = false)),
       switchMap((authenticated) => {
@@ -43,10 +51,11 @@ export class AdminComponent implements OnInit, OnDestroy  {
         }
       })
     );
+
   }
 
-  ngOnInit(): void {
-    console.log("admin")
+  // ngOnInit(): void {
+  //   console.log("admin")
     // this._authorizeService.getUser().pipe(shareReplay()).subscribe({
     //   next: (user: CurrentUserDto) => {
     //     if(!user.roles.indexOf('Administrator')){
@@ -71,7 +80,7 @@ export class AdminComponent implements OnInit, OnDestroy  {
     //       break;
     //   }
     // });
-  }
+  // }
 
   ngOnDestroy(): void {
     if (this._routeSubs) {

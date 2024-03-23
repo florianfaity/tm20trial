@@ -53,6 +53,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <None Include="wwwroot\Identity\img\background.jpg" />
   </ItemGroup>
 
   <ItemGroup>

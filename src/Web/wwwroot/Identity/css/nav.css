@@ -1,0 +1,46 @@
+.text-white{
+    color: white;
+}
+
+.background-color-primary {
+    background-color: #1f2d3f !important;;
+}
+
+.footer-custom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.margin-bottom-0{
+    margin-bottom: 0 !important;
+}
+
+.background-image{
+    background-image: url('../img/background.jpg');
+    background-size: cover;
+}
+
+.btn-primary{
+    color: #fff;
+    background-color: #1f2d3f !important;
+    border-color: #1f2d3f !important;
+}
+
+body {margin: 0; height: 100%; overflow: hidden}
+
+.container{
+    max-width: 100% !important;
+    margin-right: 20px !important;
+    margin-left: 20px !important;
+}
+
+/*.margin-right-high {*/
+/*    margin-right: 80% !important;*/
+/*}*/
+
+.margin-left-high {
+    margin-left: 80% !important;
+}
