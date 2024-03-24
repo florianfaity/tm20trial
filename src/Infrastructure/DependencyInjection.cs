@@ -1,17 +1,18 @@
-﻿using Duende.IdentityServer.Services;
-using tm20trial.Application.Common.Interfaces;
-using tm20trial.Domain.Constants;
-using tm20trial.Infrastructure.Data;
-using tm20trial.Infrastructure.Data.Interceptors;
-using tm20trial.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using tm20trial.Application.Common.Configurations;
+using tm20trial.Application.Common.Interfaces;
 using tm20trial.Domain.Interfaces;
 using tm20trial.Domain.Service;
+using tm20trial.Infrastructure.Data;
+using tm20trial.Infrastructure.Data.Interceptors;
+using tm20trial.Infrastructure.Identity;
+using tm20trial.Infrastructure.Services;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace tm20trial.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -42,12 +43,15 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         
+        services.Configure<TrackmaniaConfiguration>(configuration.GetSection("Trackmania"));
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IEncryptionService, EncryptionService>();
   //      services.AddTransient<IProfileService, ProfileService>();
     
         services.AddAuthorization(ApplicationPolicy.AddTmTrialPolicies);
+        
+        services.AddTransient<ITrackmaniaService, TrackmaniaService>();
         
         return services;
     }
