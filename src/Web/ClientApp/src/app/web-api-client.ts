@@ -422,7 +422,7 @@ export class MapsClient implements IMapsClient {
 }
 
 export interface IOpenplanetClient {
-    getAutorize(): Observable<FileResponse>;
+    searchNadeoMap(mapId: string): Observable<NadeoMapDto>;
 }
 
 @Injectable({
@@ -438,50 +438,49 @@ export class OpenplanetClient implements IOpenplanetClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getAutorize(): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Openplanet";
+    searchNadeoMap(mapId: string): Observable<NadeoMapDto> {
+        let url_ = this.baseUrl + "/api/Openplanet/{mapId}";
+        if (mapId === undefined || mapId === null)
+            throw new Error("The parameter 'mapId' must be defined.");
+        url_ = url_.replace("{mapId}", encodeURIComponent("" + mapId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAutorize(response_);
+            return this.processSearchNadeoMap(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAutorize(response_ as any);
+                    return this.processSearchNadeoMap(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<NadeoMapDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<NadeoMapDto>;
         }));
     }
 
-    protected processGetAutorize(response: HttpResponseBase): Observable<FileResponse> {
+    protected processSearchNadeoMap(response: HttpResponseBase): Observable<NadeoMapDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NadeoMapDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1675,6 +1674,54 @@ export interface IUpdateMapCommand {
     state?: EStateValidation;
 }
 
+export class NadeoMapDto implements INadeoMapDto {
+    author?: string | undefined;
+    name?: string | undefined;
+    fileUrl?: string | undefined;
+    thumbnailUrl?: string | undefined;
+
+    constructor(data?: INadeoMapDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.author = _data["author"];
+            this.name = _data["name"];
+            this.fileUrl = _data["fileUrl"];
+            this.thumbnailUrl = _data["thumbnailUrl"];
+        }
+    }
+
+    static fromJS(data: any): NadeoMapDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NadeoMapDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["author"] = this.author;
+        data["name"] = this.name;
+        data["fileUrl"] = this.fileUrl;
+        data["thumbnailUrl"] = this.thumbnailUrl;
+        return data;
+    }
+}
+
+export interface INadeoMapDto {
+    author?: string | undefined;
+    name?: string | undefined;
+    fileUrl?: string | undefined;
+    thumbnailUrl?: string | undefined;
+}
+
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
     items?: TodoItemBriefDto[];
     pageNumber?: number;
@@ -2472,13 +2519,6 @@ export interface IWeatherForecast {
     temperatureC?: number;
     temperatureF?: number;
     summary?: string | undefined;
-}
-
-export interface FileResponse {
-    data: Blob;
-    status: number;
-    fileName?: string;
-    headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

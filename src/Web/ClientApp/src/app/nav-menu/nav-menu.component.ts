@@ -25,22 +25,22 @@ export class NavMenuComponent {
   onClickSignOut(){
     window.location.href = "Identity/Account/Logout";
   }
-
-  onClickSignInUbisoft(){
-    this._openplanetClient.getAutorize().subscribe((result) => {
-      const reader = new FileReader();
-      // var resultTets = "";
-      // reader.onload = () => {
-      //   resultTets = reader.result as string;
-      // };
-      // reader.readAsText(result.body);
-
-      var test = result;
-      console.log(test);
-      // console.log(resultTets);
-    });
-    console.log("onClickSignInUbisoft");
-  }
+  //
+  // onClickSignInUbisoft(){
+  //   this._openplanetClient.getAutorize().subscribe((result) => {
+  //     const reader = new FileReader();
+  //     // var resultTets = "";
+  //     // reader.onload = () => {
+  //     //   resultTets = reader.result as string;
+  //     // };
+  //     // reader.readAsText(result.body);
+  //
+  //     var test = result;
+  //     console.log(test);
+  //     // console.log(resultTets);
+  //   });
+  //   console.log("onClickSignInUbisoft");
+  // }
 
   collapse() {
     this.isExpanded = false;

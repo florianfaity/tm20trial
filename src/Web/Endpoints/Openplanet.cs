@@ -8,9 +8,13 @@ public class Openplanet : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-          //  .MapGet(GetAutorize)
+            .MapGet(SearchNadeoMap, "{mapId}")
             ;
     }
     
-
+    public async Task<NadeoMapDto> SearchNadeoMap(ISender sender, string mapId)
+    {
+        return await sender.Send(new GetMapNadeoQuery { MapId = mapId });
+    }
+    
 }

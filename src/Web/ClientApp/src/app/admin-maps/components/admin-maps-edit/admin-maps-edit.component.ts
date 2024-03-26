@@ -6,7 +6,7 @@ import {
   EStateValidation,
   ETypeTrial,
   MapDto,
-  MapsClient,
+  MapsClient, OpenplanetClient,
   UpdateMapCommand
 } from "../../../web-api-client";
 import {of, switchMap} from "rxjs";
@@ -228,7 +228,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
     private _router: Router,
     private _toastService: ToastService,
     private _mapsClient: MapsClient, private nzImageService: NzImageService,
-    private mapsService: MapsService,
+    private _openplanetService: OpenplanetClient,
     fb: UntypedFormBuilder
   ) {
     this.loading = true;
@@ -338,29 +338,19 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
   }
 
   setTmIoId(id: any) {
-    console.log('clickTmIoId');
-    console.log(id);
-    var idMap = id.value;
-    console.log(idMap);
-
+    this.idMap = id.value;
   }
 
 
   clickTmIoId() {
     console.log(this.idMap);
-    if(this.idMap.includes("-")){
-      this.mapsService.getMapsById([this.idMap]).subscribe(data => {
-        //this.maps = data;
-        console.log(data); // Handle data as needed
-      });
-    }
-    else{
-      this.mapsService.getMapsByUid([this.idMap]).subscribe(data => {
-        //this.maps = data;
-        console.log(data); // Handle data as needed
-      });
-    }
+    console.log(this.form.get('tmIoId').value);
+
     //TODO API OPENPLANET AUTO COMPLETE TRACKMANIA.IO
+    this._openplanetService.searchNadeoMap(this.idMap).subscribe(data => {
+      console.log(data);
+      }
+    );
 
   }
 

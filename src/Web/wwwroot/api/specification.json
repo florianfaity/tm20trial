@@ -225,20 +225,30 @@
         }
       }
     },
-    "/api/Openplanet": {
+    "/api/Openplanet/{mapId}": {
       "get": {
         "tags": [
           "Openplanet"
         ],
-        "operationId": "GetAutorize",
+        "operationId": "SearchNadeoMap",
+        "parameters": [
+          {
+            "name": "mapId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/NadeoMapDto"
                 }
               }
             }
@@ -927,6 +937,28 @@
           },
           "state": {
             "$ref": "#/components/schemas/EStateValidation"
+          }
+        }
+      },
+      "NadeoMapDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
