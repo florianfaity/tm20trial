@@ -16,40 +16,26 @@ public class TrackmaniaService : ITrackmaniaService
         _trackmaniaConfiguration = configuration.Value;
     }
     
-    public async Task<ContentResult> GetAutorize()
+    public async Task<string> GetToken()
     {
-
-        var result = _trackmaniaConfiguration.BaseLoginURL
-            .AppendPathSegments("oauth", "authorize")
-            .SetQueryParams(new
-            {
-                reponse_type = "code",
-                client_id = _trackmaniaConfiguration.ClientId,
-                redirect_uri = "https://localhost:44447/",
-            });
+        // var result = _trackmaniaConfiguration.BasePublicUbiURL
+        //     .AppendPathSegments("v3", "profiles", "sessions")
+        //     .WithHeaders()
             
-        var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(result);
+        // var httpClient = new HttpClient();
+        // var response = await httpClient.GetAsync(result);
+        //
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     
+        // }
+        // else
+        // {
+        //     // Handle unsuccessful response
+        //     Console.WriteLine($"Error: {response.StatusCode}");
+        // }
 
-        if (response.IsSuccessStatusCode)
-        {
-            // Read the HTML content as string
-            return new ContentResult
-            {
-                ContentType = "text/html", 
-                Content = await response.Content.ReadAsStringAsync(),
-                StatusCode = 200
-            };
-            //  var result = await response.Content.ReadAsStringAsync();
-            //  result.
-        }
-        else
-        {
-            // Handle unsuccessful response
-            Console.WriteLine($"Error: {response.StatusCode}");
-        }
-
-        return new ContentResult();
+        return "";
     }
     
     

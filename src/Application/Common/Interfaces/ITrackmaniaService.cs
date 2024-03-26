@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 public interface ITrackmaniaService
 {
-    Task<ContentResult> GetAutorize();
+    Task<string> GetToken();
 }

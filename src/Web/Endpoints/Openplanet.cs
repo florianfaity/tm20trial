@@ -8,12 +8,9 @@ public class Openplanet : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-            .MapGet(GetAutorize)
+          //  .MapGet(GetAutorize)
             ;
     }
     
-    public async Task<ContentResult> GetAutorize(ISender sender)
-    {
-        return await sender.Send(new GetAutorizeQuery());
-    }
+
 }

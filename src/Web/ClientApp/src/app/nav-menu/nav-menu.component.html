@@ -25,7 +25,6 @@
           <li nz-menu-item *ngIf="!isAdminView" [routerLink]="['/', 'trial','maps']">Maps</li>
           <li nz-menu-item *ngIf="isAdmin && !isAdminView" [routerLink]="['/admin']">Admin</li>
           <li nz-menu-item *ngIf="!isConnected" (click)="onClickSignIn()">Sign in</li>
-          <li nz-menu-item *ngIf="!isConnected" (click)="onClickSignInUbisoft()">Sign in Ubisoft (wip)</li>
           <li nz-menu-item class="user-menu" *ngIf="isConnected">
             <a nz-dropdown [nzDropdownMenu]="menu">
               <span class="username">{{ playerName }} </span>

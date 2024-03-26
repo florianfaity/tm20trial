@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Security\" />
+    <Folder Include="Openplanet\Queries\" />
   </ItemGroup>
 
 </Project>
