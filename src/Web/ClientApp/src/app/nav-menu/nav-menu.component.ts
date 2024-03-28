@@ -1,4 +1,6 @@
 import {Component, Input} from '@angular/core';
+import {OpenplanetClient} from "../web-api-client";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,14 +17,30 @@ export class NavMenuComponent {
 
   isExpanded = false;
 
+  constructor(private _openplanetClient : OpenplanetClient ) {}
+
   onClickSignIn(){
-    console.log(window.location.href);
     window.location.href = `Identity/Account/Login`;
   }
   onClickSignOut(){
-    console.log(window.location.href);
     window.location.href = "Identity/Account/Logout";
   }
+  //
+  // onClickSignInUbisoft(){
+  //   this._openplanetClient.getAutorize().subscribe((result) => {
+  //     const reader = new FileReader();
+  //     // var resultTets = "";
+  //     // reader.onload = () => {
+  //     //   resultTets = reader.result as string;
+  //     // };
+  //     // reader.readAsText(result.body);
+  //
+  //     var test = result;
+  //     console.log(test);
+  //     // console.log(resultTets);
+  //   });
+  //   console.log("onClickSignInUbisoft");
+  // }
 
   collapse() {
     this.isExpanded = false;

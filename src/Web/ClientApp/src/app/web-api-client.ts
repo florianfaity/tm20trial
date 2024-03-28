@@ -421,6 +421,75 @@ export class MapsClient implements IMapsClient {
     }
 }
 
+export interface IOpenplanetClient {
+    searchNadeoMap(mapId: string): Observable<NadeoMapDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OpenplanetClient implements IOpenplanetClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    searchNadeoMap(mapId: string): Observable<NadeoMapDto> {
+        let url_ = this.baseUrl + "/api/Openplanet/{mapId}";
+        if (mapId === undefined || mapId === null)
+            throw new Error("The parameter 'mapId' must be defined.");
+        url_ = url_.replace("{mapId}", encodeURIComponent("" + mapId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchNadeoMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchNadeoMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NadeoMapDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NadeoMapDto>;
+        }));
+    }
+
+    protected processSearchNadeoMap(response: HttpResponseBase): Observable<NadeoMapDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NadeoMapDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ITodoItemsClient {
     getTodoItemsWithPagination(listId: number, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto>;
     createTodoItem(command: CreateTodoItemCommand): Observable<number>;
@@ -1603,6 +1672,54 @@ export interface IUpdateMapCommand {
     imageLink?: string | undefined;
     numberCheckpoint?: number;
     state?: EStateValidation;
+}
+
+export class NadeoMapDto implements INadeoMapDto {
+    author?: string | undefined;
+    name?: string | undefined;
+    fileUrl?: string | undefined;
+    thumbnailUrl?: string | undefined;
+
+    constructor(data?: INadeoMapDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.author = _data["author"];
+            this.name = _data["name"];
+            this.fileUrl = _data["fileUrl"];
+            this.thumbnailUrl = _data["thumbnailUrl"];
+        }
+    }
+
+    static fromJS(data: any): NadeoMapDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NadeoMapDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["author"] = this.author;
+        data["name"] = this.name;
+        data["fileUrl"] = this.fileUrl;
+        data["thumbnailUrl"] = this.thumbnailUrl;
+        return data;
+    }
+}
+
+export interface INadeoMapDto {
+    author?: string | undefined;
+    name?: string | undefined;
+    fileUrl?: string | undefined;
+    thumbnailUrl?: string | undefined;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {

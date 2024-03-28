@@ -2,6 +2,7 @@ using tm20trial.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tm20trial.Domain.Entities;
+using tm20trial.Infrastructure;
 using tm20trial.Web;
 
 var builder = WebApplication.CreateBuilder(args);
