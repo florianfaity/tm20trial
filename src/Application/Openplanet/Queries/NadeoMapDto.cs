@@ -5,7 +5,7 @@ namespace tm20trial.Application.Openplanet.Queries;
 
 public class NadeoMapDto
 {
-    public string? Author { get; set; }
+    public string? AuthorDisplayName { get; set; }
     
     public string? Name { get; set; }
     

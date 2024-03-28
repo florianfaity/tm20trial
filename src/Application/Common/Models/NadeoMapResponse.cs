@@ -21,4 +21,5 @@ public class NadeoMapResponse
     public DateTime Timestamp { get; set; }
     public string? FileUrl { get; set; }
     public string? ThumbnailUrl { get; set; }
+    public string? AuthorDisplayName { get; set; }
 }

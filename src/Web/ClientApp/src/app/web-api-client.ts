@@ -1675,7 +1675,7 @@ export interface IUpdateMapCommand {
 }
 
 export class NadeoMapDto implements INadeoMapDto {
-    author?: string | undefined;
+    authorDisplayName?: string | undefined;
     name?: string | undefined;
     fileUrl?: string | undefined;
     thumbnailUrl?: string | undefined;
@@ -1691,7 +1691,7 @@ export class NadeoMapDto implements INadeoMapDto {
 
     init(_data?: any) {
         if (_data) {
-            this.author = _data["author"];
+            this.authorDisplayName = _data["authorDisplayName"];
             this.name = _data["name"];
             this.fileUrl = _data["fileUrl"];
             this.thumbnailUrl = _data["thumbnailUrl"];
@@ -1707,7 +1707,7 @@ export class NadeoMapDto implements INadeoMapDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["author"] = this.author;
+        data["authorDisplayName"] = this.authorDisplayName;
         data["name"] = this.name;
         data["fileUrl"] = this.fileUrl;
         data["thumbnailUrl"] = this.thumbnailUrl;
@@ -1716,7 +1716,7 @@ export class NadeoMapDto implements INadeoMapDto {
 }
 
 export interface INadeoMapDto {
-    author?: string | undefined;
+    authorDisplayName?: string | undefined;
     name?: string | undefined;
     fileUrl?: string | undefined;
     thumbnailUrl?: string | undefined;

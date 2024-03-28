@@ -344,11 +344,21 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
 
   clickTmIoId() {
     console.log(this.idMap);
-    console.log(this.form.get('tmIoId').value);
-
     //TODO API OPENPLANET AUTO COMPLETE TRACKMANIA.IO
     this._openplanetService.searchNadeoMap(this.idMap).subscribe(data => {
       console.log(data);
+      this.form.get('name').setValue(data.name);
+      this.form.get('author').setValue(data.authorDisplayName);
+
+      // this.form.get('tmxLink').setValue(this.map.tmxLink);
+      // this.form.get('videoLink').setValue(this.map.videoLink);
+      // this.form.get('imageLink').setValue(this.map.imageLink);
+      // this.form.get('numberCheckpoint').setValue(this.map.numberCheckpoint);
+      // this.form.get('tmIoId').setValue(this.map.tmIoId);
+      // this.form.get('state').setValue(this.map.state);
+      // this.srcImage = this.map.imageLink;
+     //  this.idMap = this.map.tmIoId;
+
       }
     );
 
