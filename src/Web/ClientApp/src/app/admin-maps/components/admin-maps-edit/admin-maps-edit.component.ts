@@ -268,6 +268,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       tmxLink: [],
       videoLink: [],
       imageLink: [],
+      fileUrl: [],
       numberCheckpoint: [0, Validators.required],
       tmIoId: [null, Validators.required],
       state: [EStateValidation.New, Validators.required],
@@ -296,6 +297,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       this.form.get('numberCheckpoint').setValue(this.map.numberCheckpoint);
       this.form.get('tmIoId').setValue(this.map.tmIoId);
       this.form.get('state').setValue(this.map.state);
+      this.form.get('fileUrl').setValue(this.map.fileUrl);
       this.srcImage = this.map.imageLink;
       this.idMap = this.map.tmIoId;
     }
@@ -350,13 +352,15 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       this.form.get('name').setValue(data.name);
       this.form.get('author').setValue(data.authorDisplayName);
 
+      this.form.get('imageLink').setValue(data.thumbnailUrl);
+      this.srcImage = data.thumbnailUrl;
+      this.form.get('fileUrl').setValue(data.fileUrl);
       // this.form.get('tmxLink').setValue(this.map.tmxLink);
       // this.form.get('videoLink').setValue(this.map.videoLink);
-      // this.form.get('imageLink').setValue(this.map.imageLink);
       // this.form.get('numberCheckpoint').setValue(this.map.numberCheckpoint);
       // this.form.get('tmIoId').setValue(this.map.tmIoId);
       // this.form.get('state').setValue(this.map.state);
-      // this.srcImage = this.map.imageLink;
+      //
      //  this.idMap = this.map.tmIoId;
 
       }
