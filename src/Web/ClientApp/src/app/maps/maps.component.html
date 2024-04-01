@@ -1,45 +1,67 @@
-<nz-row>
-  <nz-col [nzMd]="2">
+<!--<nz-row style="margin-top: 16px;">-->
+<!--  <nz-col [nzMd]="2">-->
 
-  </nz-col>
+<!--  </nz-col>-->
 
-  <nz-col [nzMd]="20">
+<!--  <nz-col [nzMd]="4">-->
+<!--    <nz-anchor>-->
+<!--      <nz-link *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title"-->
+<!--               [nzHref]="'#' + difficulty.title"></nz-link>-->
+<!--    </nz-anchor>-->
+<!--  </nz-col>-->
+<!--  <nz-col [nzMd]="16">-->
+<!--    <nz-list nzBordered nzItemLayout="vertical" *ngFor="let difficulty of listOfDifficulty" [id]="difficulty.title"-->
+<!--             [nzHeader]="difficulty.title" style="margin-bottom: 16px;">-->
+<!--      <ng-container *ngFor="let map of listMapsByDifficulty(difficulty.difficulty)">-->
+<!--        <nz-list-item>-->
+<!--          <nz-list-item-meta>-->
+<!--            &lt;!&ndash;      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>&ndash;&gt;-->
+<!--            <nz-list-item-meta-title>-->
+<!--              {{ map.name }}-->
+<!--               <small>By {{ map.author }}</small>-->
+<!--            </nz-list-item-meta-title>-->
+<!--            <nz-list-item-meta-description>-->
+<!--              <nz-table nzSize="small" [nzData]="['']" [nzFrontPagination]="false"-->
+<!--                        [nzShowPagination]="false">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                  <th class="text-center">Points</th>-->
+<!--                  <th class="text-center">World record</th>-->
+<!--                  <th class="text-center">Finishers</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr>-->
+<!--                  <td class="text-center">{{ map.points?? '-' }}</td>-->
+<!--                  <td class="text-center">{{ map.bestTime?? '-' }}</td>-->
+<!--                  <td class="text-center">{{ map.numberFinisher }}</td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--              </nz-table>-->
+<!--            </nz-list-item-meta-description>-->
+<!--          </nz-list-item-meta>-->
+<!--          <ul nz-list-item-actions>-->
+<!--&lt;!&ndash;            <nz-list-item-action><a&ndash;&gt;-->
+<!--&lt;!&ndash;              nz-button&ndash;&gt;-->
+<!--&lt;!&ndash;              nzType="link"&ndash;&gt;-->
+<!--&lt;!&ndash;              nz-tooltip&ndash;&gt;-->
+<!--&lt;!&ndash;              nzTooltipTitle="Download"&ndash;&gt;-->
+<!--&lt;!&ndash;              [href]="map.fileUrl" target="_blank"&ndash;&gt;-->
+<!--&lt;!&ndash;            >&ndash;&gt;-->
+<!--&lt;!&ndash;              <i nz-icon nzType="download" nzTheme="outline"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;            </a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </nz-list-item-action>&ndash;&gt;-->
 
+<!--          </ul>-->
+<!--          <nz-list-item-extra>-->
+<!--            <img width="150" alt="logo" [src]="map.imageLink"/>-->
+<!--          </nz-list-item-extra>-->
+<!--        </nz-list-item>-->
+<!--      </ng-container>-->
+<!--    </nz-list>-->
+<!--  </nz-col>-->
+<!--  <nz-col [nzMd]="2">-->
 
-    <nz-list nzItemLayout="vertical">
-      <ng-container *ngFor="let map of maps">
-        <nz-list-item>
-          <nz-list-item-meta>
-            <!--      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>-->
-            <nz-list-item-meta-title>
-              <a href="{{ map.id }}">{{ map.name }}</a>
-            </nz-list-item-meta-title>
-            <nz-list-item-meta-description>
-              By {{ map.author }} TODO
-            </nz-list-item-meta-description>
-          </nz-list-item-meta>
-          <ul nz-list-item-actions>
-            <nz-list-item-action><a
-              nz-button
-              nzType="link"
-              nz-tooltip
-              nzTooltipTitle="Download"
-              [href]="map.fileUrl" target="_blank"
-            >
-              <i nz-icon nzType="download" nzTheme="outline"></i>
-            </a>
-            </nz-list-item-action>
+<!--  </nz-col>-->
 
-          </ul>
-          <nz-list-item-extra>
-            <img width="150" alt="logo" [src]="map.imageLink"/>
-          </nz-list-item-extra>
-        </nz-list-item>
-      </ng-container>
-    </nz-list>
-  </nz-col>
-  <nz-col [nzMd]="2">
-
-  </nz-col>
-
-</nz-row>
+<!--</nz-row>-->
