@@ -1,9 +1,10 @@
-import {Component, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+
 import {gridResponsiveMap, NzBreakpointService} from "ng-zorro-antd/core/services";
 import {Subject, takeUntil} from "rxjs";
 import {EDifficulty, EStateValidation, MapDto, MapsClient} from "../../web-api-client";
 import {ToastService} from "../../shared/services/toast.service";
+import {Component, OnDestroy} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-maps-list',

@@ -12,7 +12,7 @@ import {Subject} from "rxjs";
   templateUrl: './map-detail.component.html',
 })
 export class MapDetailComponent implements OnDestroy {
-  maps: MapDto;
+  mapDetail: MapDto;
   loading = false;
 
 
