@@ -33,8 +33,8 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isConnected]="isConnected"
       [playerName]="userName"
     >
+      <router-outlet></router-outlet>
     </app-nav-menu>
-    <router-outlet></router-outlet>
   `,
 })
 export class TrackmaniaComponent implements OnInit, OnDestroy {

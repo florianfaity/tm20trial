@@ -3,6 +3,20 @@
 
 .themeMixin({
   :host {
+    ::ng-deep .ant-menu-inline{
+      & .ant-menu-item:hover {
+        background-color: @primary-color;
+      }
+    }
+
+    .user-menu.ant-menu-item-selected {
+      background-color: @layout-header-background !important;
+    }
+
+    nz-avatar {
+      background-color: @primary-color;
+    }
+
     .inner-layout {
       &::-webkit-scrollbar-thumb
       {
@@ -10,57 +24,111 @@
         background-color: @primary-color;
       }
     }
+
+    .progress-line-placeholder {
+      background-color: @secondary-color;
+    }
+
+    .progress-line {
+      display: flex;
+      width: 100%;
+      height: @height-progress;
+      margin: 0;
+      background-color: lighten(@secondary-color, 20%);
+
+      &:before {
+        width: 100%;
+        height: @height-progress;
+        margin: 0;
+
+        background-color: @primary-color;
+        content: '';
+        -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+    }
+
+    .logo {
+      color: white;
+      transition: color .5s linear;
+
+      display: inline-block;
+
+      @media screen and (max-width: @screen-lg) {
+        display: none;
+      }
+
+      .accent-letter {
+        color: @primary-color;
+        transition: color .5s linear;
+      }
+
+      &:hover {
+        color: @primary-color;
+        .accent-letter {
+          color: white;
+        }
+      }
+    }
   }
 });
 
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
 
-html {
-  font-size: 14px;
-}
+@height-progress: 2px;
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+.layout-body {
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow:hidden;
+
+  &-loading {
+    min-height: calc(100vh - @height-progress);
   }
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+
+.filters {
+  width: 33%;
 }
-.header-menu-right{
-  text-align: right;
+
+.header-menu {
+  line-height: 64px;
 }
+
+.sider-menu {
+  height: 100%;
+  border-right: 0;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+nz-content {
+  min-height: 280px;
+}
+
+.header-menu-right {
+  line-height: 64px;
+  float: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .username {
   margin-right: 15px;
 }
 
-.sidepanel-menu {
-  display:flex;
-  flex-direction: column;
+@media screen and (max-width: 1500px) {
+  .username {
+    display: none;
+  }
 }
 
-.sidepanel-menu-items {
-  height: calc(100vh - 155px);
-}
 
-//
-//@height-progress: 2px;
-//
-//.layout-body {
-//  min-height: 100vh;
-//  max-height: 100vh;
-//  overflow:hidden;
-//
-//  &-loading {
-//    min-height: calc(100vh - @height-progress);
-//  }
-//}
+
 
 
 .inner-layout {
@@ -80,7 +148,94 @@ html {
     background-color: #F5F5F5;
   }
 
+
+
   nz-content {
     padding-top: 15px;
   }
 }
+.progress-line-placeholder {
+  display: flex;
+  width: 100%;
+  height: @height-progress;
+  margin: 0;
+}
+
+
+@-webkit-keyframes running-progress {
+  0% {
+    margin-left: 0;
+    margin-right: 100%;
+  }
+  50% {
+    margin-left: 25%;
+    margin-right: 0;
+  }
+  100% {
+    margin-left: 100%;
+    margin-right: 0;
+  }
+}
+@keyframes running-progress {
+  0% {
+    margin-left: 0;
+    margin-right: 100%;
+  }
+  50% {
+    margin-left: 25%;
+    margin-right: 0;
+  }
+  100% {
+    margin-left: 100%;
+    margin-right: 0;
+  }
+}
+
+fa-icon {
+  min-width: 14px;
+  margin-right: 8px;
+  font-size: 14px;
+  transition: font-size 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.ant-menu-inline-collapsed {
+  fa-icon + span {
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+}
+
+//#region Logo
+
+.page-header {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+//#endregion Logo
+
+
+.sidepanel-menu {
+  display:flex;
+  flex-direction: column;
+}
+
+.sidepanel-menu-items {
+  height: calc(100vh - 155px);
+}
+
+.sidepanel-menu-items-xs {
+  height: calc(100vh - 193px);
+}
+
+.background-image{
+  background-image: url("/assets/img/background.png");
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+

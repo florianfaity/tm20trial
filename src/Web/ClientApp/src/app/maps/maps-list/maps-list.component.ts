@@ -6,7 +6,7 @@ import {EDifficulty, EStateValidation, MapDto, MapsClient} from "../../web-api-c
 import {ToastService} from "../../shared/services/toast.service";
 
 @Component({
-  selector: 'app-maps',
+  selector: 'app-maps-list',
   styles:[`
   .text-center{
     text-align: center;

@@ -4,7 +4,7 @@
   </nz-col>
 
   <nz-col [nzMd]="4">
-    <nz-anchor>
+    <nz-anchor [nzOffsetTop]="16">
       <nz-link *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title"
                [nzHref]="'#' + difficulty.title"></nz-link>
     </nz-anchor>

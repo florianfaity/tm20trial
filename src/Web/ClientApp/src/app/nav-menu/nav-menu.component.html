@@ -46,8 +46,8 @@
     </nz-row>
   </nz-header>
 
-  <nz-layout *ngIf="isAdminView">
-    <nz-sider
+  <nz-layout>
+    <nz-sider  *ngIf="isAdminView"
       nzCollapsible
       nzBreakpoint="lg"
       [nzWidth]="200"
@@ -100,4 +100,3 @@
     </nz-layout>
   </nz-layout>
 </nz-layout>
-
