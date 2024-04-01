@@ -15,6 +15,7 @@
         <nz-row>
           <nz-col nzSpan="24">
             <input nz-input type="text" placeholder="Search" class="search" *ngIf="!isAdminView" />
+            <h2 *ngIf="isAdminView" style="color:white;">ADMIN</h2>
           </nz-col>
         </nz-row>
       </nz-col>
@@ -65,10 +66,13 @@
               <ul>
                 <li
                   nzMatchRouter
-                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps']" nz-menu-item>Validate list</li>
+                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps']" nz-menu-item>Validate</li>
                 <li
                   nzMatchRouter
-                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested list</li>
+                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'suggested']" nz-menu-item>Suggested</li>
+                <li
+                  nzMatchRouter
+                  nzMatchRouterExact [routerLink]="['/', 'admin', 'maps', 'refused']" nz-menu-item>Refused</li>
               </ul>
             </li>
             <li nz-menu-item

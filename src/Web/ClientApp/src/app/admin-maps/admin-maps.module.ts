@@ -10,6 +10,7 @@ import {
   AdminMapsSuggestedListComponent
 } from "./components/admin-maps-suggested-list/admin-maps-suggested-list.component";
 import {NzImageModule} from "ng-zorro-antd/image";
+import {AdminMapsRefusedListComponent} from "./components/admin-maps-refused-list/admin-maps-refused-list.component";
 
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(adminMaps_routes)],
@@ -17,7 +18,8 @@ import {NzImageModule} from "ng-zorro-antd/image";
     AdminMapsComponent,
     AdminMapsEditComponent,
     AdminMapsListComponent,
-    AdminMapsSuggestedListComponent
+    AdminMapsSuggestedListComponent,
+    AdminMapsRefusedListComponent
   ],
 })
 export class AdminMapsModule {}

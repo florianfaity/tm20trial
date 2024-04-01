@@ -8,6 +8,22 @@ import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-trackmania',
+  styles: [`
+      ::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+      ::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f0f2f5;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f0f2f5;
+      }
+  `],
   template: `
     <app-nav-menu
       [isAdminView]="false"

@@ -375,7 +375,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
     else if (this.map.state == EStateValidation.New)
       this._router.navigate(['Maps', 'Suggested'], {relativeTo: this._route});
     else if (this.map.state == EStateValidation.Refuse)
-      this._router.navigate(['Maps', 'Refuse'], {relativeTo: this._route});
+      this._router.navigate(['Maps', 'Refused'], {relativeTo: this._route});
     else
       this._router.navigate(['..'], {relativeTo: this._route});
   }

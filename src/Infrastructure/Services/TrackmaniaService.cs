@@ -152,18 +152,4 @@ public class TrackmaniaService : ITrackmaniaService
     
         return bearerToken;
     }
-    
-    public async Task<T> GetFromCacheOrCreate<T>(string id, Func<T> NoCacheAction, int cacheDurationInMinutes = 15)
-    {
-        return await _memoryCache.GetOrCreateAsync(id, cacheEntry =>
-        {
-            var cacheExpiryOptions = new MemoryCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddMinutes(cacheDurationInMinutes),
-                Priority = CacheItemPriority.High
-            };
-
-            return Task.FromResult(NoCacheAction());
-        })?? throw new NotFoundException("ProblemeCache ", "GetFromCacheOrCreate");
-    }
 }

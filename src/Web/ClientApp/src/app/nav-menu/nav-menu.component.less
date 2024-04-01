@@ -1,3 +1,19 @@
+
+@import '../../../src/styles/themes/mixin.less';
+
+.themeMixin({
+  :host {
+    .inner-layout {
+      &::-webkit-scrollbar-thumb
+      {
+        //background-color: lighten(@secondary-color, 30%);
+        background-color: @primary-color;
+      }
+    }
+  }
+});
+
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -63,8 +79,6 @@ html {
     width: 6px;
     background-color: #F5F5F5;
   }
-
-
 
   nz-content {
     padding-top: 15px;

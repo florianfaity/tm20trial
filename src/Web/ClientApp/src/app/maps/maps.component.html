@@ -1,1 +1,45 @@
-maps
+<nz-row>
+  <nz-col [nzMd]="2">
+
+  </nz-col>
+
+  <nz-col [nzMd]="20">
+
+
+    <nz-list nzItemLayout="vertical">
+      <ng-container *ngFor="let map of maps">
+        <nz-list-item>
+          <nz-list-item-meta>
+            <!--      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>-->
+            <nz-list-item-meta-title>
+              <a href="{{ map.id }}">{{ map.name }}</a>
+            </nz-list-item-meta-title>
+            <nz-list-item-meta-description>
+              By {{ map.author }} TODO
+            </nz-list-item-meta-description>
+          </nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action><a
+              nz-button
+              nzType="link"
+              nz-tooltip
+              nzTooltipTitle="Download"
+              [href]="map.fileUrl" target="_blank"
+            >
+              <i nz-icon nzType="download" nzTheme="outline"></i>
+            </a>
+            </nz-list-item-action>
+
+          </ul>
+          <nz-list-item-extra>
+            <img width="150" alt="logo" [src]="map.imageLink"/>
+          </nz-list-item-extra>
+        </nz-list-item>
+      </ng-container>
+    </nz-list>
+  </nz-col>
+  <nz-col [nzMd]="2">
+
+  </nz-col>
+
+</nz-row>

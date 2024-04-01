@@ -1,9 +1,9 @@
 import {Component, OnDestroy} from "@angular/core";
+import {Subject, takeUntil} from "rxjs";
 import {EStateValidation, MapDto, MapsClient} from "../../../web-api-client";
 import {ActivatedRoute, Router} from "@angular/router";
-import { ToastService } from "src/app/shared/services/toast.service";
+import {ToastService} from "../../../shared/services/toast.service";
 import {gridResponsiveMap, NzBreakpointService} from "ng-zorro-antd/core/services";
-import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-admin-maps-list',
@@ -13,21 +13,16 @@ import {Subject, takeUntil} from "rxjs";
         <nz-page-header [nzGhost]="false">
           <nz-breadcrumb nz-page-header-breadcrumb>
             <nz-breadcrumb-item>Maps</nz-breadcrumb-item>
-            <nz-breadcrumb-item>Validate</nz-breadcrumb-item>
+            <nz-breadcrumb-item>Refused</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <nz-page-header-title>List of validate maps</nz-page-header-title>
-          <nz-page-header-extra>
-            <button nz-button nzType="primary" (click)="goToAdd()" [nzShape]="(currentBreakpoint == 'xs') ? 'circle' : null">
-              <i nz-icon nzType="plus" nzTheme="outline"></i><span *ngIf="currentBreakpoint != 'xs'">Create a map</span>
-            </button>
-          </nz-page-header-extra>
+          <nz-page-header-title>List of refused maps</nz-page-header-title>
         </nz-page-header>
       </nz-col>
 
       <nz-col nzSpan="24">
         <nz-card nzBorderless>
           <nz-table #nzTable [nzData]="maps" [nzPageSize]="10" [nzShowSizeChanger]="true" nzShowSizeChanger
-                    [nzLoading]="loading" nzSize="small">
+                    [nzLoading]="loading">
             <thead>
             <tr>
               <th>Name</th>
@@ -58,6 +53,12 @@ import {Subject, takeUntil} from "rxjs";
                   />
                 </ng-template>
                 <nz-button-group nzSize="small">
+                  <button nz-button nzType="link" nz-tooltip nzTooltipTitle="Validate"
+                          (click)="changeStateMap(enumStateValidation.Validate, map.id)">
+
+                    <span nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></span>
+
+                  </button>
                   <button nz-button nzType="link" nz-popover
                           [nzPopoverContent]="imagePreviewTemplate" nzPopoverTrigger="hover">
                     <i nz-icon nzType="file-image" nzTheme="outline"></i>
@@ -80,15 +81,6 @@ import {Subject, takeUntil} from "rxjs";
                   >
                     <i nz-icon nzType="edit" nzTheme="outline"></i>
                   </button>
-                  <button
-                    nz-button
-                    nzType="link"
-                    nz-tooltip
-                    nzTooltipTitle="Delete"
-                    (click)="showModalDelete(map.id)"
-                  >
-                    <i nz-icon nzType="delete" nzTheme="outline" class="icon-error"></i>
-                  </button>
                 </nz-button-group>
               </td>
             </tr>
@@ -97,33 +89,9 @@ import {Subject, takeUntil} from "rxjs";
         </nz-card>
       </nz-col>
     </nz-row>
-
-    <!-- Modal delete map -->
-    <nz-modal
-      [(nzVisible)]="modalDeleteDisplay"
-      nzTitle="Delete Map"
-      (nzOnCancel)="handleCancel()"
-      [nzTitle]="modalTitle"
-      [nzContent]="modalContent"
-      [nzFooter]="modalFooter"
-    >
-      <ng-template #modalTitle>
-        <i nz-icon nzType="warning" nzTheme="twotone" [nzTwotoneColor]="'#fa625b'"></i>
-        Warning
-      </ng-template>
-
-      <ng-template #modalContent>
-        <p>You are about to delete a map.</p>
-      </ng-template>
-
-      <ng-template #modalFooter>
-        <button nz-button nzType="primary" nzDanger nzGhost (click)="handleCancel()">Cancel</button>
-        <button nz-button nzType="primary" (click)="removeMap()">Confirm</button>
-      </ng-template>
-    </nz-modal>
   `
 })
-export class AdminMapsListComponent implements OnDestroy {
+export class AdminMapsRefusedListComponent implements OnDestroy {
   maps: MapDto[] = [];
   loading = false;
   modalDeleteDisplay = false;
@@ -137,7 +105,7 @@ export class AdminMapsListComponent implements OnDestroy {
               private _nzBreakpoint: NzBreakpointService
   ) {
     this.loading = true;
-    mapsClient.getMaps(EStateValidation.Validate).subscribe({
+    mapsClient.getMaps(EStateValidation.Refuse).subscribe({
       next: result => {
         this.maps = result
         this.loading = false
@@ -155,26 +123,15 @@ export class AdminMapsListComponent implements OnDestroy {
       });
   }
 
-  showModalDelete(id: number): void {
-    this.modalDeleteDisplay = true;
-    this.idMap = id;
-  }
-
-  handleCancel(): void {
-    this.modalDeleteDisplay = false;
-  }
-
-  removeMap() {
+  changeStateMap(state: EStateValidation, id: number) {
     this.loading = true;
-    this.mapsClient.deleteMap(this.idMap).subscribe({
+    this.mapsClient.updateStateMap(id, state).subscribe({
       next: result => {
-        this.maps = this.maps.filter(m => m.id !== this.idMap)
-        this._toastService.success("Map deleted")
+        this.maps = this.maps.filter(m => m.id !== id)
         this.loading = false
       },
       error: error => {
         console.error(error)
-        this._toastService.error("Error")
         this.loading = false
       }
     });
@@ -185,14 +142,11 @@ export class AdminMapsListComponent implements OnDestroy {
     this._router.navigate([id, 'edit'], {relativeTo: this._route});
   }
 
-  goToAdd() {
-    this._router.navigate(['add'], {relativeTo: this._route});
-  }
-
-
   private readonly destroy$ = new Subject<void>();
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  protected readonly enumStateValidation = EStateValidation;
 }

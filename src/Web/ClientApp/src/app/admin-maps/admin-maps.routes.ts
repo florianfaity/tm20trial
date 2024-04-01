@@ -5,6 +5,7 @@ import {Routes} from "@angular/router";
 import {
   AdminMapsSuggestedListComponent
 } from "./components/admin-maps-suggested-list/admin-maps-suggested-list.component";
+import {AdminMapsRefusedListComponent} from "./components/admin-maps-refused-list/admin-maps-refused-list.component";
 
 export const adminMaps_routes: Routes = [
   {
@@ -19,6 +20,10 @@ export const adminMaps_routes: Routes = [
       {
         path: 'suggested',
         component: AdminMapsSuggestedListComponent,
+      },
+      {
+        path: 'refused',
+        component: AdminMapsRefusedListComponent,
       },
       {
         path: 'add',
