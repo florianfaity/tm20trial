@@ -1,74 +1,133 @@
-<nz-row style="padding-top: 16px; background-color: white">
+<nz-row style="padding-top: 16px; background-color: white" *ngIf="!loading else loadingListMap">
   <nz-col [nzMd]="2">
 
-<!--    <nz-anchor [nzOffsetTop]="16">-->
-<!--      <nz-link  nzTitle="test"-->
-<!--               [nzHref]="'#test'"></nz-link>-->
-<!--    </nz-anchor>-->
-<!--    <section id="test">TEST</section>-->
+    <!--    <nz-anchor [nzOffsetTop]="16">-->
+    <!--      <nz-link  nzTitle="test"-->
+    <!--               [nzHref]="'#test'"></nz-link>-->
+    <!--    </nz-anchor>-->
+    <!--    <section id="test">TEST</section>-->
 
   </nz-col>
 
-  <nz-col [nzMd]="4">
-    <nz-anchor [nzOffsetTop]="16">
-      <nz-link *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title"
-               [nzHref]="'#' + difficulty.title"></nz-link>
-    </nz-anchor>
-  </nz-col>
-  <nz-col [nzMd]="16">
-    <nz-list nzBordered nzItemLayout="vertical" *ngFor="let difficulty of listOfDifficulty" [id]="difficulty.title"
-             [nzHeader]="difficulty.title" style="margin-bottom: 16px;">
-      <ng-container *ngFor="let map of listMapsByDifficulty(difficulty.difficulty)">
-        <nz-list-item>
-          <nz-list-item-meta>
-            <!--      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>-->
-            <nz-list-item-meta-title>
-              {{ map.name }}
-               <small>By {{ map.author }}</small>
-            </nz-list-item-meta-title>
-            <nz-list-item-meta-description>
-              <nz-table nzSize="small" [nzData]="['']" [nzFrontPagination]="false"
-                        [nzShowPagination]="false">
-                <thead>
-                <tr>
-                  <th class="text-center">Points</th>
-                  <th class="text-center">World record</th>
-                  <th class="text-center">Finishers</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td class="text-center">{{ map.points?? '-' }}</td>
-                  <td class="text-center">{{ map.bestTime?? '-' }}</td>
-                  <td class="text-center">{{ map.numberFinisher }}</td>
-                </tr>
-                </tbody>
-              </nz-table>
-            </nz-list-item-meta-description>
-          </nz-list-item-meta>
-          <ul nz-list-item-actions>
-<!--            <nz-list-item-action><a-->
-<!--              nz-button-->
-<!--              nzType="link"-->
-<!--              nz-tooltip-->
-<!--              nzTooltipTitle="Download"-->
-<!--              [href]="map.fileUrl" target="_blank"-->
-<!--            >-->
-<!--              <i nz-icon nzType="download" nzTheme="outline"></i>-->
-<!--            </a>-->
-<!--            </nz-list-item-action>-->
+  <!--  <nz-col [nzMd]="4">  -->
+  <!--    <nz-anchor [nzOffsetTop]="16">-->
+  <!--    <nz-link *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title"-->
+  <!--             [nzHref]="'#' + difficulty.title"></nz-link>-->
+  <!--  </nz-anchor>-->
+  <!--  </nz-col>-->
+  <nz-col [nzMd]="20">
+    <nz-tabset nzType="card">
+      <nz-tab *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title">
+        <nz-list nzBordered nzItemLayout="vertical" style="overflow:hidden; overflow-y:scroll; max-height:750px; " *ngIf="listMapsByDifficulty(difficulty.difficulty).length > 0">
+          <ng-container *ngFor="let map of listMapsByDifficulty(difficulty.difficulty)">
+            <nz-list-item style="cursor: pointer;" (click)="goToDetailMap(map.id)">
+              <nz-list-item-meta>
+                <!--      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>-->
+                <nz-list-item-meta-title>
+                  {{ map.name }}
+                  <small>By {{ map.author }}</small>
+                </nz-list-item-meta-title>
+                <nz-list-item-meta-description>
+                  <nz-table nzSize="small" [nzData]="['']" [nzFrontPagination]="false"
+                            [nzShowPagination]="false">
+                    <thead>
+                    <tr>
+                      <th class="text-center">Points</th>
+                      <th class="text-center">World record</th>
+                      <th class="text-center">Finishers</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td class="text-center">{{ map.points ?? '-' }}</td>
+                      <td class="text-center">{{ map.bestTime ?? '-' }}</td>
+                      <td class="text-center">{{ map.numberFinisher }}</td>
+                    </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-list-item-meta-description>
+              </nz-list-item-meta>
+<!--              <ul nz-list-item-actions>-->
+<!--                            <nz-list-item-action><a-->
+<!--                              nz-button-->
+<!--                              nzType="link"-->
+<!--                              nz-tooltip-->
+<!--                              nzTooltipTitle="Download"-->
+<!--                              [href]="map.fileUrl" target="_blank"-->
+<!--                            >-->
+<!--                              <i nz-icon nzType="download" nzTheme="outline"></i>-->
+<!--                            </a>-->
+<!--                            </nz-list-item-action>-->
 
-          </ul>
-          <nz-list-item-extra>
-<!--          TODO   Uncomment when dev finish:-->
-<!--            <img width="150" alt="logo" [src]="map.imageLink"/> -->
-          </nz-list-item-extra>
-        </nz-list-item>
-      </ng-container>
-    </nz-list>
+<!--              </ul>-->
+              <nz-list-item-extra>
+                <!--          TODO   Uncomment when dev finish:-->
+                            <img width="150" alt="logo" [src]="map.imageLink"/>
+              </nz-list-item-extra>
+            </nz-list-item>
+          </ng-container>
+        </nz-list>
+        <nz-empty *ngIf="listMapsByDifficulty(difficulty.difficulty).length === 0" nzNotFoundContent="No maps for the moment"></nz-empty>
+      </nz-tab>
+    </nz-tabset>
+    <!--    <nz-list nzBordered nzItemLayout="vertical" *ngFor="let difficulty of listOfDifficulty"-->
+    <!--             [nzHeader]="difficulty.title" style="margin-bottom: 16px;" [id]="difficulty.title">-->
+    <!--      <ng-container *ngFor="let map of listMapsByDifficulty(difficulty.difficulty)" >-->
+    <!--        <nz-list-item>-->
+    <!--          <nz-list-item-meta>-->
+    <!--            &lt;!&ndash;      <nz-list-item-meta-avatar [nzSrc]="item.avatar"></nz-list-item-meta-avatar>&ndash;&gt;-->
+    <!--            <nz-list-item-meta-title>-->
+    <!--              {{ map.name }}-->
+    <!--               <small>By {{ map.author }}</small>-->
+    <!--            </nz-list-item-meta-title>-->
+    <!--            <nz-list-item-meta-description>-->
+    <!--              <nz-table nzSize="small" [nzData]="['']" [nzFrontPagination]="false"-->
+    <!--                        [nzShowPagination]="false">-->
+    <!--                <thead>-->
+    <!--                <tr>-->
+    <!--                  <th class="text-center">Points</th>-->
+    <!--                  <th class="text-center">World record</th>-->
+    <!--                  <th class="text-center">Finishers</th>-->
+    <!--                </tr>-->
+    <!--                </thead>-->
+    <!--                <tbody>-->
+    <!--                <tr>-->
+    <!--                  <td class="text-center">{{ map.points?? '-' }}</td>-->
+    <!--                  <td class="text-center">{{ map.bestTime?? '-' }}</td>-->
+    <!--                  <td class="text-center">{{ map.numberFinisher }}</td>-->
+    <!--                </tr>-->
+    <!--                </tbody>-->
+    <!--              </nz-table>-->
+    <!--            </nz-list-item-meta-description>-->
+    <!--          </nz-list-item-meta>-->
+    <!--          <ul nz-list-item-actions>-->
+    <!--&lt;!&ndash;            <nz-list-item-action><a&ndash;&gt;-->
+    <!--&lt;!&ndash;              nz-button&ndash;&gt;-->
+    <!--&lt;!&ndash;              nzType="link"&ndash;&gt;-->
+    <!--&lt;!&ndash;              nz-tooltip&ndash;&gt;-->
+    <!--&lt;!&ndash;              nzTooltipTitle="Download"&ndash;&gt;-->
+    <!--&lt;!&ndash;              [href]="map.fileUrl" target="_blank"&ndash;&gt;-->
+    <!--&lt;!&ndash;            >&ndash;&gt;-->
+    <!--&lt;!&ndash;              <i nz-icon nzType="download" nzTheme="outline"></i>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </nz-list-item-action>&ndash;&gt;-->
+
+    <!--          </ul>-->
+    <!--          <nz-list-item-extra>-->
+    <!--&lt;!&ndash;          TODO   Uncomment when dev finish:&ndash;&gt;-->
+    <!--&lt;!&ndash;            <img width="150" alt="logo" [src]="map.imageLink"/> &ndash;&gt;-->
+    <!--          </nz-list-item-extra>-->
+    <!--        </nz-list-item>-->
+    <!--      </ng-container>-->
+    <!--    </nz-list>-->
   </nz-col>
   <nz-col [nzMd]="2">
 
   </nz-col>
 
 </nz-row>
+
+
+<ng-template #loadingListMap>
+  <app-spinner></app-spinner>
+</ng-template>

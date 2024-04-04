@@ -1,3 +1,82 @@
+<nz-row *ngIf="!loading else loadingMap" [nzGutter]="[16,16]">
+  <nz-col nzSpan="8">
+    <nz-card [nzCover]="coverTemplate" [nzActions]="[actionDownload,actionRefreshTime, actionUploadTime]">
+      <nz-card-meta [nzTitle]="map.name" [nzDescription]="'by ' + map.author"></nz-card-meta>
+    </nz-card>
+    <ng-template #coverTemplate>
+      <img alt="map" [src]="map.imageLink"/>
+    </ng-template>
+    <ng-template #actionDownload>
+      <a
+        nz-button
+        nzType="link"
+        nz-tooltip
+        nzTooltipTitle="Download"
+        [href]="map.fileUrl" target="_blank"
+      >
+        <i nz-icon nzType="download" nzTheme="outline"></i>
+      </a>
+    </ng-template>
+    <ng-template #actionRefreshTime>
+      <a
+        nz-button
+        nzType="link"
+        nz-tooltip
+        nzTooltipTitle="Refresh time from tm.io"
+        (click)="checkTimeExist()"
+      >
+        <span nz-icon [nzType]="'sync'" [nzSpin]="false"></span>
+      </a>
+    </ng-template>
+    <ng-template #actionUploadTime>
+      <a
+        nz-button
+        nzType="link"
+        nz-tooltip
+        nzTooltipTitle="Upload time"
+        (click)="uploadTime()"
+      >
+        <i nz-icon nzType="upload" nzTheme="outline"></i>
+      </a>
+    </ng-template>
+    <!--    <nz-card>-->
+    <!--      <nz-row>-->
+    <!--        <nz-col nzSpan="8">-->
+    <!--          <img width="400" alt="logo" [src]="map.imageLink"/>-->
+    <!--        </nz-col>-->
+    <!--        <nz-col nzSpan="16">-->
+    <!--          <h1>{{ map.name }}           <small>By {{ map.author }}</small></h1>-->
+    <!--          <h1><strong>{{map.difficulty | difficulty}}</strong></h1>-->
+    <!--          <h1><strong>{{ map.points }} points</strong></h1>-->
+    <!--          <a-->
+    <!--            nz-button-->
+    <!--            nzType="link"-->
+    <!--            nz-tooltip-->
+    <!--            nzTooltipTitle="Download"-->
+    <!--            [href]="map.fileUrl" target="_blank"-->
+    <!--          >-->
+    <!--            <i nz-icon nzType="download" nzTheme="outline"></i>-->
+    <!--          </a>-->
+
+    <!--        </nz-col>-->
+    <!--      </nz-row>-->
+    <!--    </nz-card>-->
+    <nz-card>
+      <nz-row>
+        <nz-col nzSpan="8">
+          <h1>Track Details</h1>
+          <p *ngIf=" map.numberFinisher > 0">{{ map.numberFinisher } Finishers</p>
+          <p *ngIf=" map.numberFinisher == 0">no finishers</p>
+        </nz-col>
+      </nz-row>
+    </nz-card>
+  </nz-col>
+</nz-row>
+
+<ng-template #loadingMap>
+  <app-spinner></app-spinner>
+</ng-template>
+
 MAP DETAIL
 
-<pre>{{ mapDetail | json}}</pre>
+<pre *ngIf="!loading">{{ map | json }}</pre>

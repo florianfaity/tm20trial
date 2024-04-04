@@ -31,12 +31,12 @@ export class MapsListComponent implements OnDestroy {
     this.loading = true;
     mapsClient.getMaps(EStateValidation.Validate).subscribe({
       next: result => {
-        this.maps = result
-        this.loading = false
+        this.maps = result;
+        this.loading = false;
       },
       error: error => {
-        console.error(error)
-        this.loading = false
+        console.error(error);
+        this.loading = false;
       }
     });
 
@@ -58,11 +58,18 @@ export class MapsListComponent implements OnDestroy {
     {title: "Hard", difficulty: EDifficulty.Hard},
     {title: "Expert", difficulty: EDifficulty.Expert},
     {title: "Insane", difficulty: EDifficulty.Insane},
-  ]
+  ];
+
+  goToDetailMap(id : number){
+    console.log("Id Map clicked",id);
+    this._router.navigate([id], {relativeTo: this._route});
+  }
 
   private readonly destroy$ = new Subject<void>();
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
 }
