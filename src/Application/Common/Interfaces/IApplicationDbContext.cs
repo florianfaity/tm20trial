@@ -10,7 +10,7 @@ public interface IApplicationDbContext
 
     DbSet<Domain.Entities.Users> Users { get; }
 
-    DbSet<Records> Records { get; }
+    DbSet<Domain.Entities.Records> Records { get; }
 
     DbSet<Domain.Entities.Maps> Maps { get; }
 

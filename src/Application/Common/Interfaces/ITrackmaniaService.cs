@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public interface ITrackmaniaService
 {
-    Task<string> GetToken();
     Task<NadeoMapResponse> GetMapById(string MapId);
+    
+    Task<NadeoRecordResponse> GetUserRecordByMapId(string MapId, string userId);
+
 }

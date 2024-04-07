@@ -63,7 +63,36 @@ public class TrackmaniaService : ITrackmaniaService
         throw new NotFoundException("Id wrong format", "GetMapById");
     }
 
-    public async Task<string> GetDisplayNameById(string id)
+
+    public async Task<NadeoRecordResponse> GetUserRecordByMapId(string mapId, string userId)
+    {
+        var token = await GetToken();
+        
+        var bearerToken = await GetBearerToken();
+        
+        //TODO : COrrection Authorization not work
+        
+        var result = await _trackmaniaConfiguration.BaseAPIURL
+            .AppendPathSegments("mapRecords")
+            .SetQueryParam("accountIdList", userId)
+            .SetQueryParam("mapIdList", mapId)
+            .WithHeader("Authorization", $"nadeo_v1 t={token}")
+            //.WithHeader("Authorization", $"Bearer {bearerToken.access_token}")
+            .WithHeader("Content-Type", "application/json")
+            .WithHeader("User-Agent", $"{UserAgent} {_trackmaniaConfiguration.LoginUbisoft}")
+            .GetJsonAsync<List<NadeoRecordResponse>>();
+
+            //   .WithHeader("Authorization", $"nadeo_v1 t={token}")
+          // .SetQueryParams(new
+            // {
+            //     accountIdList = userId,
+            //     mapIdList = mapId
+            // }) 
+            
+        return new NadeoRecordResponse();
+    }
+        
+    private async Task<string> GetDisplayNameById(string id)
     {
         var bearerToken = await GetBearerToken();
         var displayNameJson = await _trackmaniaConfiguration.BaseLoginURL
@@ -79,7 +108,7 @@ public class TrackmaniaService : ITrackmaniaService
         return displayName.Value.ToString();
     }
 
-    public async Task<string> GetToken()
+    private async Task<string> GetToken()
     {
         string? accessToken = "";
         var cacheExist = _memoryCache.TryGetValue(KeyCachingUbisoftToken, out accessToken);
@@ -128,7 +157,7 @@ public class TrackmaniaService : ITrackmaniaService
     }
 
 
-    public async Task<UbiServicesBearerTokenResponse> GetBearerToken()
+    private async Task<UbiServicesBearerTokenResponse> GetBearerToken()
     {
         UbiServicesBearerTokenResponse? accessToken = new UbiServicesBearerTokenResponse();
         var cacheExist = _memoryCache.TryGetValue(KeyCachingUbisoftBearerToken, out accessToken);

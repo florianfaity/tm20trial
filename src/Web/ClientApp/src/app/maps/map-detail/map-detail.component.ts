@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {MapDto, MapsClient, UserDto} from "../../web-api-client";
+import {MapDto, MapsClient, RecordsClient, UserDto} from "../../web-api-client";
 import {of, Subject, switchMap} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastService} from "../../shared/services/toast.service";
@@ -19,6 +19,7 @@ export class MapDetailComponent implements OnDestroy, OnInit {
 
   constructor(
     private _route: ActivatedRoute,
+    private _recordsService: RecordsClient,
     private _toastService: ToastService,
     private _router: Router, private _mapsClient: MapsClient) {
   }
@@ -49,8 +50,22 @@ export class MapDetailComponent implements OnDestroy, OnInit {
   }
 
   checkTimeExist(){
+    console.log(this.map.id);
+    if(this.map && this.map.id){
+      this._recordsService.updateRecordByIoId(this.map.id).subscribe({
+        next: result => {
+          this._toastService.success("Record updated")
+         // this._router.navigate(['..'], {relativeTo: this._route});
+        },
+        error: error => {
+          console.error(error)
+          this._toastService.error("Error")
+        }
+      });
+    }
     console.log('checkTimeExist');
   }
+
   uploadTime(){
     console.log('uploadTime');
   }

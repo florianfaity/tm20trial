@@ -256,6 +256,31 @@
         }
       }
     },
+    "/api/Records/{idMap}": {
+      "put": {
+        "tags": [
+          "Records"
+        ],
+        "operationId": "UpdateRecordByIoId",
+        "parameters": [
+          {
+            "name": "idMap",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/TodoItems": {
       "get": {
         "tags": [
