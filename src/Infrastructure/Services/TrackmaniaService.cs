@@ -68,16 +68,14 @@ public class TrackmaniaService : ITrackmaniaService
     {
         var token = await GetToken();
         
-        //TODO : COrrection Authorization not work
-        
-        var result = await _trackmaniaConfiguration.BaseAPIURL
-            .AppendPathSegments("mapRecords")
-            .SetQueryParam("accountIdList", userId)
-            .SetQueryParam("mapIdList", mapId)
-            .WithHeader("Authorization", $"nadeo_v1 t={token}")
-            .WithHeader("Content-Type", "application/json")
-            .WithHeader("User-Agent", $"{UserAgent} {_trackmaniaConfiguration.LoginUbisoft}")
-            .GetJsonAsync<List<NadeoRecordResponse>>();
+         var result = await _trackmaniaConfiguration.BaseAPIURL
+             .AppendPathSegments("/mapRecords/")
+             .SetQueryParam("accountIdList", userId)
+             .SetQueryParam("mapIdList", mapId)
+             .WithHeader("Authorization", $"nadeo_v1 t={token}")
+             .WithHeader("Content-Type", "application/json")
+             .WithHeader("User-Agent", $"{UserAgent} {_trackmaniaConfiguration.LoginUbisoft}")
+             .GetJsonAsync<List<NadeoRecordResponse>>();
 
         return new NadeoRecordResponse();
     }
