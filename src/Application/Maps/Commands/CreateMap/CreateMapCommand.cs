@@ -1,4 +1,5 @@
-﻿using tm20trial.Application.Common.Interfaces;
+﻿using tm20trial.Application.Common.Exceptions;
+using tm20trial.Application.Common.Interfaces;
 using tm20trial.Application.Common.Models;
 using tm20trial.Application.Common.Security;
 using tm20trial.Domain.Enums;
@@ -43,7 +44,13 @@ public class CreateMapCommandHandler : IRequestHandler<CreateMapCommand, int>
 
     public async Task<int> Handle(CreateMapCommand request, CancellationToken cancellationToken)
     {
-        
+
+        if (!String.IsNullOrEmpty(request.TmIoId))
+        {
+            var mapAlreadyExist = await _context.Maps.Where(m => m.TmIoId == request.TmIoId).FirstOrDefaultAsync();
+            if (mapAlreadyExist != null)
+                throw new ConflictException($"Map already suggested with TmIoId:{request.TmIoId}");
+        }
         var entity = new tm20trial.Domain.Entities.Maps
         {
             Name = request.Name,
