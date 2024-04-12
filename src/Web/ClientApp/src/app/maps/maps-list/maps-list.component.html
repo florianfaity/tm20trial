@@ -16,7 +16,7 @@
   <!--  </nz-anchor>-->
   <!--  </nz-col>-->
   <nz-col [nzMd]="20">
-    <nz-tabset nzType="card">
+    <nz-tabset nzType="card" [nzTabBarExtraContent]=" isMapper? extraTemplateSuggestMap: null">
       <nz-tab *ngFor="let difficulty of listOfDifficulty" [nzTitle]="difficulty.title">
         <nz-list nzBordered nzItemLayout="vertical" style="overflow:hidden; overflow-y:scroll; max-height:750px; " *ngIf="listMapsByDifficulty(difficulty.difficulty).length > 0">
           <ng-container *ngFor="let map of listMapsByDifficulty(difficulty.difficulty)">
@@ -127,6 +127,9 @@
 
 </nz-row>
 
+<ng-template #extraTemplateSuggestMap>
+  <button nz-button nzType="primary" (click)="goToSuggestMap()">Suggest a map</button>
+</ng-template>
 
 <ng-template #loadingListMap>
   <app-spinner></app-spinner>
