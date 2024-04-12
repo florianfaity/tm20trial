@@ -1,4 +1,6 @@
+using tm20trial.Application.Common.Exceptions;
 using tm20trial.Application.Common.Interfaces;
+using tm20trial.Domain.Enums;
 
 namespace tm20trial.Application.Records.Command.UpdateRecord;
 
@@ -52,14 +54,42 @@ public class UpdateRecordByIoIdCommandHandler : IRequestHandler<UpdateRecordByIo
             throw new NotFoundException("User", "IoId");
         }
         
-        var record = _trackmaniaService.GetUserRecordByMapId(map.TmIoId, user.UserDetails.TmIoId);
+        var record = await _trackmaniaService.GetUserRecordByMapId(map.TmIoId, user.UserDetails.TmIoId);
 
-        var test = record;
-            
-   //     Guard.Against.NotFound(request.IdMap, record);
+        if (record.RecordScore == null)
+        {
+            throw new NotFoundException("Record", "RecordScore");
+        }
         
+        var recordExist = await _context.Records.Where(x => x.IdMap == request.IdMap && x.IdUser == user.UserDetails.IdUser).FirstOrDefaultAsync(cancellationToken);;
+
+        if (recordExist == null)
+        {
+            var newRecord = new Domain.Entities.Records
+            {
+                Time = TimeSpan.FromMilliseconds(record.RecordScore.Time),
+                IdMap =  request.IdMap,
+                IdUser = user.UserDetails.IdUser,
+                FileUrl = record.Url,
+                IsValidated = true,
+                DatePersonalBest = record.Timestamp,
+                Medal = (EMedal)record.Medal
+            };
+        
+            await _context.Records.AddAsync(newRecord, cancellationToken);
+        }
+        else
+        {
+            if (recordExist.Time == TimeSpan.FromMilliseconds(record.RecordScore.Time))
+                throw new ConflictException("Time not changed");//  return "Time not changed";
+        
+            recordExist.Time = TimeSpan.FromMilliseconds(record.RecordScore.Time);
+            recordExist.FileUrl = record.Url;
+            recordExist.DatePersonalBest = record.Timestamp;
+            recordExist.Medal = (EMedal)record.Medal;
+            _context.Records.Update(recordExist);
+        }
         
         await _context.SaveChangesAsync(cancellationToken);
-        
     }
 }

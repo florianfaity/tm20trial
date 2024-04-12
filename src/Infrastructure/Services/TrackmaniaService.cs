@@ -77,6 +77,11 @@ public class TrackmaniaService : ITrackmaniaService
              .WithHeader("User-Agent", $"{UserAgent} {_trackmaniaConfiguration.LoginUbisoft}")
              .GetJsonAsync<List<NadeoRecordResponse>>();
 
+         if (result != null && result.Count > 0)
+         {
+             return result[0];
+         }
+         
         return new NadeoRecordResponse();
     }
         

@@ -55,6 +55,11 @@ Add migration
 dotnet ef migrations add "" --project src\Infrastructure --startup-project src\Web --output-dir Data\Migrations
 ```
 
+Update migration
+```
+dotnet ef database update --project src\Infrastructure --startup-project src\Web
+```
+
 ## Test
 
 The solution contains unit, integration, functional, and acceptance tests.
