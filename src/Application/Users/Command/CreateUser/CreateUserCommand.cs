@@ -91,7 +91,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
         await _identityService.CreateUserAsync(request.Email, _encryptionService.GeneratePassword(), roles, user);
       
         await _context.SaveChangesAsync(cancellationToken);
-        // Send mail to generate password
+        // Send mail to generate password ??
         return user.IdUser;
     }
 }

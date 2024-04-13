@@ -32,7 +32,12 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
         {
             throw new NotFoundException("GetCurrentUser","id");
         }
+
+        var userDto = _mapper.Map<UserDto>(user.UserDetails);
         
-        return  _mapper.Map<UserDto>(user.UserDetails);
+        userDto.Email = user.Email;
+        userDto.IsMapper = await _identityService.IsInRoleAsync(user.Id, Constants.UserRoles.Mapper);
+        
+        return userDto;
     }
 }

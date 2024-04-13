@@ -23,6 +23,9 @@ import {MapsService} from "../../../shared/services/maps.service";
         margin-top: 5px;
         margin-bottom: 10px;
       }
+      .text-center{
+        text-align: center;
+      }
     `,
   ],
   template: `
@@ -188,13 +191,13 @@ import {MapsService} from "../../../shared/services/maps.service";
 
               <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24" style="margin-top: 5px;">
                 <nz-row class="margin-line" nzJustify="space-between">
-                  <nz-col>
+                  <nz-col [nzLg]="18" class="text-center">
                     <button nz-button nzType="primary" nzGhost class="margin-button" type="button"
                             (click)="goBack()">
-                      <i nz-icon nzType="close" nzTheme="outline"></i> Annuler
+                      <i nz-icon nzType="close" nzTheme="outline"></i> Cancel
                     </button>
                   </nz-col>
-                  <nz-col>
+                  <nz-col [nzLg]="6">
                     <button nz-button nzType="primary" class="margin-button-edition" (click)="onSubmit()">
                       <i nz-icon nzType="save" nzTheme="outline"></i>
                       {{ isEdit ? 'Update' : 'Add' }}
@@ -343,29 +346,16 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
     this.idMap = id.value;
   }
 
-
   clickTmIoId() {
-    console.log(this.idMap);
-    //TODO API OPENPLANET AUTO COMPLETE TRACKMANIA.IO
     this._openplanetService.searchNadeoMap(this.idMap).subscribe(data => {
       console.log(data);
       this.form.get('name').setValue(data.name);
       this.form.get('author').setValue(data.authorDisplayName);
-
       this.form.get('imageLink').setValue(data.thumbnailUrl);
       this.srcImage = data.thumbnailUrl;
       this.form.get('fileUrl').setValue(data.fileUrl);
-      // this.form.get('tmxLink').setValue(this.map.tmxLink);
-      // this.form.get('videoLink').setValue(this.map.videoLink);
-      // this.form.get('numberCheckpoint').setValue(this.map.numberCheckpoint);
-      // this.form.get('tmIoId').setValue(this.map.tmIoId);
-      // this.form.get('state').setValue(this.map.state);
-      //
-     //  this.idMap = this.map.tmIoId;
-
       }
     );
-
   }
 
 

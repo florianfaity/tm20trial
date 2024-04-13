@@ -21,6 +21,9 @@ public class UserDto : IMapFrom<Domain.Entities.Users>
     
     public string? TmIoId { get; set; }
 
+    public string? Email { get; set; }
+    
+    public bool IsMapper { get; set; }
     
     public void Mapping(AutoMapper.Profile profile)
     {

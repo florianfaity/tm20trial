@@ -121,4 +121,65 @@ public class IdentityService : IIdentityService
         return user != null;
     }
 
+
+    public async Task<Result> AddUserRoleAsync(string id, string role, CancellationToken token = default)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id, token);
+
+        if (user == null)
+        {
+            return Result.Failure(new[] { "User not found" });
+        }
+
+        var userIsInRole = await UserIsInRoleAsync(id, role);
+
+        if (!userIsInRole.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+        }
+
+        return userIsInRole;
+    }
+
+    public async Task<Result> UpdateUserAsync(IApplicationUser user, CancellationToken token = default)
+    {
+        if (user.UserDetails == null)
+        {
+            return Result.Failure(new[] { "User Detail not found" });
+        }
+        var result = await _userManager.UpdateAsync(user as ApplicationUser ?? throw new InvalidOperationException());
+
+        return result.ToApplicationResult();
+    }
+    
+    public async Task<Result> DeleteUserRoleAsync(string id, string role, CancellationToken token = default)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id, token);
+
+        if (user == null)
+        {
+            return Result.Failure(new[] { "User not found" });
+        }
+
+        var userIsInRole = await UserIsInRoleAsync(id, role);
+
+        if (userIsInRole.Succeeded)
+        {
+            await _userManager.RemoveFromRoleAsync(user, role);
+        }
+
+        return userIsInRole;
+    }
+    
+    public async Task<Result> UserIsInRoleAsync(string userId, string role)
+    {
+        var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+        if (user == null || !await _userManager.IsInRoleAsync(user, role))
+        {
+            return Result.Failure(new[] { "User not found or is not in role." });
+        }
+
+        return Result.Success();
+    }
 }

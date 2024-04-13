@@ -20,5 +20,12 @@ public interface IIdentityService
     Task<IApplicationUser> FindUserByIdAsync(int id, CancellationToken token = default);
     
     Task<bool> UserExistAsync(string username, CancellationToken token = default);
+    
+    Task<Result> AddUserRoleAsync(string id, string role, CancellationToken token = default);
 
+    Task<Result> DeleteUserRoleAsync(string id, string role, CancellationToken token = default);
+    
+    Task<Result> UpdateUserAsync(IApplicationUser user, CancellationToken token = default);
+    
+    Task<Result> UserIsInRoleAsync(string userId, string role);
 }

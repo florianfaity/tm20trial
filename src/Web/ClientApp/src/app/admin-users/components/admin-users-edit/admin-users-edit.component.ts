@@ -20,9 +20,11 @@ import {UntypedFormGroup} from "@angular/forms";
           <nz-page-header-title *ngIf="isEdit">Edit User</nz-page-header-title>
         </nz-page-header>
       </nz-col>
-    </nz-row>
-    <nz-row *ngIf="!loading; else loadingView">
-      <pre>{{ user | json }}</pre>
+<!--    </nz-row>-->
+<!--    <nz-row *ngIf="!loading; else loadingView">-->
+      <nz-col nzSpan="24" *ngIf="!loading; else loadingView">
+         <app-edit-users [user]="user" [isEdit]="isEdit" (goBack)="goBack()"></app-edit-users>
+      </nz-col>
     </nz-row>
     <ng-template #loadingView>
       <app-spinner></app-spinner>

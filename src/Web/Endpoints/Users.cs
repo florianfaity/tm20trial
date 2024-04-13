@@ -2,6 +2,7 @@
 using tm20trial.Application.Common.Models;
 using tm20trial.Application.Users.Command.CreateUser;
 using tm20trial.Application.Users.Command.DeleteUser;
+using tm20trial.Application.Users.Command.UpdateUser;
 using tm20trial.Application.Users.Queries;
 
 namespace tm20trial.Web.Endpoints;
@@ -18,7 +19,7 @@ public class Users : EndpointGroupBase
             .MapGet(GetCurrentUser, "current-user")
             .MapPost(CreateUser)
             .MapDelete(DeleteUser,"{id}")
-            ;
+            .MapPut(UpdateUser, "{id}");
     }
     
     public async Task<UserDto> GetUser(ISender sender, int id)
@@ -54,4 +55,12 @@ public class Users : EndpointGroupBase
         await sender.Send(new DeleteUserCommand(id));
         return Results.NoContent();
     }
+    
+    public async Task<IResult> UpdateUser(ISender sender, int id, UpdateUserCommand command)
+    {
+        if (id != command.Id) return Results.BadRequest();
+        await sender.Send(command);
+        return Results.NoContent();
+    }
+
 }

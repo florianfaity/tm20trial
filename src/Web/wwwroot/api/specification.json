@@ -625,6 +625,41 @@
             "description": ""
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UpdateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
       }
     },
     "/api/Users": {
@@ -1250,6 +1285,13 @@
           "tmIoId": {
             "type": "string",
             "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMapper": {
+            "type": "boolean"
           }
         }
       },
@@ -1338,6 +1380,48 @@
             "type": "boolean"
           },
           "player": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "loginUplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "nation": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitchUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitterUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmIoId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isMapper": {
             "type": "boolean"
           }
         }

@@ -65,6 +65,7 @@ import {DifficultyPipe} from "./pipes/difficulty-pipe";
 import {ToastService} from "./services/toast.service";
 import {NzImageModule} from "ng-zorro-antd/image";
 import {MapsService} from "./services/maps.service";
+import {EditUsersComponent} from "./components/users/edit-users.component";
 
 const ngZorroModule = [
   NzIconModule,
@@ -147,12 +148,14 @@ const modules = [
     SpinnerComponent,
     NavMenuComponent,
     DifficultyPipe,
+    EditUsersComponent
   ],
   exports: [
     ...modules,
     SpinnerComponent,
     NavMenuComponent,
-    DifficultyPipe
+    DifficultyPipe,
+    EditUsersComponent
   ],
 })
 export class SharedModule {

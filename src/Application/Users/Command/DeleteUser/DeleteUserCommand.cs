@@ -54,6 +54,8 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
         _context.Records.RemoveRange(userDb.Records);
         
         _context.Users.Remove(userDb);
+        
+        await _identityService.DeleteUserAsync(user.Id);  
 
         await _context.SaveChangesAsync(cancellationToken);
     }

@@ -15,11 +15,11 @@ import {Subject, takeUntil} from "rxjs";
             <nz-breadcrumb-item>Users</nz-breadcrumb-item>
           </nz-breadcrumb>
           <nz-page-header-title>List of users</nz-page-header-title>
-          <nz-page-header-extra>
-            <button nz-button nzType="primary" (click)="goToAdd()" [nzShape]="(currentBreakpoint == 'xs') ? 'circle' : null">
-              <i nz-icon nzType="plus" nzTheme="outline"></i><span *ngIf="currentBreakpoint != 'xs'">Create a user</span>
-            </button>
-          </nz-page-header-extra>
+<!--          <nz-page-header-extra>-->
+<!--            <button nz-button nzType="primary" (click)="goToAdd()" [nzShape]="(currentBreakpoint == 'xs') ? 'circle' : null">-->
+<!--              <i nz-icon nzType="plus" nzTheme="outline"></i><span *ngIf="currentBreakpoint != 'xs'">Create a user</span>-->
+<!--            </button>-->
+<!--          </nz-page-header-extra>-->
         </nz-page-header>
       </nz-col>
 

@@ -1062,6 +1062,7 @@ export class TodoListsClient implements ITodoListsClient {
 export interface IUsersClient {
     getUser(id: number): Observable<UserDto>;
     deleteUser(id: number): Observable<void>;
+    updateUser(id: number, command: UpdateUserCommand): Observable<void>;
     getUsers(): Observable<UserDto[]>;
     createUser(command: CreateUserCommand): Observable<number>;
     getUserRoles(): Observable<string[]>;
@@ -1161,6 +1162,57 @@ export class UsersClient implements IUsersClient {
     }
 
     protected processDeleteUser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    updateUser(id: number, command: UpdateUserCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateUser(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2331,6 +2383,8 @@ export class UserDto implements IUserDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
+    email?: string | undefined;
+    isMapper?: boolean;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -2351,6 +2405,8 @@ export class UserDto implements IUserDto {
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
             this.tmIoId = _data["tmIoId"];
+            this.email = _data["email"];
+            this.isMapper = _data["isMapper"];
         }
     }
 
@@ -2371,6 +2427,8 @@ export class UserDto implements IUserDto {
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
         data["tmIoId"] = this.tmIoId;
+        data["email"] = this.email;
+        data["isMapper"] = this.isMapper;
         return data;
     }
 }
@@ -2384,6 +2442,8 @@ export interface IUserDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
+    email?: string | undefined;
+    isMapper?: boolean;
 }
 
 export class CurrentUserDto implements ICurrentUserDto {
@@ -2536,6 +2596,78 @@ export interface ICreateUserCommand {
     admin?: boolean;
     mapper?: boolean;
     player?: boolean;
+}
+
+export class UpdateUserCommand implements IUpdateUserCommand {
+    id?: number;
+    displayName?: string;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string;
+    email?: string;
+    isMapper?: boolean;
+
+    constructor(data?: IUpdateUserCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.displayName = _data["displayName"];
+            this.loginUplay = _data["loginUplay"];
+            this.nation = _data["nation"];
+            this.twitchUsername = _data["twitchUsername"];
+            this.twitterUsername = _data["twitterUsername"];
+            this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
+            this.email = _data["email"];
+            this.isMapper = _data["isMapper"];
+        }
+    }
+
+    static fromJS(data: any): UpdateUserCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateUserCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["displayName"] = this.displayName;
+        data["loginUplay"] = this.loginUplay;
+        data["nation"] = this.nation;
+        data["twitchUsername"] = this.twitchUsername;
+        data["twitterUsername"] = this.twitterUsername;
+        data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
+        data["email"] = this.email;
+        data["isMapper"] = this.isMapper;
+        return data;
+    }
+}
+
+export interface IUpdateUserCommand {
+    id?: number;
+    displayName?: string;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string;
+    email?: string;
+    isMapper?: boolean;
 }
 
 export class WeatherForecast implements IWeatherForecast {
