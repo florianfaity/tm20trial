@@ -492,6 +492,8 @@ export class OpenplanetClient implements IOpenplanetClient {
 
 export interface IRecordsClient {
     updateRecordByIoId(idMap: number): Observable<void>;
+    getRecordsMap(idMap: number): Observable<RecordDto[]>;
+    getRecords(): Observable<RecordDto[]>;
 }
 
 @Injectable({
@@ -545,6 +547,119 @@ export class RecordsClient implements IRecordsClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getRecordsMap(idMap: number): Observable<RecordDto[]> {
+        let url_ = this.baseUrl + "/api/Records/{idMap}";
+        if (idMap === undefined || idMap === null)
+            throw new Error("The parameter 'idMap' must be defined.");
+        url_ = url_.replace("{idMap}", encodeURIComponent("" + idMap));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRecordsMap(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRecordsMap(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RecordDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RecordDto[]>;
+        }));
+    }
+
+    protected processGetRecordsMap(response: HttpResponseBase): Observable<RecordDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(RecordDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getRecords(): Observable<RecordDto[]> {
+        let url_ = this.baseUrl + "/api/Records";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRecords(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRecords(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RecordDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RecordDto[]>;
+        }));
+    }
+
+    protected processGetRecords(response: HttpResponseBase): Observable<RecordDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(RecordDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1837,6 +1952,74 @@ export interface INadeoMapDto {
     name?: string | undefined;
     fileUrl?: string | undefined;
     thumbnailUrl?: string | undefined;
+}
+
+export class RecordDto implements IRecordDto {
+    isValidated?: boolean;
+    time?: string;
+    datePersonalBest?: Date;
+    mapName?: string | undefined;
+    displayName?: string | undefined;
+    fileUrl?: string | undefined;
+    medal?: EMedal;
+
+    constructor(data?: IRecordDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isValidated = _data["isValidated"];
+            this.time = _data["time"];
+            this.datePersonalBest = _data["datePersonalBest"] ? new Date(_data["datePersonalBest"].toString()) : <any>undefined;
+            this.mapName = _data["mapName"];
+            this.displayName = _data["displayName"];
+            this.fileUrl = _data["fileUrl"];
+            this.medal = _data["medal"];
+        }
+    }
+
+    static fromJS(data: any): RecordDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isValidated"] = this.isValidated;
+        data["time"] = this.time;
+        data["datePersonalBest"] = this.datePersonalBest ? this.datePersonalBest.toISOString() : <any>undefined;
+        data["mapName"] = this.mapName;
+        data["displayName"] = this.displayName;
+        data["fileUrl"] = this.fileUrl;
+        data["medal"] = this.medal;
+        return data;
+    }
+}
+
+export interface IRecordDto {
+    isValidated?: boolean;
+    time?: string;
+    datePersonalBest?: Date;
+    mapName?: string | undefined;
+    displayName?: string | undefined;
+    fileUrl?: string | undefined;
+    medal?: EMedal;
+}
+
+export enum EMedal {
+    None = 0,
+    Bronze = 1,
+    Silver = 2,
+    Gold = 3,
+    Author = 4,
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {

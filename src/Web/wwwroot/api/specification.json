@@ -279,6 +279,62 @@
             "description": ""
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Records"
+        ],
+        "operationId": "GetRecordsMap",
+        "parameters": [
+          {
+            "name": "idMap",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Records": {
+      "get": {
+        "tags": [
+          "Records"
+        ],
+        "operationId": "GetRecords",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/TodoItems": {
@@ -1021,6 +1077,56 @@
             "nullable": true
           }
         }
+      },
+      "RecordDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isValidated": {
+            "type": "boolean"
+          },
+          "time": {
+            "type": "string",
+            "format": "duration"
+          },
+          "datePersonalBest": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mapName": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "medal": {
+            "$ref": "#/components/schemas/EMedal"
+          }
+        }
+      },
+      "EMedal": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "Bronze",
+          "Silver",
+          "Gold",
+          "Author"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
       },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",
