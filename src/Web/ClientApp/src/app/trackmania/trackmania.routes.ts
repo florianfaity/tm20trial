@@ -1,10 +1,5 @@
 import {Routes} from '@angular/router';
 import {TrackmaniaComponent} from "./trackmania.component";
-import {HomeComponent} from "../home/home.component";
-import {LeaderboardComponent} from "../leaderboard/leaderboard.component";
-import {MapsComponent} from "../maps/maps.component";
-import {IsRoleGuard} from "../../api-authorization/guards/is-role.guard";
-
 
 export const trackmania_route: Routes = [
   {
@@ -23,6 +18,10 @@ export const trackmania_route: Routes = [
       {
         path: 'maps',
         loadChildren: () => import('../maps/maps.module').then((m) => m.MapsModule)
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('../user/user.module').then((m) => m.UserModule)
       },
       {path: '**', redirectTo: 'home'},
     ],

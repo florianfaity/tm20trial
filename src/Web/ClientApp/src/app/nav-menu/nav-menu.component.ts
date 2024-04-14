@@ -13,7 +13,8 @@ export class NavMenuComponent {
   @Input() isMapper = false;
   @Input() isPlayer = false;
   @Input() isConnected = false;
-  @Input() playerName: string = "Test"
+  @Input() playerName: string = "";
+  @Input() idUser: number ;
 
   isExpanded = false;
 

@@ -33,8 +33,11 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
-                <li  nz-menu-item [routerLink]="['/']">
+                <li  nz-menu-item  [routerLink]="['/', 'trial','user', idUser]">
                   Profile
+                </li>
+                <li  nz-menu-item  [routerLink]="['/', 'trial','user', 'edit']">
+                  Setting
                 </li>
                 <li nz-menu-item (click)="onClickSignOut()">Sign out</li>
 <!--                [state]="{ local: true }"-->

@@ -14,6 +14,7 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isAdmin]="true"
       [isConnected]="true"
       [playerName]="userName"
+      [idUser]="idUser"
     >
       <router-outlet></router-outlet>
     </app-nav-menu>
@@ -26,6 +27,7 @@ export class AdminComponent implements OnDestroy  {
   loading = false;
 
  userName: string;
+ idUser: number;
 
   private _routeSubs: Subscription;
   constructor(
@@ -36,6 +38,7 @@ export class AdminComponent implements OnDestroy  {
     this._authorizeService.getUser().pipe(shareReplay()).subscribe({
       next: (user: CurrentUserDto) => {
         this.userName = user.displayName;
+        this.idUser = user.idUser;
       },
       error: (err: HttpErrorResponse) =>console.error(err)
     });

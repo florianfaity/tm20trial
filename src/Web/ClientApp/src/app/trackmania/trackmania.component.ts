@@ -32,6 +32,7 @@ import {HttpErrorResponse} from "@angular/common/http";
       [isPlayer]="isPlayer"
       [isConnected]="isConnected"
       [playerName]="userName"
+      [idUser]="idUser"
     >
       <router-outlet></router-outlet>
     </app-nav-menu>
@@ -57,7 +58,8 @@ export class TrackmaniaComponent implements OnInit, OnDestroy {
   isMapper: boolean = false;
   isPlayer: boolean = false;
   isConnected: boolean = false;
-  userName: string = ''
+  userName: string = '';
+  idUser: number ;
 
   ngOnInit(): void {
 
@@ -68,6 +70,7 @@ export class TrackmaniaComponent implements OnInit, OnDestroy {
         this.isPlayer = user.roles.indexOf('Player') > -1;
         this.isConnected = this.isAdmin || this.isMapper || this.isPlayer;
         this.userName = user.displayName;
+        this.idUser = user.idUser;
       },
       error: (err: HttpErrorResponse) => {
         if (err.status == 401) {
