@@ -81,13 +81,10 @@
               <i nz-icon nzType="database"></i>
                 <span>Records</span>
             </li>
-            <li nz-menu-item
-                nzMatchRouter
-                nzMatchRouterExact href="/api" target="_blank">
+            <li nz-menu-item (click)="goToApi()">
               <span nz-icon nzType="api" nzTheme="outline"></span>
               <span>api</span>
             </li>
-
           </ng-container>
         </ul>
       </div>

@@ -21,11 +21,11 @@ export const admin_routes: Routes = [
         pathMatch: 'prefix',
         loadChildren: () => import('../admin-maps/admin-maps.module').then((m) => m.AdminMapsModule),
       },
-      // {
-      //   path: 'records',
-      //   pathMatch: 'prefix',
-      //  loadChildren: () =>          import('../admin-/admin-.module').then((m) => m.),
-      // },
+      {
+        path: 'records',
+        pathMatch: 'prefix',
+        loadChildren: () => import('../admin-records/admin-records.module').then((m) => m.AdminRecordsModule),
+      },
 
       { path: '**', redirectTo: 'users' },
     ],

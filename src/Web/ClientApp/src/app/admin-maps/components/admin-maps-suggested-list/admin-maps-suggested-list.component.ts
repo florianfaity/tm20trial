@@ -175,9 +175,7 @@ export class AdminMapsSuggestedListComponent{
     this.modalDeleteDisplay = false;
   }
 
-
   goToEdit(id: number) {
-    this._router.navigate([id, 'edit'], {relativeTo: this._route});
+    this._router.navigate(['..',id, 'edit'], {relativeTo: this._route});
   }
-
 }

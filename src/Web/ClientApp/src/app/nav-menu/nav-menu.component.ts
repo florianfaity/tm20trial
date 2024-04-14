@@ -25,6 +25,19 @@ export class NavMenuComponent {
   onClickSignOut(){
     window.location.href = "Identity/Account/Logout";
   }
+  collapse() {
+    this.isExpanded = false;
+  }
+
+  toggle() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  goToApi(){
+    window.open("api", "_blank");
+  }
+
+
   //
   // onClickSignInUbisoft(){
   //   this._openplanetClient.getAutorize().subscribe((result) => {
@@ -42,11 +55,4 @@ export class NavMenuComponent {
   //   console.log("onClickSignInUbisoft");
   // }
 
-  collapse() {
-    this.isExpanded = false;
-  }
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-  }
 }

@@ -37,13 +37,13 @@ import {MapsService} from "../../../shared/services/maps.service";
             <nz-breadcrumb-item *ngIf="!isEdit">Add</nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="isEdit && map != null && map.state == enumStateValidation.Validate" (click)="goBack()" class="cursor-pointer">List of validate map </nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="isEdit && map != null && map.state == enumStateValidation.New" (click)="goBack()" class="cursor-pointer">List of suggested map </nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngIf="isEdit && map != null && map.state == enumStateValidation.Refuse" (click)="goBack()" class="cursor-pointer">List of refused map </nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="isEdit">Edit</nz-breadcrumb-item>
           </nz-breadcrumb>
           <nz-page-header-title *ngIf="!isEdit">Create Map</nz-page-header-title>
           <nz-page-header-title *ngIf="isEdit">Edit Map</nz-page-header-title>
         </nz-page-header>
       </nz-col>
-
 
       <nz-col nzSpan="24" *ngIf="!loading; else loadingView">
         <nz-card nzBorderless>
@@ -209,10 +209,10 @@ import {MapsService} from "../../../shared/services/maps.service";
           </form>
         </nz-card>
       </nz-col>
+      <ng-template #loadingView>
+        <app-spinner></app-spinner>
+      </ng-template>
     </nz-row>
-    <ng-template #loadingView>
-      <app-spinner></app-spinner>
-    </ng-template>
   `
 })
 export class AdminMapsEditComponent implements OnInit, OnChanges {
@@ -311,13 +311,14 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       return;
     }
     if (this.isEdit) {
-      const modelToSubmit = new UpdateMapCommand({
+      let modelToSubmit = new UpdateMapCommand({
         ...this.form.value,
       })
+      modelToSubmit.id = this.map.id;
       this._mapsClient.updateMap(this.map.id, modelToSubmit).subscribe({
         next: result => {
           this._toastService.success("Map updated")
-          this._router.navigate(['..'], {relativeTo: this._route});
+          this.goBack();
         },
         error: error => {
           console.error(error)
@@ -331,7 +332,7 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       this._mapsClient.createMap(modelToSubmit).subscribe({
         next: result => {
           this._toastService.success("Map created")
-          this._router.navigate(['..'], {relativeTo: this._route});
+          this.goBack();
         },
         error: error => {
           console.error(error)
@@ -363,9 +364,9 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
     if (this.map.state == EStateValidation.Validate)
       this._router.navigate(['../..'], {relativeTo: this._route});
     else if (this.map.state == EStateValidation.New)
-      this._router.navigate(['Maps', 'Suggested'], {relativeTo: this._route});
+      this._router.navigateByUrl(`/admin/maps/suggested`);
     else if (this.map.state == EStateValidation.Refuse)
-      this._router.navigate(['Maps', 'Refused'], {relativeTo: this._route});
+      this._router.navigateByUrl(`/admin/maps/refused`);
     else
       this._router.navigate(['..'], {relativeTo: this._route});
   }

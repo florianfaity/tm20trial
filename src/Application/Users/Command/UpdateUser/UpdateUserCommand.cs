@@ -86,6 +86,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
         await _context.SaveChangesAsync(cancellationToken);
         
         user.Email = request.Email;
+        user.UserName = request.Email;
         user.UserDetails = userDb;
         
         await _identityService.UpdateUserAsync(user, cancellationToken);

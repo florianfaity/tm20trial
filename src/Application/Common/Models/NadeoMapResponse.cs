@@ -6,11 +6,11 @@ public class NadeoMapResponse
     public int AuthorScore { get; set; }
     public int BronzeScore { get; set; }
     public string? CollectionName { get; set; }
-    public bool CreatedWithGamepadEditor { get; set; }
-    public bool CreatedWithSimpleEditor { get; set; }
+    public bool? CreatedWithGamepadEditor { get; set; }
+    public bool? CreatedWithSimpleEditor { get; set; }
     public string? Filename { get; set; }
     public int GoldScore { get; set; }
-    public bool IsPlayable { get; set; }
+    public bool? IsPlayable { get; set; }
     public string? MapId { get; set; }
     public string? MapStyle { get; set; }
     public string? MapType { get; set; }

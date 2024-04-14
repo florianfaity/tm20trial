@@ -8,7 +8,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { TodoComponent } from './todo/todo.component';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,7 +20,6 @@ import {NzAvatarModule} from "ng-zorro-antd/avatar";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzGridModule} from "ng-zorro-antd/grid";
 import {NzInputModule} from "ng-zorro-antd/input";
-import {MapsComponent} from "./maps/maps.component";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {SharedModule} from "./shared/shared.module";
 import {IsRoleGuard} from "../api-authorization/guards/is-role.guard";
@@ -32,7 +30,6 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     CounterComponent,
-    FetchDataComponent,
     TodoComponent
   ],
   imports: [

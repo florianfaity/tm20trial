@@ -4,9 +4,11 @@ namespace tm20trial.Application.Records.Queries;
 
 public class RecordDto  
 {
+    public int Id { get; set; }
+    
     public bool IsValidated { get; set; }
 
-    public TimeSpan Time { get; set; }
+    public string? Time { get; set; }
     
     public DateTime DatePersonalBest { get; set; }
 
@@ -24,6 +26,7 @@ public class RecordDto
         {
             CreateMap<Domain.Entities.Records, RecordDto>()
                 .ForMember(d => d.MapName, opt => opt.MapFrom(s => s.Map != null ? s.Map.Name : ""))
+                .ForMember(d => d.Time, opt => opt.MapFrom(s => s.Time.ToString("hh':'mm':'ss'.'fff")))
                 .ForMember(d => d.DisplayName, opt => opt.MapFrom(s => s.User != null ? s.User.DisplayName: ""));
 
         }
