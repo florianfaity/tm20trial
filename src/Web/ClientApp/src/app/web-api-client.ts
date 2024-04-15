@@ -2620,6 +2620,7 @@ export class CurrentUserDto implements ICurrentUserDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
+    email?: string | undefined;
     roles?: string[];
 
     constructor(data?: ICurrentUserDto) {
@@ -2641,6 +2642,7 @@ export class CurrentUserDto implements ICurrentUserDto {
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
             this.tmIoId = _data["tmIoId"];
+            this.email = _data["email"];
             if (Array.isArray(_data["roles"])) {
                 this.roles = [] as any;
                 for (let item of _data["roles"])
@@ -2666,6 +2668,7 @@ export class CurrentUserDto implements ICurrentUserDto {
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
         data["tmIoId"] = this.tmIoId;
+        data["email"] = this.email;
         if (Array.isArray(this.roles)) {
             data["roles"] = [];
             for (let item of this.roles)
@@ -2684,6 +2687,7 @@ export interface ICurrentUserDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
+    email?: string | undefined;
     roles?: string[];
 }
 

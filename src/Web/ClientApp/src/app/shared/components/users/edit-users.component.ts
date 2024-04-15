@@ -126,6 +126,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class EditUsersComponent implements OnChanges, OnInit  {
   @Input() user: UserDto;
   @Input() isEdit: boolean;
+  @Input() fromAdmin: boolean = false;
 
   @Output() goBack = new EventEmitter();
 
@@ -171,7 +172,6 @@ export class EditUsersComponent implements OnChanges, OnInit  {
     }
   }
 
-
   onSubmit() {
     if (!this.form.valid) {
       return;
@@ -184,15 +184,14 @@ export class EditUsersComponent implements OnChanges, OnInit  {
       this._userClient.updateUser(this.user.idUser, modelToSubmit).subscribe({
         next: result => {
           this._toastService.success("User updated")
-          this._router.navigate(['..'], {relativeTo: this._route});
+          if(this.fromAdmin)
+            this._router.navigate(['..'], {relativeTo: this._route});
         },
         error: error => {
           console.error(error)
           this._toastService.error("Error")
         }
       });
-    } else {
-
     }
   }
 }

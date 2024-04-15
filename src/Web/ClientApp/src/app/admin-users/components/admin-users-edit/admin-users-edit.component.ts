@@ -23,7 +23,7 @@ import {UntypedFormGroup} from "@angular/forms";
 <!--    </nz-row>-->
 <!--    <nz-row *ngIf="!loading; else loadingView">-->
       <nz-col nzSpan="24" *ngIf="!loading; else loadingView">
-         <app-edit-users [user]="user" [isEdit]="isEdit" (goBack)="goBack()"></app-edit-users>
+         <app-edit-users [user]="user" [isEdit]="isEdit" [fromAdmin]="true" (goBack)="goBack()"></app-edit-users>
       </nz-col>
     </nz-row>
     <ng-template #loadingView>
@@ -31,7 +31,7 @@ import {UntypedFormGroup} from "@angular/forms";
     </ng-template>
   `
 })
-export class AdminUsersEditComponent implements OnChanges {
+export class AdminUsersEditComponent {
   id: number;
   user: UserDto;
   loading = false;
@@ -70,14 +70,6 @@ export class AdminUsersEditComponent implements OnChanges {
         this.loading = false;
       }
     });
-
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const {user} = changes;
-    if (user && user.currentValue) {
-
-    }
   }
 
   goBack(){

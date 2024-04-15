@@ -16,7 +16,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, C
     private readonly IMapper _mapper;
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserService _currentUserService;
-
+    
     public GetCurrentUserQueryHandler(IApplicationDbContext context, IMapper mapper, IIdentityService identityService, ICurrentUserService currentUserService)
     {
         _context = context;
@@ -41,6 +41,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, C
         var userDto = _mapper.Map<CurrentUserDto>(user.UserDetails);
         
         userDto.Roles =_currentUserService.Roles;
+        userDto.Email = user.UserName;
 
         return userDto;
     }

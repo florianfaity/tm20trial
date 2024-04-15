@@ -91,6 +91,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
         
         await _identityService.UpdateUserAsync(user, cancellationToken);
 
+        
         if (request.IsMapper)
         {
             await _identityService.AddUserRoleAsync(user.Id, Constants.UserRoles.Mapper, cancellationToken);
