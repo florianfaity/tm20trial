@@ -182,4 +182,12 @@ public class IdentityService : IIdentityService
 
         return Result.Success();
     }
+    
+    
+    public async Task<Result> UpdateUserPassword(IApplicationUser user, string currentPassword, string newPassword, CancellationToken token = default)
+    {
+        var result = await _userManager.ChangePasswordAsync(user as ApplicationUser?? throw new InvalidOperationException(), currentPassword, newPassword);
+
+        return result.ToApplicationResult();
+    }
 }

@@ -28,4 +28,6 @@ public interface IIdentityService
     Task<Result> UpdateUserAsync(IApplicationUser user, CancellationToken token = default);
     
     Task<Result> UserIsInRoleAsync(string userId, string role);
+    
+    Task<Result> UpdateUserPassword(IApplicationUser user, string currentPassword, string newPassword, CancellationToken token = default);
 }
