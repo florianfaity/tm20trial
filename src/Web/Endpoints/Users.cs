@@ -15,6 +15,7 @@ public class Users : EndpointGroupBase
         app.MapGroup(this)
             .RequireAuthorization()
             .MapGet(GetUser, "{id}")
+            .MapGet(GetUserDetails, "{id}/details")
             .MapGet(GetUsers)
             .MapGet(GetUserRoles, "roles")
             .MapGet(GetCurrentUser, "current-user")
@@ -27,6 +28,11 @@ public class Users : EndpointGroupBase
     public async Task<UserDto> GetUser(ISender sender, int id)
     {
         return await sender.Send(new GetUserQuery { IdUser = id });
+    }
+    
+    public async Task<UserDetailsDto> GetUserDetails(ISender sender, int id)
+    {
+        return await sender.Send(new GetUserDetailsQuery { IdUser = id });
     }
     
     [Authorize(Policy = Constants.UserPolicies.AdministratorPolicy)]

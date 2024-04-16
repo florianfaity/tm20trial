@@ -13,6 +13,8 @@ public class RecordDto
     public DateTime DatePersonalBest { get; set; }
 
     public string? MapName { get; set; }
+    
+    public int IdMap { get; set; }
 
     public string? DisplayName { get; set; }
     
@@ -26,6 +28,7 @@ public class RecordDto
         {
             CreateMap<Domain.Entities.Records, RecordDto>()
                 .ForMember(d => d.MapName, opt => opt.MapFrom(s => s.Map != null ? s.Map.Name : ""))
+                .ForMember(d => d.IdMap, opt => opt.MapFrom(s => s.Map != null ? s.Map.Id : 0))
                 .ForMember(d => d.Time, opt => opt.MapFrom(s => s.Time.ToString("hh':'mm':'ss'.'fff")))
                 .ForMember(d => d.DisplayName, opt => opt.MapFrom(s => s.User != null ? s.User.DisplayName: ""));
 
