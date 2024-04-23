@@ -22,7 +22,7 @@ public class UserDetailsDto : IMapFrom<Domain.Entities.Users>
     
     public string? TmIoId { get; set; }
     
-    public int NumberOfPoint { get; set; }
+    public int Points { get; set; }
     
     public int NumberOfWorldRecord { get; set; }
     

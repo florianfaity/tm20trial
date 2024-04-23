@@ -1525,7 +1525,7 @@
             "type": "string",
             "nullable": true
           },
-          "numberOfPoint": {
+          "points": {
             "type": "integer",
             "format": "int32"
           },

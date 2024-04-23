@@ -52,6 +52,7 @@ public static class DependencyInjection
         services.AddAuthorization(ApplicationPolicy.AddTmTrialPolicies);
         
         services.AddTransient<ITrackmaniaService, TrackmaniaService>();
+        services.AddTransient<IPointsService, PointsService>();
         
         return services;
     }

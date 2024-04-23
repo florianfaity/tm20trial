@@ -2728,7 +2728,7 @@ export class UserDetailsDto implements IUserDetailsDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
-    numberOfPoint?: number;
+    points?: number;
     numberOfWorldRecord?: number;
     numberOfMapCompleted?: number;
     records?: RecordDto[] | undefined;
@@ -2752,7 +2752,7 @@ export class UserDetailsDto implements IUserDetailsDto {
             this.twitterUsername = _data["twitterUsername"];
             this.tmxId = _data["tmxId"];
             this.tmIoId = _data["tmIoId"];
-            this.numberOfPoint = _data["numberOfPoint"];
+            this.points = _data["points"];
             this.numberOfWorldRecord = _data["numberOfWorldRecord"];
             this.numberOfMapCompleted = _data["numberOfMapCompleted"];
             if (Array.isArray(_data["records"])) {
@@ -2780,7 +2780,7 @@ export class UserDetailsDto implements IUserDetailsDto {
         data["twitterUsername"] = this.twitterUsername;
         data["tmxId"] = this.tmxId;
         data["tmIoId"] = this.tmIoId;
-        data["numberOfPoint"] = this.numberOfPoint;
+        data["points"] = this.points;
         data["numberOfWorldRecord"] = this.numberOfWorldRecord;
         data["numberOfMapCompleted"] = this.numberOfMapCompleted;
         if (Array.isArray(this.records)) {
@@ -2801,7 +2801,7 @@ export interface IUserDetailsDto {
     twitterUsername?: string | undefined;
     tmxId?: string | undefined;
     tmIoId?: string | undefined;
-    numberOfPoint?: number;
+    points?: number;
     numberOfWorldRecord?: number;
     numberOfMapCompleted?: number;
     records?: RecordDto[] | undefined;
