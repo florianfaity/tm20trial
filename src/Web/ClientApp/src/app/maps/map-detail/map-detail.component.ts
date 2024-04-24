@@ -3,25 +3,22 @@ import {MapDto, MapsClient, RecordsClient, UserDto} from "../../web-api-client";
 import {of, Subject, switchMap} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastService} from "../../shared/services/toast.service";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-map-detail',
-  styles: [`
-    .text-center {
-      text-align: center;
-    }
-  `],
   templateUrl: './map-detail.component.html',
 })
 export class MapDetailComponent implements OnDestroy, OnInit {
   map: MapDto;
   loading = false;
+  safeURL:SafeResourceUrl;
 
   constructor(
     private _route: ActivatedRoute,
     private _recordsService: RecordsClient,
     private _toastService: ToastService,
-    private _router: Router, private _mapsClient: MapsClient) {
+    private _router: Router, private _mapsClient: MapsClient, private _sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -40,6 +37,10 @@ export class MapDetailComponent implements OnDestroy, OnInit {
     map$.subscribe({
         next: result => {
           this.map = result;
+          if(this.map.videoLink != null)
+            this.safeURL = this._sanitizer.bypassSecurityTrustResourceUrl(this.map.videoLink.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/"));
+          else
+            this.safeURL = null;
           this.loading = false;
         },
         error: error => {

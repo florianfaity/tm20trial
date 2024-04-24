@@ -38,7 +38,7 @@ import {of, switchMap} from "rxjs";
           </nz-page-header-extra>
         </nz-page-header>
       </nz-col>
-      <nz-col nzSpan="24" *ngIf="!loading; else loadingView">
+      <nz-col nzSpan="24" *ngIf="!loading && userDetails; else loadingView">
         <nz-row [nzGutter]="[16, 16]">
           <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
             <nz-row>
