@@ -65,15 +65,20 @@
   <nz-col nzSpan="16">
     <nz-card>
       <nz-row>
+        <nz-col nzSpan="24">
         <h1>Track Details</h1>
         <p *ngIf=" map.numberFinisher > 0">{{ map.numberFinisher }} Finishers</p>
         <p *ngIf=" map.numberFinisher == 0">no finishers</p>
+        </nz-col>
       </nz-row>
     </nz-card>
+    <br>
     <nz-card *ngIf="map.videoLink" nzTitle="Vidéo">
       <nz-row>
+        <nz-col nzSpan="24" nzAlign="center">
         <iframe [src]='safeURL' width="850" height="400"  frameborder="0" allowfullscreen></iframe>
 
+        </nz-col>
       </nz-row>
     </nz-card>
   </nz-col>
