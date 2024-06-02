@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using tm20trial.Application.Common.Exceptions;
 using tm20trial.Application.Common.Interfaces;
 using tm20trial.Domain.Enums;
@@ -20,15 +21,17 @@ public class UpdateRecordByIoIdCommandHandler : IRequestHandler<UpdateRecordByIo
     private readonly IApplicationDbContext _context;
     private readonly IIdentityService _identityService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IMemoryCache _memoryCache;
     private readonly ITrackmaniaService _trackmaniaService;
     
 
-    public UpdateRecordByIoIdCommandHandler(IApplicationDbContext context, IIdentityService identityService, ICurrentUserService currentUser, ITrackmaniaService trackmaniaService)
+    public UpdateRecordByIoIdCommandHandler(IApplicationDbContext context, IIdentityService identityService, ICurrentUserService currentUser, ITrackmaniaService trackmaniaService, IMemoryCache memoryCache)
     {
         _context = context;
         _identityService = identityService;
         _currentUserService = currentUser;
         _trackmaniaService = trackmaniaService;
+        _memoryCache = memoryCache;
     }
     
     public async Task Handle(UpdateRecordByIoIdCommand request, CancellationToken cancellationToken)
@@ -89,6 +92,8 @@ public class UpdateRecordByIoIdCommandHandler : IRequestHandler<UpdateRecordByIo
             recordExist.Medal = (EMedal)record.Medal;
             _context.Records.Update(recordExist);
         }
+        
+        _memoryCache.Remove("leaderboard");
         
         await _context.SaveChangesAsync(cancellationToken);
     }

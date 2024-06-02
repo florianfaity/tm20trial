@@ -29,6 +29,29 @@
         }
       }
     },
+    "/api/Leaderboards": {
+      "get": {
+        "tags": [
+          "Leaderboards"
+        ],
+        "operationId": "GetLeaderboard",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDetailsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Maps/{id}": {
       "get": {
         "tags": [
@@ -921,6 +944,121 @@
   },
   "components": {
     "schemas": {
+      "UserDetailsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "loginUplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "nation": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitchUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitterUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmIoId": {
+            "type": "string",
+            "nullable": true
+          },
+          "points": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfWorldRecord": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfMapCompleted": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "records": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RecordDto"
+            }
+          }
+        }
+      },
+      "RecordDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isValidated": {
+            "type": "boolean"
+          },
+          "time": {
+            "type": "string",
+            "nullable": true
+          },
+          "datePersonalBest": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mapName": {
+            "type": "string",
+            "nullable": true
+          },
+          "idMap": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "medal": {
+            "$ref": "#/components/schemas/EMedal"
+          }
+        }
+      },
+      "EMedal": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "Bronze",
+          "Silver",
+          "Gold",
+          "Author"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
       "MapDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1157,64 +1295,6 @@
             "nullable": true
           }
         }
-      },
-      "RecordDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isValidated": {
-            "type": "boolean"
-          },
-          "time": {
-            "type": "string",
-            "nullable": true
-          },
-          "datePersonalBest": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "mapName": {
-            "type": "string",
-            "nullable": true
-          },
-          "idMap": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "medal": {
-            "$ref": "#/components/schemas/EMedal"
-          }
-        }
-      },
-      "EMedal": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "None",
-          "Bronze",
-          "Silver",
-          "Gold",
-          "Author"
-        ],
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
-        ]
       },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",
@@ -1486,63 +1566,6 @@
           },
           "isMapper": {
             "type": "boolean"
-          }
-        }
-      },
-      "UserDetailsDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "idUser": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "loginUplay": {
-            "type": "string",
-            "nullable": true
-          },
-          "nation": {
-            "type": "string",
-            "nullable": true
-          },
-          "twitchUsername": {
-            "type": "string",
-            "nullable": true
-          },
-          "twitterUsername": {
-            "type": "string",
-            "nullable": true
-          },
-          "tmxId": {
-            "type": "string",
-            "nullable": true
-          },
-          "tmIoId": {
-            "type": "string",
-            "nullable": true
-          },
-          "points": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "numberOfWorldRecord": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "numberOfMapCompleted": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "records": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/RecordDto"
-            }
           }
         }
       },

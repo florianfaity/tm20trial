@@ -1,2 +1,30 @@
-Leaderboard
+<nz-row *ngIf="!loading else loadingLeaderboard">
+  <nz-col [nzMd]="2">
+  </nz-col>
+  <nz-col [nzMd]="20">
+<nz-table #leaderboardData [nzData]="leaderboard">
+  <thead>
+  <tr>
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Points</th>
+    <th>Finishes</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of leaderboardData.data let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{user.displayName}}</td>
+    <td>{{user.points}}</td>
+    <td>{{user.numberOfMapCompleted}}</td>
+  </tr>
+  </tbody>
+</nz-table>
+  </nz-col>
+  <nz-col [nzMd]="2">
+  </nz-col>
+</nz-row>
 
+<ng-template #loadingLeaderboard>
+  <app-spinner></app-spinner>
+</ng-template>

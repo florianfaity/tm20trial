@@ -88,6 +88,79 @@ export class AuthClient implements IAuthClient {
     }
 }
 
+export interface ILeaderboardsClient {
+    getLeaderboard(): Observable<UserDetailsDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class LeaderboardsClient implements ILeaderboardsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    getLeaderboard(): Observable<UserDetailsDto[]> {
+        let url_ = this.baseUrl + "/api/Leaderboards";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaderboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaderboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserDetailsDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserDetailsDto[]>;
+        }));
+    }
+
+    protected processGetLeaderboard(response: HttpResponseBase): Observable<UserDetailsDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserDetailsDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface IMapsClient {
     getMap(id: number): Observable<MapDto>;
     updateMap(id: number, command: UpdateMapCommand): Observable<void>;
@@ -1713,6 +1786,170 @@ export class UsersClient implements IUsersClient {
     }
 }
 
+export class UserDetailsDto implements IUserDetailsDto {
+    idUser?: number;
+    displayName?: string | undefined;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string | undefined;
+    points?: number;
+    numberOfWorldRecord?: number;
+    numberOfMapCompleted?: number;
+    records?: RecordDto[] | undefined;
+
+    constructor(data?: IUserDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.idUser = _data["idUser"];
+            this.displayName = _data["displayName"];
+            this.loginUplay = _data["loginUplay"];
+            this.nation = _data["nation"];
+            this.twitchUsername = _data["twitchUsername"];
+            this.twitterUsername = _data["twitterUsername"];
+            this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
+            this.points = _data["points"];
+            this.numberOfWorldRecord = _data["numberOfWorldRecord"];
+            this.numberOfMapCompleted = _data["numberOfMapCompleted"];
+            if (Array.isArray(_data["records"])) {
+                this.records = [] as any;
+                for (let item of _data["records"])
+                    this.records!.push(RecordDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["idUser"] = this.idUser;
+        data["displayName"] = this.displayName;
+        data["loginUplay"] = this.loginUplay;
+        data["nation"] = this.nation;
+        data["twitchUsername"] = this.twitchUsername;
+        data["twitterUsername"] = this.twitterUsername;
+        data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
+        data["points"] = this.points;
+        data["numberOfWorldRecord"] = this.numberOfWorldRecord;
+        data["numberOfMapCompleted"] = this.numberOfMapCompleted;
+        if (Array.isArray(this.records)) {
+            data["records"] = [];
+            for (let item of this.records)
+                data["records"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IUserDetailsDto {
+    idUser?: number;
+    displayName?: string | undefined;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string | undefined;
+    points?: number;
+    numberOfWorldRecord?: number;
+    numberOfMapCompleted?: number;
+    records?: RecordDto[] | undefined;
+}
+
+export class RecordDto implements IRecordDto {
+    id?: number;
+    isValidated?: boolean;
+    time?: string | undefined;
+    datePersonalBest?: Date;
+    mapName?: string | undefined;
+    idMap?: number;
+    displayName?: string | undefined;
+    fileUrl?: string | undefined;
+    medal?: EMedal;
+
+    constructor(data?: IRecordDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.isValidated = _data["isValidated"];
+            this.time = _data["time"];
+            this.datePersonalBest = _data["datePersonalBest"] ? new Date(_data["datePersonalBest"].toString()) : <any>undefined;
+            this.mapName = _data["mapName"];
+            this.idMap = _data["idMap"];
+            this.displayName = _data["displayName"];
+            this.fileUrl = _data["fileUrl"];
+            this.medal = _data["medal"];
+        }
+    }
+
+    static fromJS(data: any): RecordDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["isValidated"] = this.isValidated;
+        data["time"] = this.time;
+        data["datePersonalBest"] = this.datePersonalBest ? this.datePersonalBest.toISOString() : <any>undefined;
+        data["mapName"] = this.mapName;
+        data["idMap"] = this.idMap;
+        data["displayName"] = this.displayName;
+        data["fileUrl"] = this.fileUrl;
+        data["medal"] = this.medal;
+        return data;
+    }
+}
+
+export interface IRecordDto {
+    id?: number;
+    isValidated?: boolean;
+    time?: string | undefined;
+    datePersonalBest?: Date;
+    mapName?: string | undefined;
+    idMap?: number;
+    displayName?: string | undefined;
+    fileUrl?: string | undefined;
+    medal?: EMedal;
+}
+
+export enum EMedal {
+    None = 0,
+    Bronze = 1,
+    Silver = 2,
+    Gold = 3,
+    Author = 4,
+}
+
 export class MapDto implements IMapDto {
     id?: number;
     name?: string | undefined;
@@ -2034,82 +2271,6 @@ export interface INadeoMapDto {
     name?: string | undefined;
     fileUrl?: string | undefined;
     thumbnailUrl?: string | undefined;
-}
-
-export class RecordDto implements IRecordDto {
-    id?: number;
-    isValidated?: boolean;
-    time?: string | undefined;
-    datePersonalBest?: Date;
-    mapName?: string | undefined;
-    idMap?: number;
-    displayName?: string | undefined;
-    fileUrl?: string | undefined;
-    medal?: EMedal;
-
-    constructor(data?: IRecordDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.isValidated = _data["isValidated"];
-            this.time = _data["time"];
-            this.datePersonalBest = _data["datePersonalBest"] ? new Date(_data["datePersonalBest"].toString()) : <any>undefined;
-            this.mapName = _data["mapName"];
-            this.idMap = _data["idMap"];
-            this.displayName = _data["displayName"];
-            this.fileUrl = _data["fileUrl"];
-            this.medal = _data["medal"];
-        }
-    }
-
-    static fromJS(data: any): RecordDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new RecordDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["isValidated"] = this.isValidated;
-        data["time"] = this.time;
-        data["datePersonalBest"] = this.datePersonalBest ? this.datePersonalBest.toISOString() : <any>undefined;
-        data["mapName"] = this.mapName;
-        data["idMap"] = this.idMap;
-        data["displayName"] = this.displayName;
-        data["fileUrl"] = this.fileUrl;
-        data["medal"] = this.medal;
-        return data;
-    }
-}
-
-export interface IRecordDto {
-    id?: number;
-    isValidated?: boolean;
-    time?: string | undefined;
-    datePersonalBest?: Date;
-    mapName?: string | undefined;
-    idMap?: number;
-    displayName?: string | undefined;
-    fileUrl?: string | undefined;
-    medal?: EMedal;
-}
-
-export enum EMedal {
-    None = 0,
-    Bronze = 1,
-    Silver = 2,
-    Gold = 3,
-    Author = 4,
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
@@ -2717,94 +2878,6 @@ export interface IUserDto {
     tmIoId?: string | undefined;
     email?: string | undefined;
     isMapper?: boolean;
-}
-
-export class UserDetailsDto implements IUserDetailsDto {
-    idUser?: number;
-    displayName?: string | undefined;
-    loginUplay?: string | undefined;
-    nation?: string | undefined;
-    twitchUsername?: string | undefined;
-    twitterUsername?: string | undefined;
-    tmxId?: string | undefined;
-    tmIoId?: string | undefined;
-    points?: number;
-    numberOfWorldRecord?: number;
-    numberOfMapCompleted?: number;
-    records?: RecordDto[] | undefined;
-
-    constructor(data?: IUserDetailsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.idUser = _data["idUser"];
-            this.displayName = _data["displayName"];
-            this.loginUplay = _data["loginUplay"];
-            this.nation = _data["nation"];
-            this.twitchUsername = _data["twitchUsername"];
-            this.twitterUsername = _data["twitterUsername"];
-            this.tmxId = _data["tmxId"];
-            this.tmIoId = _data["tmIoId"];
-            this.points = _data["points"];
-            this.numberOfWorldRecord = _data["numberOfWorldRecord"];
-            this.numberOfMapCompleted = _data["numberOfMapCompleted"];
-            if (Array.isArray(_data["records"])) {
-                this.records = [] as any;
-                for (let item of _data["records"])
-                    this.records!.push(RecordDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): UserDetailsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserDetailsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["idUser"] = this.idUser;
-        data["displayName"] = this.displayName;
-        data["loginUplay"] = this.loginUplay;
-        data["nation"] = this.nation;
-        data["twitchUsername"] = this.twitchUsername;
-        data["twitterUsername"] = this.twitterUsername;
-        data["tmxId"] = this.tmxId;
-        data["tmIoId"] = this.tmIoId;
-        data["points"] = this.points;
-        data["numberOfWorldRecord"] = this.numberOfWorldRecord;
-        data["numberOfMapCompleted"] = this.numberOfMapCompleted;
-        if (Array.isArray(this.records)) {
-            data["records"] = [];
-            for (let item of this.records)
-                data["records"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IUserDetailsDto {
-    idUser?: number;
-    displayName?: string | undefined;
-    loginUplay?: string | undefined;
-    nation?: string | undefined;
-    twitchUsername?: string | undefined;
-    twitterUsername?: string | undefined;
-    tmxId?: string | undefined;
-    tmIoId?: string | undefined;
-    points?: number;
-    numberOfWorldRecord?: number;
-    numberOfMapCompleted?: number;
-    records?: RecordDto[] | undefined;
 }
 
 export class CurrentUserDto implements ICurrentUserDto {
