@@ -1,12 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using tm20trial.Application.Common.Interfaces;
-using tm20trial.Application.Common.Models;
-using tm20trial.Application.Common.Security;
 using tm20trial.Application.Records.Queries;
 
 namespace tm20trial.Application.Users.Queries;
 
-[Authorize(Policy = Constants.UserPolicies.ConnectedPolicy)]
 public record GetUserDetailsQuery : IRequest<UserDetailsDto>
 {
     public int IdUser {get;set;}

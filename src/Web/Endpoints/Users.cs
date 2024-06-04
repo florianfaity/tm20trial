@@ -13,7 +13,6 @@ public class Users : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-            .RequireAuthorization()
             .MapGet(GetUser, "{id}")
             .MapGet(GetUserDetails, "{id}/details")
             .MapGet(GetUsers)

@@ -1,25 +1,34 @@
-<nz-row *ngIf="!loading else loadingLeaderboard">
+<nz-row [nzGutter]="[16, 16]"  *ngIf="!loading else loadingLeaderboard">
+  <nz-col nzSpan="24">
+    <nz-page-header [nzGhost]="false">
+      <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>Leaderboard</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <nz-page-header-title >Leaderboard</nz-page-header-title>
+
+    </nz-page-header>
+  </nz-col>
   <nz-col [nzMd]="2">
   </nz-col>
   <nz-col [nzMd]="20">
-<nz-table #leaderboardData [nzData]="leaderboard">
-  <thead>
-  <tr>
-    <th>Rank</th>
-    <th>Name</th>
-    <th>Points</th>
-    <th>Finishes</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of leaderboardData.data let i = index">
-    <td>{{ i + 1 }}</td>
-    <td>{{user.displayName}}</td>
-    <td>{{user.points}}</td>
-    <td>{{user.numberOfMapCompleted}}</td>
-  </tr>
-  </tbody>
-</nz-table>
+    <nz-table #leaderboardData [nzData]="leaderboard">
+      <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Points</th>
+        <th>Finishes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of leaderboardData.data let i = index">
+        <td>{{ i + 1 }}</td>
+        <td style="cursor: pointer;" (click)="goToDetailsUser(user.idUser)">{{ user.displayName }}</td>
+        <td>{{ user.points }}</td>
+        <td>{{ user.numberOfMapCompleted }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
   </nz-col>
   <nz-col [nzMd]="2">
   </nz-col>

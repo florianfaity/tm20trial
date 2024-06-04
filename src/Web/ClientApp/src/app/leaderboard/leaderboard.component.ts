@@ -52,4 +52,8 @@ export class LeaderboardComponent implements OnInit{
     this.destroy$.complete();
   }
 
+  goToDetailsUser(idUser:number){
+    this._router.navigateByUrl('/trial/user/' + idUser);
+  }
+
 }
