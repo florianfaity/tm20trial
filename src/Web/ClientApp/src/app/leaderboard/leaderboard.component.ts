@@ -8,6 +8,7 @@ import {AuthorizeService} from "../../api-authorization/authorize.service";
 
 @Component({
   selector: 'app-leaderboard',
+  styleUrls: ['leaderboard.component.less'],
   templateUrl: 'leaderboard.component.html',
 })
 export class LeaderboardComponent implements OnInit{
@@ -16,11 +17,8 @@ export class LeaderboardComponent implements OnInit{
 
   currentBreakpoint: string = '';
   constructor(private leaderboardsClient: LeaderboardsClient,
-              private _route: ActivatedRoute,
               private _router: Router,
-              private _toastService: ToastService,
               private _nzBreakpoint: NzBreakpointService,
-              private _authorizeService: AuthorizeService,
   ) {
   }
 

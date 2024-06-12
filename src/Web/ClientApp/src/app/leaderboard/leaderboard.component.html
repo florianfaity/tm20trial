@@ -23,7 +23,7 @@
       <tbody>
       <tr *ngFor="let user of leaderboardData.data let i = index">
         <td>{{ i + 1 }}</td>
-        <td style="cursor: pointer;" (click)="goToDetailsUser(user.idUser)">{{ user.displayName }}</td>
+        <td style="cursor: pointer;" (click)="goToDetailsUser(user.idUser)" class="primary-color-text">{{ user.displayName }}</td>
         <td>{{ user.points }}</td>
         <td>{{ user.numberOfMapCompleted }}</td>
       </tr>
