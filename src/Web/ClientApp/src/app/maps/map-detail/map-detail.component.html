@@ -33,9 +33,31 @@
     <nz-card>
       <nz-row>
         <nz-col nzSpan="24">
-        <h1>Track Details</h1>
-        <p *ngIf=" map.numberFinisher > 0">{{ map.numberFinisher }} Finishers</p>
-        <p *ngIf=" map.numberFinisher == 0">no finishers</p>
+          <h1>Track Details</h1>
+          <!--          <p *ngIf=" map.numberFinisher > 1">{{ map.numberFinisher }} Finishers</p>-->
+          <!--          <p *ngIf=" map.numberFinisher == 1">{{ map.numberFinisher }} Finisher</p>-->
+          <!--          <p *ngIf=" map.numberFinisher == 0">no finishers</p>-->
+        </nz-col>
+
+      </nz-row>
+      <nz-row>
+        <nz-col [nzSpan]="4">
+          <nz-statistic [nzValue]="(map.difficulty | difficulty)" [nzTitle]="'Difficulty'"></nz-statistic>
+        </nz-col>
+        <nz-col [nzSpan]="4">
+          <nz-statistic [nzValue]="(map.numberFinisher | number)" [nzTitle]="'Finishers'"></nz-statistic>
+        </nz-col>
+        <nz-col [nzSpan]="4">
+          <nz-statistic [nzValue]="(map.points | number)" [nzTitle]="'Points'"></nz-statistic>
+        </nz-col>
+        <nz-col [nzSpan]="4">
+          <nz-statistic [nzValue]="(map.numberCheckpoint | number)" [nzTitle]="'Checkpoints'"></nz-statistic>
+        </nz-col>
+        <nz-col [nzSpan]="12">
+          <!--          <h3>{{ map.points }} points</h3>-->
+          <!--          <h3 *ngIf="map.numberCheckpoint > 1">{{ map.numberCheckpoint }} checkpoints</h3>-->
+          <!--          <h3 *ngIf="map.numberCheckpoint == 1">{{ map.numberCheckpoint }} checkpoint</h3>-->
+          <!--          <h3 *ngIf="map.numberCheckpoint == 0">no checkpoints</h3>-->
         </nz-col>
       </nz-row>
     </nz-card>
@@ -43,7 +65,7 @@
     <nz-card *ngIf="map.videoLink" nzTitle="Vidéo">
       <nz-row>
         <nz-col nzSpan="24" nzAlign="center">
-        <iframe [src]='safeURL' width="850" height="400"  frameborder="0" allowfullscreen></iframe>
+          <iframe [src]='safeURL' width="850" height="400" frameborder="0" allowfullscreen></iframe>
 
         </nz-col>
       </nz-row>
@@ -62,17 +84,22 @@
         <th>Rank</th>
         <th>Name</th>
         <th>Time</th>
-        <th>Date time set</th>
+        <th>Submitted</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let record of leaderboardData.data let i = index">
         <td>{{ i + 1 }}</td>
-        <td style="cursor: pointer;" (click)="goToDetailsUser(record.idUser)" class="primary-color-text">{{ record.displayName }}</td>
-        <td>{{ record.time }}</td>
+        <td style="cursor: pointer;" (click)="goToDetailsUser(record.idUser)"
+            class="primary-color-text">{{ record.displayName }}
+        </td>
+        <td>
+          <a nz-button *ngIf="record.fileUrl != null"
+             nzType="link" [href]="getLinkRecord(record.fileUrl)"> {{ record.time }}
+          </a>
+        </td>
+        <td *ngIf="record.fileUrl == null">{{ record.time }}</td>
         <td>{{ record.datePersonalBest | date: 'dd/MM/yyyy' }} {{ record.datePersonalBest | date: 'shortTime' }}</td>
-<!--        <td>{{ user.points }}</td>-->
-<!--        <td>{{ user.numberOfMapCompleted }}</td>-->
       </tr>
       </tbody>
     </nz-table>
@@ -80,8 +107,10 @@
   <nz-col [nzMd]="2">
   </nz-col>
 </nz-row>
-<nz-row  *ngIf="!map || !map.records">
-  <nz-col><nz-empty></nz-empty></nz-col>
+<nz-row *ngIf="!map || !map.records">
+  <nz-col>
+    <nz-empty></nz-empty>
+  </nz-col>
 </nz-row>
 <ng-template #loadingMap>
   <app-spinner></app-spinner>

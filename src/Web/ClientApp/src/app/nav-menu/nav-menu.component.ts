@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {OpenplanetClient} from "../web-api-client";
-import {HttpResponse} from "@angular/common/http";
+import {MapDto, OpenplanetClient, SearchClient, UserDto} from "../web-api-client";
+import {ToastService} from "../shared/services/toast.service";
+import {debounce} from 'lodash';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,18 +16,27 @@ export class NavMenuComponent {
   @Input() isPlayer = false;
   @Input() isConnected = false;
   @Input() playerName: string = "";
-  @Input() idUser: number ;
+  @Input() idUser: number;
 
+  searchValue = '';
   isExpanded = false;
+  listOfMapsFiltered: MapDto[] = [];
+  listOfUsersFiltered: UserDto[] = [];
+  loadingSearch = false;
 
-  constructor(private _openplanetClient : OpenplanetClient ) {}
+  constructor(private _openplanetClient: OpenplanetClient, private _searchClient: SearchClient,
+              private _toastService: ToastService, private _router: Router) {
+    this.search = debounce(this.search, 250);
+  }
 
-  onClickSignIn(){
+  onClickSignIn() {
     window.location.href = `Identity/Account/Login`;
   }
-  onClickSignOut(){
+
+  onClickSignOut() {
     window.location.href = "Identity/Account/Logout";
   }
+
   collapse() {
     this.isExpanded = false;
   }
@@ -34,10 +45,37 @@ export class NavMenuComponent {
     this.isExpanded = !this.isExpanded;
   }
 
-  goToApi(){
+  goToApi() {
     window.open("api", "_blank");
   }
 
+
+
+  goToSearch(searchValue: string) {
+    this._router.navigateByUrl('/trial/' + searchValue.replace(' ', '/'));
+  }
+
+  search(value: string) {
+    if (!value || value.length < 3) {
+      return;
+    }
+    this.loadingSearch = true;
+    this.listOfMapsFiltered = [];
+    this.listOfUsersFiltered = [];
+
+    this._searchClient.getFilteredMapsUsers(value).subscribe({
+      next: result => {
+        this.loadingSearch = false;
+        this.listOfMapsFiltered = result.maps;
+        this.listOfUsersFiltered = result.users;
+      },
+      error: error => {
+        this.loadingSearch = false;
+        console.error(error)
+        this._toastService.error("Error")
+      }
+    });
+  }
 
   //
   // onClickSignInUbisoft(){
@@ -56,4 +94,5 @@ export class NavMenuComponent {
   //   console.log("onClickSignInUbisoft");
   // }
 
+  protected readonly console = console;
 }

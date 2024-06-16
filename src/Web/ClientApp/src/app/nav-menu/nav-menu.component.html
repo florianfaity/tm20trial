@@ -14,7 +14,15 @@
       <nz-col nzXs="0" nzLg="8" nzXl="6" >
         <nz-row>
           <nz-col nzSpan="24">
-            <input nz-input type="text" placeholder="Search" class="search" *ngIf="!isAdminView" />
+            <nz-select  [(ngModel)]="searchValue" nzPlaceHolder="Search" nzShowSearch class="search" *ngIf="!isAdminView"  [ngModelOptions]="{standalone: true}"
+                       [nzShowArrow]="false" (nzOnSearch)="search($event)" (ngModelChange)="goToSearch(searchValue)">
+                <nz-option-group nzLabel="Maps" *ngIf="listOfMapsFiltered && listOfMapsFiltered.length >0" >
+                  <nz-option *ngFor="let map of listOfMapsFiltered" [nzLabel]="map.name + ' by ' + map.author" [nzValue]="'maps ' + map.id"></nz-option>
+                </nz-option-group>
+                <nz-option-group nzLabel="Players" *ngIf="listOfUsersFiltered && listOfUsersFiltered.length >0">
+                  <nz-option *ngFor="let user of listOfUsersFiltered" [nzLabel]="user.displayName" [nzValue]="'user ' + user.idUser"></nz-option>
+                </nz-option-group>
+            </nz-select>
             <h2 *ngIf="isAdminView" style="color:white;">ADMIN</h2>
           </nz-col>
         </nz-row>
@@ -40,7 +48,6 @@
                   Setting
                 </li>
                 <li nz-menu-item (click)="onClickSignOut()">Sign out</li>
-<!--                [state]="{ local: true }"-->
               </ul>
             </nz-dropdown-menu>
           </li>

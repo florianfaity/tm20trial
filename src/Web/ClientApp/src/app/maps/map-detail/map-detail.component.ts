@@ -81,4 +81,8 @@ export class MapDetailComponent implements OnDestroy, OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  getLinkRecord(fileUrl): string{
+    return fileUrl.replace('https://core.trackmania.nadeo.live/storageObjects','https://trackmania.io/api/download/ghost');
+  }
 }

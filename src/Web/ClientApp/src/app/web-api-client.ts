@@ -794,6 +794,75 @@ export class RecordsClient implements IRecordsClient {
     }
 }
 
+export interface ISearchClient {
+    getFilteredMapsUsers(search: string): Observable<ListSearchDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SearchClient implements ISearchClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    getFilteredMapsUsers(search: string): Observable<ListSearchDto> {
+        let url_ = this.baseUrl + "/api/Search/{search}";
+        if (search === undefined || search === null)
+            throw new Error("The parameter 'search' must be defined.");
+        url_ = url_.replace("{search}", encodeURIComponent("" + search));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFilteredMapsUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFilteredMapsUsers(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListSearchDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListSearchDto>;
+        }));
+    }
+
+    protected processGetFilteredMapsUsers(response: HttpResponseBase): Observable<ListSearchDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListSearchDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ITodoItemsClient {
     getTodoItemsWithPagination(listId: number, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto>;
     createTodoItem(command: CreateTodoItemCommand): Observable<number>;
@@ -2289,6 +2358,134 @@ export interface INadeoMapDto {
     thumbnailUrl?: string | undefined;
 }
 
+export class ListSearchDto implements IListSearchDto {
+    users?: UserDto[];
+    maps?: MapDto[];
+
+    constructor(data?: IListSearchDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["users"])) {
+                this.users = [] as any;
+                for (let item of _data["users"])
+                    this.users!.push(UserDto.fromJS(item));
+            }
+            if (Array.isArray(_data["maps"])) {
+                this.maps = [] as any;
+                for (let item of _data["maps"])
+                    this.maps!.push(MapDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListSearchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListSearchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.users)) {
+            data["users"] = [];
+            for (let item of this.users)
+                data["users"].push(item.toJSON());
+        }
+        if (Array.isArray(this.maps)) {
+            data["maps"] = [];
+            for (let item of this.maps)
+                data["maps"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IListSearchDto {
+    users?: UserDto[];
+    maps?: MapDto[];
+}
+
+export class UserDto implements IUserDto {
+    idUser?: number;
+    displayName?: string | undefined;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string | undefined;
+    email?: string | undefined;
+    isMapper?: boolean;
+
+    constructor(data?: IUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.idUser = _data["idUser"];
+            this.displayName = _data["displayName"];
+            this.loginUplay = _data["loginUplay"];
+            this.nation = _data["nation"];
+            this.twitchUsername = _data["twitchUsername"];
+            this.twitterUsername = _data["twitterUsername"];
+            this.tmxId = _data["tmxId"];
+            this.tmIoId = _data["tmIoId"];
+            this.email = _data["email"];
+            this.isMapper = _data["isMapper"];
+        }
+    }
+
+    static fromJS(data: any): UserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["idUser"] = this.idUser;
+        data["displayName"] = this.displayName;
+        data["loginUplay"] = this.loginUplay;
+        data["nation"] = this.nation;
+        data["twitchUsername"] = this.twitchUsername;
+        data["twitterUsername"] = this.twitterUsername;
+        data["tmxId"] = this.tmxId;
+        data["tmIoId"] = this.tmIoId;
+        data["email"] = this.email;
+        data["isMapper"] = this.isMapper;
+        return data;
+    }
+}
+
+export interface IUserDto {
+    idUser?: number;
+    displayName?: string | undefined;
+    loginUplay?: string | undefined;
+    nation?: string | undefined;
+    twitchUsername?: string | undefined;
+    twitterUsername?: string | undefined;
+    tmxId?: string | undefined;
+    tmIoId?: string | undefined;
+    email?: string | undefined;
+    isMapper?: boolean;
+}
+
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {
     items?: TodoItemBriefDto[];
     pageNumber?: number;
@@ -2822,78 +3019,6 @@ export class UpdateTodoListCommand implements IUpdateTodoListCommand {
 export interface IUpdateTodoListCommand {
     id?: number;
     title?: string | undefined;
-}
-
-export class UserDto implements IUserDto {
-    idUser?: number;
-    displayName?: string | undefined;
-    loginUplay?: string | undefined;
-    nation?: string | undefined;
-    twitchUsername?: string | undefined;
-    twitterUsername?: string | undefined;
-    tmxId?: string | undefined;
-    tmIoId?: string | undefined;
-    email?: string | undefined;
-    isMapper?: boolean;
-
-    constructor(data?: IUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.idUser = _data["idUser"];
-            this.displayName = _data["displayName"];
-            this.loginUplay = _data["loginUplay"];
-            this.nation = _data["nation"];
-            this.twitchUsername = _data["twitchUsername"];
-            this.twitterUsername = _data["twitterUsername"];
-            this.tmxId = _data["tmxId"];
-            this.tmIoId = _data["tmIoId"];
-            this.email = _data["email"];
-            this.isMapper = _data["isMapper"];
-        }
-    }
-
-    static fromJS(data: any): UserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["idUser"] = this.idUser;
-        data["displayName"] = this.displayName;
-        data["loginUplay"] = this.loginUplay;
-        data["nation"] = this.nation;
-        data["twitchUsername"] = this.twitchUsername;
-        data["twitterUsername"] = this.twitterUsername;
-        data["tmxId"] = this.tmxId;
-        data["tmIoId"] = this.tmIoId;
-        data["email"] = this.email;
-        data["isMapper"] = this.isMapper;
-        return data;
-    }
-}
-
-export interface IUserDto {
-    idUser?: number;
-    displayName?: string | undefined;
-    loginUplay?: string | undefined;
-    nation?: string | undefined;
-    twitchUsername?: string | undefined;
-    twitterUsername?: string | undefined;
-    tmxId?: string | undefined;
-    tmIoId?: string | undefined;
-    email?: string | undefined;
-    isMapper?: boolean;
 }
 
 export class CurrentUserDto implements ICurrentUserDto {

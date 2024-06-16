@@ -394,6 +394,37 @@
         }
       }
     },
+    "/api/Search/{search}": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "operationId": "GetFilteredMapsUsers",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListSearchDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TodoItems": {
       "get": {
         "tags": [
@@ -1307,6 +1338,69 @@
           }
         }
       },
+      "ListSearchDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            }
+          },
+          "maps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MapDto"
+            }
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "idUser": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "loginUplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "nation": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitchUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "twitterUsername": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmxId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmIoId": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMapper": {
+            "type": "boolean"
+          }
+        }
+      },
       "PaginatedListOfTodoItemBriefDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1532,51 +1626,6 @@
           "title": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "UserDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "idUser": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "loginUplay": {
-            "type": "string",
-            "nullable": true
-          },
-          "nation": {
-            "type": "string",
-            "nullable": true
-          },
-          "twitchUsername": {
-            "type": "string",
-            "nullable": true
-          },
-          "twitterUsername": {
-            "type": "string",
-            "nullable": true
-          },
-          "tmxId": {
-            "type": "string",
-            "nullable": true
-          },
-          "tmIoId": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "isMapper": {
-            "type": "boolean"
           }
         }
       },
