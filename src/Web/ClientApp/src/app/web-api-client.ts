@@ -1882,6 +1882,7 @@ export class RecordDto implements IRecordDto {
     mapName?: string | undefined;
     idMap?: number;
     displayName?: string | undefined;
+    idUser?: number | undefined;
     fileUrl?: string | undefined;
     medal?: EMedal;
 
@@ -1903,6 +1904,7 @@ export class RecordDto implements IRecordDto {
             this.mapName = _data["mapName"];
             this.idMap = _data["idMap"];
             this.displayName = _data["displayName"];
+            this.idUser = _data["idUser"];
             this.fileUrl = _data["fileUrl"];
             this.medal = _data["medal"];
         }
@@ -1924,6 +1926,7 @@ export class RecordDto implements IRecordDto {
         data["mapName"] = this.mapName;
         data["idMap"] = this.idMap;
         data["displayName"] = this.displayName;
+        data["idUser"] = this.idUser;
         data["fileUrl"] = this.fileUrl;
         data["medal"] = this.medal;
         return data;
@@ -1938,6 +1941,7 @@ export interface IRecordDto {
     mapName?: string | undefined;
     idMap?: number;
     displayName?: string | undefined;
+    idUser?: number | undefined;
     fileUrl?: string | undefined;
     medal?: EMedal;
 }
@@ -1966,6 +1970,7 @@ export class MapDto implements IMapDto {
     numberFinisher?: number;
     bestTime?: string | undefined;
     state?: EStateValidation;
+    records?: RecordDto[];
 
     constructor(data?: IMapDto) {
         if (data) {
@@ -1993,6 +1998,11 @@ export class MapDto implements IMapDto {
             this.numberFinisher = _data["numberFinisher"];
             this.bestTime = _data["bestTime"];
             this.state = _data["state"];
+            if (Array.isArray(_data["records"])) {
+                this.records = [] as any;
+                for (let item of _data["records"])
+                    this.records!.push(RecordDto.fromJS(item));
+            }
         }
     }
 
@@ -2020,6 +2030,11 @@ export class MapDto implements IMapDto {
         data["numberFinisher"] = this.numberFinisher;
         data["bestTime"] = this.bestTime;
         data["state"] = this.state;
+        if (Array.isArray(this.records)) {
+            data["records"] = [];
+            for (let item of this.records)
+                data["records"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -2040,6 +2055,7 @@ export interface IMapDto {
     numberFinisher?: number;
     bestTime?: string | undefined;
     state?: EStateValidation;
+    records?: RecordDto[];
 }
 
 export enum EDifficulty {

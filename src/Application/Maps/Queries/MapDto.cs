@@ -1,3 +1,4 @@
+using tm20trial.Application.Records.Queries;
 using tm20trial.Domain.Entities;
 using tm20trial.Domain.Enums;
 
@@ -35,13 +36,23 @@ public class MapDto
 
     public EStateValidation State { get; set; }
     
+    public ICollection<RecordDto> Records { get; set; }
+    
+    public MapDto()
+    {
+        Records = Array.Empty<RecordDto>();
+    }
+    
+
     private class Mapping : Profile
     {
         public Mapping()
         {
             CreateMap<Domain.Entities.Maps, MapDto>()
                 .ForMember(d => d.NumberFinisher, opt => opt.MapFrom(s => s.Records.Count()))
-                .ForMember(d => d.BestTime, opt => opt.MapFrom(s => s.Records.Any() ? (TimeSpan?)s.Records.Min(r => r.Time) : null));
+                .ForMember(d => d.BestTime, opt => opt.MapFrom(s => s.Records.Any() ? (TimeSpan?)s.Records.Min(r => r.Time) : null))
+                .ForMember(d => d.Records, opt => opt.MapFrom(s => s.Records))
+                ;
         }
     }
 }

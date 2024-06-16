@@ -28,39 +28,6 @@
         <span nz-icon [nzType]="'sync'" [nzSpin]="false"></span>
       </a>
     </ng-template>
-<!--    <ng-template #actionUploadTime>-->
-<!--      <a-->
-<!--        nz-button-->
-<!--        nzType="link"-->
-<!--        nz-tooltip-->
-<!--        nzTooltipTitle="Upload time"-->
-<!--        (click)="uploadTime()"-->
-<!--      >-->
-<!--        <i nz-icon nzType="upload" nzTheme="outline"></i>-->
-<!--      </a>-->
-<!--    </ng-template>-->
-    <!--    <nz-card>-->
-    <!--      <nz-row>-->
-    <!--        <nz-col nzSpan="8">-->
-    <!--          <img width="400" alt="logo" [src]="map.imageLink"/>-->
-    <!--        </nz-col>-->
-    <!--        <nz-col nzSpan="16">-->
-    <!--          <h1>{{ map.name }}           <small>By {{ map.author }}</small></h1>-->
-    <!--          <h1><strong>{{map.difficulty | difficulty}}</strong></h1>-->
-    <!--          <h1><strong>{{ map.points }} points</strong></h1>-->
-    <!--          <a-->
-    <!--            nz-button-->
-    <!--            nzType="link"-->
-    <!--            nz-tooltip-->
-    <!--            nzTooltipTitle="Download"-->
-    <!--            [href]="map.fileUrl" target="_blank"-->
-    <!--          >-->
-    <!--            <i nz-icon nzType="download" nzTheme="outline"></i>-->
-    <!--          </a>-->
-
-    <!--        </nz-col>-->
-    <!--      </nz-row>-->
-    <!--    </nz-card>-->
   </nz-col>
   <nz-col nzSpan="16">
     <nz-card>
@@ -83,9 +50,73 @@
     </nz-card>
   </nz-col>
 </nz-row>
-
+<br>
+<h2 style="text-align: center">Leaderboard</h2>
+<nz-row *ngIf="map && map.records">
+  <nz-col [nzMd]="2">
+  </nz-col>
+  <nz-col [nzMd]="20">
+    <nz-table #leaderboardData [nzData]="map.records">
+      <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Time</th>
+        <th>Date time set</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let record of leaderboardData.data let i = index">
+        <td>{{ i + 1 }}</td>
+        <td style="cursor: pointer;" (click)="goToDetailsUser(record.idUser)" class="primary-color-text">{{ record.displayName }}</td>
+        <td>{{ record.time }}</td>
+        <td>{{ record.datePersonalBest | date: 'dd/MM/yyyy' }} {{ record.datePersonalBest | date: 'shortTime' }}</td>
+<!--        <td>{{ user.points }}</td>-->
+<!--        <td>{{ user.numberOfMapCompleted }}</td>-->
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-col>
+  <nz-col [nzMd]="2">
+  </nz-col>
+</nz-row>
+<nz-row  *ngIf="!map || !map.records">
+  <nz-col><nz-empty></nz-empty></nz-col>
+</nz-row>
 <ng-template #loadingMap>
   <app-spinner></app-spinner>
 </ng-template>
 
-<pre *ngIf="!loading">{{ map | json }}</pre>
+<!--    <ng-template #actionUploadTime>-->
+<!--      <a-->
+<!--        nz-button-->
+<!--        nzType="link"-->
+<!--        nz-tooltip-->
+<!--        nzTooltipTitle="Upload time"-->
+<!--        (click)="uploadTime()"-->
+<!--      >-->
+<!--        <i nz-icon nzType="upload" nzTheme="outline"></i>-->
+<!--      </a>-->
+<!--    </ng-template>-->
+<!--    <nz-card>-->
+<!--      <nz-row>-->
+<!--        <nz-col nzSpan="8">-->
+<!--          <img width="400" alt="logo" [src]="map.imageLink"/>-->
+<!--        </nz-col>-->
+<!--        <nz-col nzSpan="16">-->
+<!--          <h1>{{ map.name }}           <small>By {{ map.author }}</small></h1>-->
+<!--          <h1><strong>{{map.difficulty | difficulty}}</strong></h1>-->
+<!--          <h1><strong>{{ map.points }} points</strong></h1>-->
+<!--          <a-->
+<!--            nz-button-->
+<!--            nzType="link"-->
+<!--            nz-tooltip-->
+<!--            nzTooltipTitle="Download"-->
+<!--            [href]="map.fileUrl" target="_blank"-->
+<!--          >-->
+<!--            <i nz-icon nzType="download" nzTheme="outline"></i>-->
+<!--          </a>-->
+
+<!--        </nz-col>-->
+<!--      </nz-row>-->
+<!--    </nz-card>-->

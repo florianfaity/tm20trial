@@ -71,6 +71,10 @@ export class MapDetailComponent implements OnDestroy, OnInit {
     console.log('uploadTime');
   }
 
+  goToDetailsUser(idUser:number){
+    this._router.navigateByUrl('/trial/user/' + idUser);
+  }
+
   private readonly destroy$ = new Subject<void>();
 
   ngOnDestroy(): void {

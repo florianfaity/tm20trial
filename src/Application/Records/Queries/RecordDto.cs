@@ -18,6 +18,8 @@ public class RecordDto
 
     public string? DisplayName { get; set; }
     
+    public int? IdUser { get; set; }
+    
     public string? FileUrl { get; set; }
     
     public EMedal Medal { get; set; }
@@ -30,7 +32,9 @@ public class RecordDto
                 .ForMember(d => d.MapName, opt => opt.MapFrom(s => s.Map != null ? s.Map.Name : ""))
                 .ForMember(d => d.IdMap, opt => opt.MapFrom(s => s.Map != null ? s.Map.Id : 0))
                 .ForMember(d => d.Time, opt => opt.MapFrom(s => s.Time.ToString("hh':'mm':'ss'.'fff")))
-                .ForMember(d => d.DisplayName, opt => opt.MapFrom(s => s.User != null ? s.User.DisplayName: ""));
+                .ForMember(d => d.DisplayName, opt => opt.MapFrom(s => s.User != null ? s.User.DisplayName: ""))
+                .ForMember(d => d.IdUser, opt => opt.MapFrom(s => s.User != null ? s.User.IdUser: (int?)null))
+                ;
 
         }
     }

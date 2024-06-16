@@ -24,7 +24,12 @@ public class GetMapQueryHandler : IRequestHandler<GetMapQuery, MapDto>
 
     public async Task<MapDto> Handle(GetMapQuery request, CancellationToken cancellationToken)
     {
-        var maps = await _context.Maps.Include(x => x.Records).FirstOrDefaultAsync(m => m.Id == request.Id ,cancellationToken);
-        return _mapper.Map<MapDto>(maps);
+        var maps = await _context.Maps
+            .Include(x => x.Records)
+            .ThenInclude(x => x.User)
+            .FirstOrDefaultAsync(m => m.Id == request.Id ,cancellationToken);
+        var mapDto = _mapper.Map<MapDto>(maps);
+
+       return mapDto;
     }
 }

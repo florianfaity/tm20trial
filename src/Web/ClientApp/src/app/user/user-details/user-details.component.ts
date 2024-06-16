@@ -22,9 +22,9 @@ import {of, switchMap} from "rxjs";
         <nz-page-header [nzGhost]="false">
           <nz-breadcrumb nz-page-header-breadcrumb>
             <nz-breadcrumb-item *ngIf="userDetails != null && userDetails.displayName != null">
-              <span nz-icon nzType="user"></span>{{ userDetails.displayName }}</nz-breadcrumb-item>
+              <span nz-icon nzType="user"></span> {{ userDetails.displayName }}</nz-breadcrumb-item>
             <nz-breadcrumb-item *ngIf="userDetails == null || userDetails.displayName == null">
-              <span nz-icon nzType="user"></span>Player</nz-breadcrumb-item>
+              <span nz-icon nzType="user"> </span>Player</nz-breadcrumb-item>
             <nz-breadcrumb-item>Details</nz-breadcrumb-item>
           </nz-breadcrumb>
           <nz-page-header-title *ngIf="userDetails != null && userDetails.displayName != null">Detail {{ userDetails.displayName }}</nz-page-header-title>

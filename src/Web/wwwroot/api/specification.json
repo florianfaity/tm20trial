@@ -1032,6 +1032,11 @@
             "type": "string",
             "nullable": true
           },
+          "idUser": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "fileUrl": {
             "type": "string",
             "nullable": true
@@ -1120,6 +1125,12 @@
           },
           "state": {
             "$ref": "#/components/schemas/EStateValidation"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordDto"
+            }
           }
         }
       },
