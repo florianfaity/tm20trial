@@ -91,6 +91,6 @@ export class MapsListComponent implements OnDestroy {
 
 
   goToSuggestMap(){
-    console.log("goToSuggestMap");
+      this._router.navigate(['suggest'], {relativeTo: this._route});
   }
 }

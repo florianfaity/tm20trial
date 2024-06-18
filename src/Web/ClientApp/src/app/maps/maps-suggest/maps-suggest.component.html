@@ -1,0 +1,162 @@
+
+<nz-row [nzGutter]="[16, 16]">
+  <nz-col nzSpan="24">
+    <nz-page-header nzBackIcon (nzBack)="goBack()" [nzGhost]="false">
+      <nz-breadcrumb nz-page-header-breadcrumb>
+        <nz-breadcrumb-item>Maps</nz-breadcrumb-item>
+        <nz-breadcrumb-item (click)="goBack()" class="cursor-pointer">List of map</nz-breadcrumb-item>
+        <nz-breadcrumb-item >Suggest a map</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <nz-page-header-title>Suggest Map</nz-page-header-title>
+    </nz-page-header>
+  </nz-col>
+
+  <nz-col nzSpan="24">
+    <nz-card nzBorderless>
+      <form [formGroup]="form">
+        <nz-row>
+          <nz-col class="margin-line" [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row>
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzRequired nzFor="tmIoId">
+                Trackmania.io Id
+              </nz-form-label>
+              <nz-form-control nz-col [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                  <input type="text" nz-input formControlName="tmIoId" (blur)="setTmIoId($event.target)"/>
+                </nz-input-group>
+                <ng-template #suffixButton>
+                  <button nz-button nzType="primary" (click)="clickTmIoId()" nzSearch>Search</button>
+                </ng-template>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzRequired nzFor="name">
+                Name
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
+                <input nz-input formControlName="name"/>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzRequired nzFor="author">
+                Author
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
+                <input nz-input formControlName="author"/>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzFor="difficulty">
+                Difficulty
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24">
+                <nz-select formControlName="difficulty">
+                  <nz-option [nzValue]="enumDifficulty.Easy" nzLabel="Easy"></nz-option>
+                  <nz-option [nzValue]="enumDifficulty.Intermediate" nzLabel="Intermediate"></nz-option>
+                  <nz-option [nzValue]="enumDifficulty.Advanced" nzLabel="Advanced"></nz-option>
+                  <nz-option [nzValue]="enumDifficulty.Hard" nzLabel="Hard"></nz-option>
+                  <nz-option [nzValue]="enumDifficulty.Expert" nzLabel="Expert"></nz-option>
+                  <nz-option [nzValue]="enumDifficulty.Insane" nzLabel="Insane"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzFor="typeTrial">
+                Type trial
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24">
+                <nz-select formControlName="typeTrial">
+                  <nz-option [nzValue]="enumTypeTrial.Classic" nzLabel="Classic"></nz-option>
+                  <nz-option [nzValue]="enumTypeTrial.Fun" nzLabel="Fun"></nz-option>
+                  <nz-option [nzValue]="enumTypeTrial.Mini" nzLabel="Mini"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzRequired nzFor="points">
+                Points
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
+                <nz-input-number formControlName="points"
+                                 [nzMin]="1" [nzMax]="1500" [nzStep]="1"></nz-input-number>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzFor="tmxLink">
+                Trackmania exchange link
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24">
+                <input nz-input formControlName="tmxLink"/>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzFor="videoLink">
+                Vidéo link or GPS
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24">
+                <input nz-input formControlName="videoLink"/>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzFor="imageLink">
+                Image link
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24">
+                <nz-input-group nzSearch [nzAddOnAfter]="previewButton">
+                  <input nz-input formControlName="imageLink" (blur)="setImage($event.target)"/>
+                </nz-input-group>
+                <ng-template #previewButton>
+                  <button nz-button nzType="primary" (click)="previewImage()" nzSearch>Preview</button>
+                </ng-template>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-form-label class="text-left" [nzLg]="8" [nzXs]="24" nzRequired nzFor="numberCheckpoint">
+                Number of checkpoints
+              </nz-form-label>
+              <nz-form-control [nzLg]="16" [nzXs]="24" nzErrorTip="Required">
+                <nz-input-number formControlName="numberCheckpoint"
+                                 [nzMin]="0" [nzMax]="1500" [nzStep]="1"></nz-input-number>
+              </nz-form-control>
+            </nz-row>
+          </nz-col>
+
+          <nz-col [nzLg]="{ span: 12, offset: 6 }" [nzXs]="24" style="margin-top: 5px;">
+            <nz-row class="margin-line" nzJustify="space-between">
+              <nz-col [nzLg]="18" class="text-center">
+                <button nz-button nzType="primary" nzGhost class="margin-button" type="button"
+                        (click)="goBack()">
+                  <i nz-icon nzType="close" nzTheme="outline"></i> Cancel
+                </button>
+              </nz-col>
+              <nz-col [nzLg]="6">
+                <button nz-button nzType="primary" class="margin-button-edition" (click)="onSubmit()">
+                  <i nz-icon nzType="save" nzTheme="outline"></i>
+                  Suggest
+                </button>
+              </nz-col>
+            </nz-row>
+          </nz-col>
+        </nz-row>
+      </form>
+    </nz-card>
+  </nz-col>
+</nz-row>

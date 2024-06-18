@@ -22,7 +22,6 @@ public class GetMapNadeoQueryHandler : IRequestHandler<GetMapNadeoQuery, NadeoMa
     {
         var mapNadeo = await _trackmaniaService.GetMapById(request.MapId);
         
-        
         return _mapper.Map<NadeoMapDto>(mapNadeo);
     }
 }

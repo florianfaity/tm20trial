@@ -7,9 +7,10 @@ import {MapsComponent} from "./maps.component";
 import {maps_routes} from "./maps.routes";
 import {MapDetailComponent} from "./map-detail/map-detail.component";
 import {MapsListComponent} from "./maps-list/maps-list.component";
+import {MapsSuggestComponent} from "./maps-suggest/maps-suggest.component";
 
 @NgModule({
-  declarations: [MapsComponent, MapsListComponent, MapDetailComponent],
+  declarations: [MapsComponent, MapsListComponent, MapDetailComponent, MapsSuggestComponent],
   imports: [
     CommonModule, RouterModule.forChild(maps_routes), SharedModule
   ]

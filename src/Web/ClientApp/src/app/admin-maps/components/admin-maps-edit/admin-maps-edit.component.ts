@@ -215,7 +215,7 @@ import {MapsService} from "../../../shared/services/maps.service";
     </nz-row>
   `
 })
-export class AdminMapsEditComponent implements OnInit, OnChanges {
+export class AdminMapsEditComponent implements OnInit {
   map: MapDto;
   loading = false;
   isEdit = false;
@@ -277,11 +277,6 @@ export class AdminMapsEditComponent implements OnInit, OnChanges {
       state: [EStateValidation.New, Validators.required],
     });
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.log(changes.map);
-    }
 
   ngOnInit(): void {
     this.setValue();
