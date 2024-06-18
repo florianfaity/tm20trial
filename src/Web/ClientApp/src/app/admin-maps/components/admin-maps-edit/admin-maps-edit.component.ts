@@ -156,7 +156,7 @@ import {MapsService} from "../../../shared/services/maps.service";
                       <input nz-input formControlName="imageLink" (blur)="setImage($event.target)"/>
                     </nz-input-group>
                     <ng-template #previewButton>
-                      <button nz-button nzType="primary" (click)="previewImage()" nzSearch>Preview</button>
+                      <button nz-button nzType="primary" (click)="previewImage()" nzSearch [disabled]="!this.srcImage">Preview</button>
                     </ng-template>
                   </nz-form-control>
                 </nz-row>
