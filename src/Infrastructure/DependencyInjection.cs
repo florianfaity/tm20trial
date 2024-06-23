@@ -44,6 +44,7 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
         
         services.Configure<TrackmaniaConfiguration>(configuration.GetSection("Trackmania"));
+        services.Configure<MailJetConfiguration>(configuration.GetSection("MailJet"));
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IEncryptionService, EncryptionService>();
@@ -53,6 +54,7 @@ public static class DependencyInjection
         
         services.AddTransient<ITrackmaniaService, TrackmaniaService>();
         services.AddTransient<IPointsService, PointsService>();
+        services.AddTransient<IEmailClient, MailJetService>();
         
         return services;
     }

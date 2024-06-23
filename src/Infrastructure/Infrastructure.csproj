@@ -9,6 +9,7 @@
     <PackageReference Include="Duende.IdentityServer" />
     <PackageReference Include="Flurl" />
     <PackageReference Include="Flurl.Http" />
+    <PackageReference Include="Mailjet.Api" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
